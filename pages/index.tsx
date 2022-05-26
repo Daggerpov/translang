@@ -4,7 +4,6 @@ import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import { TextBoxComponent } from "@syncfusion/ej2-react-inputs";
 import { useState } from "react";
-import translate from "./translation";
 
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
@@ -12,9 +11,15 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { LoadingButton } from "@mui/lab";
+import { TextField } from "@mui/material";
+
+
+
+
 
 const Home: NextPage = () => {
     const [codeInput, setCodeInput] = useState<any>(null);
+    const [codeOutput, setCodeOutput] = useState<any>(null);
     const [languageFrom, setLanguageFrom] = useState<any>(null);
     const [languageTo, setLanguageTo] = useState<any>(null);
 
@@ -25,6 +30,16 @@ const Home: NextPage = () => {
     const handleChange2 = (event: SelectChangeEvent) => {
         setLanguageTo(event.target.value as string);
     };
+
+    const translate = (codeInput: string, languageFrom: string, languageTo: string) => {
+        console.log(codeInput);
+        console.log(languageFrom);
+        console.log(languageTo);
+
+        let translatedCode: string = 'print("Hello World!")';
+
+        setCodeOutput(translatedCode);
+    }
 
     return (
         <div className={styles.container}>
@@ -68,72 +83,43 @@ const Home: NextPage = () => {
                         />
                     </div>
                 </Box>
-
-                <FormControl fullWidth>
-                    <InputLabel id="demo-simple-select-label">
-                        Language To
-                    </InputLabel>
-                    <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        value={languageTo}
-                        label="Age"
-                        onChange={handleChange2}
-                    >
-                        <MenuItem value={"Python"}>Python</MenuItem>
-                        <MenuItem value={"Java"}>Java</MenuItem>
-                        <MenuItem value={"JavaScript"}>JavaScript</MenuItem>
-                        <MenuItem value={"C++"}>C++</MenuItem>
-                    </Select>
-                </FormControl>
+                <Box>
+                    <FormControl fullWidth>
+                        <InputLabel id="demo-simple-select-label">
+                            Language To
+                        </InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={languageTo}
+                            label="Age"
+                            onChange={handleChange2}
+                        >
+                            <MenuItem value={"Python"}>Python</MenuItem>
+                            <MenuItem value={"Java"}>Java</MenuItem>
+                            <MenuItem value={"JavaScript"}>JavaScript</MenuItem>
+                            <MenuItem value={"C++"}>C++</MenuItem>
+                        </Select>
+                    </FormControl>
+                    <TextField
+                        id="outlined-multiline-flexible"
+                        placeholder="This is where your code will be output"
+                        multiline
+                        maxRows={Infinity}
+                        value={codeOutput}
+                    />
+                </Box>
 
                 <LoadingButton
                     onClick={() =>
-                        translate(codeInput, languageFrom, languageTo)
+                        // this gets only the codeInput's actual text value, 
+                        // which is all I care about for now
+                        translate(codeInput.value, languageFrom, languageTo)
                     }
                     style={styles.button}
                 >
                     Translate!
                 </LoadingButton>
-                {/* <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.tsx</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h2>Documentation &rarr;</h2>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h2>Learn &rarr;</h2>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/canary/examples"
-            className={styles.card}
-          >
-            <h2>Examples &rarr;</h2>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h2>Deploy &rarr;</h2>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-          */}
             </main>
 
             <footer className={styles.footer}>
