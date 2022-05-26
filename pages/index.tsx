@@ -5,6 +5,7 @@ import styles from "../styles/Home.module.css";
 import { TextBoxComponent } from "@syncfusion/ej2-react-inputs";
 import { useState } from "react";
 
+// ? Material UI is a component library for easier styling and with some custom components
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -12,10 +13,6 @@ import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { LoadingButton } from "@mui/lab";
 import { TextField } from "@mui/material";
-
-
-
-
 
 const Home: NextPage = () => {
     const [codeInput, setCodeInput] = useState<any>(null);
@@ -32,9 +29,13 @@ const Home: NextPage = () => {
     };
 
     const translate = (codeInput: string, languageFrom: string, languageTo: string) => {
-
+        console.log(codeInput);
+        if (languageTo === "Java"){
+            codeInput = codeInput.replace(/print/gi, "System.out.println");
+            console.log("yes");
+        }
         
-        let translatedCode: string = 'print("Hello World!")';
+        let translatedCode: string = codeInput;
         setCodeOutput(translatedCode);
     }
 
