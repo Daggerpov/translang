@@ -32,12 +32,9 @@ const Home: NextPage = () => {
     };
 
     const translate = (codeInput: string, languageFrom: string, languageTo: string) => {
-        console.log(codeInput);
-        console.log(languageFrom);
-        console.log(languageTo);
 
+        
         let translatedCode: string = 'print("Hello World!")';
-
         setCodeOutput(translatedCode);
     }
 
@@ -107,6 +104,7 @@ const Home: NextPage = () => {
                         multiline
                         maxRows={Infinity}
                         value={codeOutput}
+                        disabled={true}
                     />
                 </Box>
 
