@@ -29,14 +29,32 @@ const Home: NextPage = () => {
     };
 
     const translate = (codeInput: string, languageFrom: string, languageTo: string) => {
-        console.log(codeInput);
+        let codeOutput: string = codeInput; 
+        let codeOutputLines: Array<any>;
+
         if (languageTo === "Java"){
-            codeInput = codeInput.replace(/print/gi, "System.out.println");
-            console.log("yes");
+            // could alternatively use RegEx (Regular Expressions) instead of the first argument being a string
+            codeOutput = codeOutput.replace("print", "System.out.println");
+
+            codeOutputLines = codeOutput.split(/[\r\n]+/); // RegEx for splitting by line
+
+            // for (
+            //     let lineNumber = 0;
+            //     lineNumber < codeOutputLines.length;
+            //     lineNumber++
+            // ) {
+            //     codeOutputLines[lineNumber] += ";";
+            // }
+
+            // ? better way to add semicolon to each line then convert to string
+            codeOutput = codeOutputLines.map((item) => `${item};`).join("\n");
+            console.log(codeOutput);
         }
         
-        let translatedCode: string = codeInput;
-        setCodeOutput(translatedCode);
+        if (codeInput != codeOutput) {
+            setCodeOutput(codeOutput);
+        }
+        
     }
 
     return (
