@@ -32,11 +32,7 @@ const Home: NextPage = () => {
         let codeOutput: string = codeInput; 
         let codeOutputLines: Array<any>;
 
-        if (languageTo === "Java"){
-            // ? could alternatively use RegEx (Regular Expressions) instead of the first
-            // ? argument being a string, but I don't believe I'll need this
-            codeOutput = codeOutput.replaceAll("print", "System.out.println");
-
+        if (languageTo === "Java" || languageTo === "JavaScript"){
             codeOutputLines = codeOutput.split(/[\r\n]+/); // RegEx for splitting by line
 
             // * better way to add semicolon to each line then convert to string
@@ -44,35 +40,35 @@ const Home: NextPage = () => {
 
             console.log(codeOutputLines);
 
-            // this filters out the semicolon-only lines from the output after having added 
+            // this filters out the semicolon-only lines from the output after having added
             // these semicolons to every line with the language conversion (prevents empty lines
             // at the end of the code block)
-            let filteredCodeOutputLines = codeOutputLines.filter(function (element) {
+            let filteredCodeOutputLines = codeOutputLines.filter(function (
+                element
+            ) {
                 return element != ";";
             });
 
             codeOutput = filteredCodeOutputLines.join("\n");
 
             console.log(codeOutput);
+        }
 
-            // for (
-            //     let lineNumber = 0;
-            //     lineNumber < codeOutputLines.length;
-            //     lineNumber++
-            // ) {
-            //     if (codeOutputLines[lineNumber] == ";") {
-            //         console.log("true");
-            //         codeOutput = codeOutputLines.slice(lineNumber).join("\n");
-            //     }
-                
-            // }
-            // console.log(codeOutput);
+        if (languageFrom === "Python"){
+            // ? could alternatively use RegEx (Regular Expressions) instead of the first
+            // ? argument being a string, but I don't believe I'll need this
+            codeOutput = codeOutput.replaceAll(
+                "print",
+                // * what it's replaced with depends on whether it's to JS or Java
+                languageTo === "Java" ? "System.out.println" : "console.log"
+            ); 
         }
         
         if (codeInput != codeOutput) {
             setCodeOutput(codeOutput);
+        } else {
+            setCodeOutput("No conversion was performed");
         }
-        
     }
 
     return (
