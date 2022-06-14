@@ -30,17 +30,28 @@ const Home: NextPage = () => {
         setLanguageTo(event.target.value as string);
     };
 
-    const translate = (codeInput: string, languageFrom: string, languageTo: string) => {
-        let codeOutput: string = codeInput; 
+    const [defaultOutputMessage, setDefaultOutputMessage] = useState<boolean>(true);
+
+    const translate = (
+        codeInput: string,
+        languageFrom: string,
+        languageTo: string
+    ) => {
+        let codeOutput: string = codeInput;
         let codeOutputLines: Array<any>;
 
-        if (languageTo === "Java" || languageTo === "JavaScript"){
-            codeOutputLines = codeOutput.split(/[\r\n]+/); // RegEx for splitting by line
+        codeOutputLines = codeOutput.split(/[\r\n]+/); // RegEx for splitting by line
 
+        // this is a dictionary to keep track of the lines that have been adjusted
+        const linesChecked: { [lineNumber: number]: string } = {};
+
+        for (let i: number = 0; i < codeOutputLines.length; i++) {
+            linesChecked[i] = "unmodified";
+        }
+
+        if (languageTo === "Java" || languageTo === "JavaScript") {
             // * better way to add semicolon to each line then convert to string
             codeOutputLines = codeOutputLines.map((item) => `${item};`);
-
-            console.log(codeOutputLines);
 
             // this filters out the semicolon-only lines from the output after having added
             // these semicolons to every line with the language conversion (prevents empty lines
@@ -52,26 +63,54 @@ const Home: NextPage = () => {
             });
 
             codeOutput = filteredCodeOutputLines.join("\n");
-
-            console.log(codeOutput);
         }
 
-        if (languageFrom === "Python"){
+        if (languageFrom === "Python") {
             // ? could alternatively use RegEx (Regular Expressions) instead of the first
             // ? argument being a string, but I don't believe I'll need this
             codeOutput = codeOutput.replaceAll(
                 "print",
                 // * what it's replaced with depends on whether it's to JS or Java
                 languageTo === "Java" ? "System.out.println" : "console.log"
-            ); 
+            );
         }
-        
+
+        console.log(linesChecked);
+
+        console.log(defaultOutputMessage);
+
         if (codeInput != codeOutput) {
             setCodeOutput(codeOutput);
         } else {
-            setCodeOutput("No conversion was performed");
+            setDefaultOutputMessage(false);
+        }
+    };
+
+    const [isCopied, setIsCopied] = useState(false);
+
+    async function copyTextToClipboard(text: string) {
+        if ("clipboard" in navigator) {
+            return await navigator.clipboard.writeText(text);
+        } else {
+            return document.execCommand("copy", true, text);
         }
     }
+
+    // onClick handler function for the copy button
+    const handleCopyClick = () => {
+        // Asynchronously call copyTextToClipboard
+        copyTextToClipboard(codeOutput)
+            .then(() => {
+                // If successful, update the isCopied state value
+                setIsCopied(true);
+                setTimeout(() => {
+                    setIsCopied(false);
+                }, 1500);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
 
     return (
         <div className={styles.container}>
@@ -88,7 +127,7 @@ const Home: NextPage = () => {
                 <h1 className={styles.title}>
                     translang - the programming language converter
                 </h1>
-                <Box component="form">
+                <Box component="form" style={{ padding: "10px" }}>
                     <FormControl fullWidth>
                         <InputLabel id="demo-simple-select-label">
                             Language From
@@ -103,7 +142,7 @@ const Home: NextPage = () => {
                             <MenuItem value={"Python"}>Python</MenuItem>
                             <MenuItem value={"Java"}>Java</MenuItem>
                             <MenuItem value={"JavaScript"}>JavaScript</MenuItem>
-                            <MenuItem value={"C++"}>C++</MenuItem>
+                            {/* <MenuItem value={"C++"}>C++</MenuItem> */}
                         </Select>
                     </FormControl>
 
@@ -115,14 +154,13 @@ const Home: NextPage = () => {
                         />
                     </div>
                 </Box>
-                <Box>
+                <Box component="form" style={{ padding: "10px" }}>
                     <FormControl fullWidth>
                         <InputLabel id="demo-simple-select-label">
                             Language To
                         </InputLabel>
                         <Select
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
+                            id="outlined-multiline-flexible"
                             value={languageTo}
                             label="Age"
                             onChange={handleChange2}
@@ -130,19 +168,23 @@ const Home: NextPage = () => {
                             <MenuItem value={"Python"}>Python</MenuItem>
                             <MenuItem value={"Java"}>Java</MenuItem>
                             <MenuItem value={"JavaScript"}>JavaScript</MenuItem>
-                            <MenuItem value={"C++"}>C++</MenuItem>
+                            {/* <MenuItem value={"C++"}>C++</MenuItem> */}
                         </Select>
                     </FormControl>
-                    <div className="multiline">
+                    <div
+                    >
                         <TextareaAutosize
-                            id="outlined-multiline-flexible"
-                            placeholder="This is where your code will be output"
+                            // id="outlined-multiline-flexible"
+                            placeholder={defaultOutputMessage ? "This is where your code will be output" : "No conversion was performed"}
                             minRows={3}
                             maxRows={10}
                             value={codeOutput}
                             disabled={true}
                         />
                     </div>
+                    <button onClick={handleCopyClick}>
+                        <span>{isCopied ? "Copied!" : "Copy to Clipboard"}</span>
+                    </button>
                 </Box>
 
                 <LoadingButton
