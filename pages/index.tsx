@@ -77,8 +77,6 @@ const Home: NextPage = () => {
 
         console.log(linesChecked);
 
-        console.log(defaultOutputMessage);
-
         if (codeInput != codeOutput) {
             setCodeOutput(codeOutput);
         } else {
@@ -182,9 +180,7 @@ const Home: NextPage = () => {
                             disabled={true}
                         />
                     </div>
-                    <button onClick={handleCopyClick}>
-                        <span>{isCopied ? "Copied!" : "Copy to Clipboard"}</span>
-                    </button>
+                    <input type="button" onClick={handleCopyClick} value={isCopied ? "Copied!" : "Copy to Clipboard"}/>
                 </Box>
 
                 <LoadingButton
