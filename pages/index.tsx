@@ -12,7 +12,9 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { LoadingButton } from "@mui/lab";
-import { TextField } from "@mui/material";
+
+//import { TextField } from "@mui/material";
+import { TextareaAutosize } from "@material-ui/core";
 
 const Home: NextPage = () => {
     const [codeInput, setCodeInput] = useState<any>(null);
@@ -131,19 +133,21 @@ const Home: NextPage = () => {
                             <MenuItem value={"C++"}>C++</MenuItem>
                         </Select>
                     </FormControl>
-                    <TextField
-                        id="outlined-multiline-flexible"
-                        placeholder="This is where your code will be output"
-                        multiline
-                        maxRows={Infinity}
-                        value={codeOutput}
-                        disabled={true}
-                    />
+                    <div className="multiline">
+                        <TextareaAutosize
+                            id="outlined-multiline-flexible"
+                            placeholder="This is where your code will be output"
+                            minRows={3}
+                            maxRows={10}
+                            value={codeOutput}
+                            disabled={true}
+                        />
+                    </div>
                 </Box>
 
                 <LoadingButton
                     onClick={() =>
-                        // this gets only the codeInput's actual text value, 
+                        // this gets only the codeInput's actual text value,
                         // which is all I care about for now
                         translate(codeInput.value, languageFrom, languageTo)
                     }
