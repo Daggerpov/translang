@@ -16,9 +16,16 @@
     "@mui/lab": "^5.0.0-alpha.83",
     "@mui/material": "^5.8.1",
     "@syncfusion/ej2-react-inputs": "^20.1.55",
+    "chalk": "^4.1.2",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "firebase-tools": "^11.1.0",
+    "joi": "^17.6.0",
+    "mongoose": "^6.3.8",
     "next": "12.1.6",
     "react": "18.1.0",
-    "react-dom": "18.1.0"
+    "react-dom": "18.1.0",
+    "ts-node": "^10.8.1"
   },
   "devDependencies": {
     "@types/node": "17.0.34",

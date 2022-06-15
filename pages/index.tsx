@@ -17,6 +17,8 @@ import { LoadingButton } from "@mui/lab";
 import { TextareaAutosize } from "@material-ui/core";
 
 const Home: NextPage = () => {
+    const [translationPerformed, setTranslationPerformed] = useState<boolean>(false);
+
     const [codeInput, setCodeInput] = useState<any>(null);
     const [codeOutput, setCodeOutput] = useState<any>(null);
     const [languageFrom, setLanguageFrom] = useState<any>(null);
@@ -79,6 +81,7 @@ const Home: NextPage = () => {
 
         if (codeInput != codeOutput) {
             setCodeOutput(codeOutput);
+            setTranslationPerformed(true);
         } else {
             setDefaultOutputMessage(false);
         }
@@ -169,18 +172,28 @@ const Home: NextPage = () => {
                             {/* <MenuItem value={"C++"}>C++</MenuItem> */}
                         </Select>
                     </FormControl>
-                    <div
-                    >
+                    <div>
                         <TextareaAutosize
                             // id="outlined-multiline-flexible"
-                            placeholder={defaultOutputMessage ? "This is where your code will be output" : "No conversion was performed"}
+                            placeholder={
+                                defaultOutputMessage
+                                    ? "This is where your code will be output"
+                                    : "No conversion was performed"
+                            }
                             minRows={3}
                             maxRows={10}
                             value={codeOutput}
                             disabled={true}
                         />
                     </div>
-                    <input type="button" onClick={handleCopyClick} value={isCopied ? "Copied!" : "Copy to Clipboard"}/>
+                    {/* the following is only displayed upon translation execution */}
+                    {translationPerformed && (
+                        <input
+                            type="button"
+                            onClick={handleCopyClick}
+                            value={isCopied ? "Copied!" : "Copy to Clipboard"}
+                        />
+                    )}
                 </Box>
 
                 <LoadingButton
