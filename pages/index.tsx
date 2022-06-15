@@ -194,6 +194,15 @@ const Home: NextPage = () => {
                             value={isCopied ? "Copied!" : "Copy to Clipboard"}
                         />
                     )}
+                    {translationPerformed && (
+                        <button
+                            // onClick={}
+                            // style={}
+                            className="btn"
+                        >
+                            Submit a Complaint
+                        </button>
+                    )}
                 </Box>
 
                 <LoadingButton
