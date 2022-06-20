@@ -16,6 +16,9 @@ import { LoadingButton } from "@mui/lab";
 //import { TextField } from "@mui/material";
 import { TextareaAutosize } from "@material-ui/core";
 
+import Link from "next/link";
+
+
 const Home: NextPage = () => {
     const [translationPerformed, setTranslationPerformed] = useState<boolean>(false);
 
@@ -128,6 +131,17 @@ const Home: NextPage = () => {
                 <h1 className={styles.title}>
                     translang - the programming language converter
                 </h1>
+
+                <Link href={{pathname: "/complaint"}}>
+                    <button
+                        // onClick={}
+                        // style={}
+                        className="btn"
+                    >
+                        Submit a Complaint
+                    </button>
+                </Link>
+
                 <Box component="form" style={{ padding: "10px" }}>
                     <FormControl fullWidth>
                         <InputLabel id="demo-simple-select-label">
@@ -194,15 +208,9 @@ const Home: NextPage = () => {
                             value={isCopied ? "Copied!" : "Copy to Clipboard"}
                         />
                     )}
-                    {translationPerformed && (
-                        <button
-                            // onClick={}
-                            // style={}
-                            className="btn"
-                        >
-                            Submit a Complaint
-                        </button>
-                    )}
+                    {/* {translationPerformed && (
+                        
+                    )} */}
                 </Box>
 
                 <LoadingButton
