@@ -132,13 +132,18 @@ const Home: NextPage = () => {
                     translang - the programming language converter
                 </h1>
 
-                <Link href={{pathname: "/complaint"}}>
+                <Link
+                    href={{
+                        pathname: "/complaint",
+                        query: {languageFrom, languageTo},
+                    }}
+                >
                     <button
                         // onClick={}
                         // style={}
                         className="btn"
                     >
-                        Submit a Complaint
+                        Fake Complaint
                     </button>
                 </Link>
 
@@ -208,9 +213,22 @@ const Home: NextPage = () => {
                             value={isCopied ? "Copied!" : "Copy to Clipboard"}
                         />
                     )}
-                    {/* {translationPerformed && (
-                        
-                    )} */}
+                    {translationPerformed && (
+                        <Link
+                            href={{
+                                pathname: "/complaint",
+                                query: { languageFrom, languageTo },
+                            }}
+                        >
+                            <button
+                                // onClick={}
+                                // style={}
+                                className="btn"
+                            >
+                                Submit a Complaint
+                            </button>
+                        </Link>
+                    )}
                 </Box>
 
                 <LoadingButton
