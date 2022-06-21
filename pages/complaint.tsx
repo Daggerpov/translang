@@ -30,9 +30,7 @@ import {
     Element as SlateElement,
 } from "slate";
 import { withHistory } from "slate-history";
-// import { Button, Icon, Toolbar } from "@mui/material";
-
-import { Button, Icon, Toolbar } from "../text_editor_components";
+import { Button, Icon, Toolbar } from "@mui/material";
 
 
 // for the slate text editor:
