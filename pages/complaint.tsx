@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
@@ -32,6 +34,17 @@ import {
 import { withHistory } from "slate-history";
 import { Button, Icon, Toolbar } from "@mui/material";
 
+import FormatBoldOutlinedIcon from "@mui/icons-material/FormatBoldOutlined";
+import FormatItalicOutlinedIcon from "@mui/icons-material/FormatItalicOutlined";
+import FormatUnderlinedOutlinedIcon from "@mui/icons-material/FormatUnderlinedOutlined";
+import CodeOutlinedIcon from "@mui/icons-material/CodeOutlined";
+import FormatQuoteOutlinedIcon from "@mui/icons-material/FormatQuoteOutlined";
+import FormatListNumberedOutlinedIcon from "@mui/icons-material/FormatListNumberedOutlined";
+import FormatListBulletedOutlinedIcon from "@mui/icons-material/FormatListBulletedOutlined";
+import FormatAlignLeftOutlinedIcon from "@mui/icons-material/FormatAlignLeftOutlined";
+import FormatAlignCenterOutlinedIcon from "@mui/icons-material/FormatAlignCenterOutlined";
+import FormatAlignRightOutlinedIcon from "@mui/icons-material/FormatAlignRightOutlined";
+import FormatAlignJustifyOutlinedIcon from "@mui/icons-material/FormatAlignJustifyOutlined";
 
 // for the slate text editor:
 const HOTKEYS = {
@@ -192,12 +205,32 @@ const BlockButton = ({ format, icon }) => {
                 toggleBlock(editor, format);
             }}
         >
-            <Icon>{icon}</Icon>
+            {format === "block-quote" && (
+                <FormatQuoteOutlinedIcon></FormatQuoteOutlinedIcon>
+            )}
+            {format === "numbered-list" && (
+                <FormatListNumberedOutlinedIcon></FormatListNumberedOutlinedIcon>
+            )}
+            {format === "bulleted-list" && (
+                <FormatListBulletedOutlinedIcon></FormatListBulletedOutlinedIcon>
+            )}
+            {format === "left" && (
+                <FormatAlignLeftOutlinedIcon></FormatAlignLeftOutlinedIcon>
+            )}
+            {format === "center" && (
+                <FormatAlignCenterOutlinedIcon></FormatAlignCenterOutlinedIcon>
+            )}
+            {format === "right" && (
+                <FormatAlignRightOutlinedIcon></FormatAlignRightOutlinedIcon>
+            )}
+            {format === "justify" && (
+                <FormatAlignJustifyOutlinedIcon></FormatAlignJustifyOutlinedIcon>
+            )}
         </Button>
     );
 };
 
-const MarkButton = ({ format, icon }) => {
+const MarkButton = ({ format }) => {
     const editor = useSlate();
     return (
         <Button
@@ -207,7 +240,16 @@ const MarkButton = ({ format, icon }) => {
                 toggleMark(editor, format);
             }}
         >
-            <Icon>{icon}</Icon>
+            {format === "bold" && (
+                <FormatBoldOutlinedIcon></FormatBoldOutlinedIcon>
+            )}
+            {format === "italic" && (
+                <FormatItalicOutlinedIcon></FormatItalicOutlinedIcon>
+            )}
+            {format === "underline" && (
+                <FormatUnderlinedOutlinedIcon></FormatUnderlinedOutlinedIcon>
+            )}
+            {format === "code" && <CodeOutlinedIcon></CodeOutlinedIcon>}
         </Button>
     );
 };
@@ -216,12 +258,10 @@ const initialValue: Descendant[] = [
     {
         type: "paragraph",
         children: [
-            { text: "This is editable " },
+            { text: "This is " },
+            { text: "editable ", italic: true },
             { text: "rich", bold: true },
-            { text: " text, " },
-            { text: "much", italic: true },
-            { text: " better than a " },
-            { text: "<textarea>", code: true },
+            { text: " text" },
             { text: "!" },
         ],
     },
@@ -229,22 +269,11 @@ const initialValue: Descendant[] = [
         type: "paragraph",
         children: [
             {
-                text: "Since it's rich text, you can do things like turn a selection of text ",
+                text: `Please leave any other comments that you'd like to include,
+and feel free to utilize the tools above to `,
             },
-            { text: "bold", bold: true },
-            {
-                text: ", or add a semantically rendered block quote in the middle of the page, like this:",
-            },
+            { text: "format", bold: true },
         ],
-    },
-    {
-        type: "block-quote",
-        children: [{ text: "A wise quote." }],
-    },
-    {
-        type: "paragraph",
-        align: "center",
-        children: [{ text: "Try it out for yourself!" }],
     },
 ];
 
@@ -252,7 +281,7 @@ const Complaint: NextPage = () => {
     const router = useRouter();
     const languageFrom = router.query.languageFrom
         ? router.query.languageFrom
-        : "JavaScript";
+        : "javascript";
     const languageTo = router.query.languageTo
         ? router.query.languageTo
         : "Python";
@@ -286,54 +315,42 @@ const Complaint: NextPage = () => {
                     You translated from: {languageFrom} to: {languageTo}
                 </h1>
 
-                <Slate editor={editor} value={initialValue}>
-                    <Toolbar>
-                        <MarkButton format="bold" icon="format_bold" />
-                        <MarkButton format="italic" icon="format_italic" />
-                        <MarkButton
-                            format="underline"
-                            icon="format_underlined"
-                        />
-                        <MarkButton format="code" icon="code" />
-                        <BlockButton format="heading-one" icon="looks_one" />
-                        <BlockButton format="heading-two" icon="looks_two" />
-                        <BlockButton format="block-quote" icon="format_quote" />
-                        <BlockButton
-                            format="numbered-list"
-                            icon="format_list_numbered"
-                        />
-                        <BlockButton
-                            format="bulleted-list"
-                            icon="format_list_bulleted"
-                        />
-                        <BlockButton format="left" icon="format_align_left" />
-                        <BlockButton
-                            format="center"
-                            icon="format_align_center"
-                        />
-                        <BlockButton format="right" icon="format_align_right" />
-                        <BlockButton
-                            format="justify"
-                            icon="format_align_justify"
-                        />
-                    </Toolbar>
-                    <Editable
-                        renderElement={renderElement}
-                        renderLeaf={renderLeaf}
-                        placeholder="Enter some rich text…"
-                        spellCheck
-                        autoFocus
-                        onKeyDown={(event) => {
-                            for (const hotkey in HOTKEYS) {
-                                if (isHotkey(hotkey, event as any)) {
-                                    event.preventDefault();
-                                    const mark = HOTKEYS[hotkey];
-                                    toggleMark(editor, mark);
+                <Box
+                    component="form"
+                    style={{ padding: "10px", border: "1px solid grey" }}
+                >
+                    <Slate editor={editor} value={initialValue}>
+                        <Toolbar>
+                            <MarkButton format="bold" />
+                            <MarkButton format="italic" />
+                            <MarkButton format="underline" />
+                            <MarkButton format="code" />
+                            <BlockButton format="block-quote" />
+                            <BlockButton format="numbered-list" />
+                            <BlockButton format="bulleted-list" />
+                            <BlockButton format="left" />
+                            <BlockButton format="center" />
+                            <BlockButton format="right" />
+                            <BlockButton format="justify" />
+                        </Toolbar>
+                        <Editable
+                            renderElement={renderElement}
+                            renderLeaf={renderLeaf}
+                            placeholder="Enter some rich text…"
+                            spellCheck
+                            autoFocus
+                            onKeyDown={(event) => {
+                                for (const hotkey in HOTKEYS) {
+                                    if (isHotkey(hotkey, event as any)) {
+                                        event.preventDefault();
+                                        const mark = HOTKEYS[hotkey];
+                                        toggleMark(editor, mark);
+                                    }
                                 }
-                            }
-                        }}
-                    />
-                </Slate>
+                            }}
+                        />
+                    </Slate>
+                </Box>
             </main>
 
             <footer className={styles.footer}>

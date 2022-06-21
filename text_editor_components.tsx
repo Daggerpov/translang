@@ -1,3 +1,4 @@
+// @ts-nocheck
 /* eslint-disable react/display-name */
 import React, { Ref, PropsWithChildren } from "react";
 import { cx, css } from "@emotion/css";
@@ -42,8 +43,6 @@ export const Button = React.forwardRef(
         />
     )
 );
-
-
 
 export const Icon = React.forwardRef(
     (

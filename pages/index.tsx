@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
@@ -18,14 +20,111 @@ import { TextareaAutosize } from "@material-ui/core";
 
 import Link from "next/link";
 
+import Prism from "prismjs";
+import "prismjs/components/prism-python";
+import "prismjs/components/prism-java";
+import React, { useCallback, useMemo } from "react";
+import { Slate, Editable, withReact } from "slate-react";
+import { Text, createEditor, Element as SlateElement, Descendant } from "slate";
+import { withHistory } from "slate-history";
+import { css } from "@emotion/css";
+
+const getLength = (token) => {
+    if (typeof token === "string") {
+        return token.length;
+    } else if (typeof token.content === "string") {
+        return token.content.length;
+    } else {
+        return token.content.reduce((l, t) => l + getLength(t), 0);
+    }
+};
+
+// different token types, styles found on Prismjs website
+const Leaf = ({ attributes, children, leaf }) => {
+    return (
+        <span
+            {...attributes}
+            className={css`
+                font-family: monospace;
+                background: hsla(0, 0%, 100%, 0.5);
+                ${leaf.comment &&
+                css`
+                    color: slategray;
+                `}
+                ${(leaf.operator || leaf.url) &&
+                css`
+                    color: #9a6e3a;
+                `}
+        ${leaf.keyword &&
+                css`
+                    color: #07a;
+                `}
+        ${(leaf.variable || leaf.regex) &&
+                css`
+                    color: #e90;
+                `}
+        ${(leaf.number ||
+                    leaf.boolean ||
+                    leaf.tag ||
+                    leaf.constant ||
+                    leaf.symbol ||
+                    leaf["attr-name"] ||
+                    leaf.selector) &&
+                css`
+                    color: #905;
+                `}
+        ${leaf.punctuation &&
+                css`
+                    color: #999;
+                `}
+        ${(leaf.string || leaf.char) &&
+                css`
+                    color: #690;
+                `}
+        ${(leaf.function || leaf["class-name"]) &&
+                css`
+                    color: #dd4a68;
+                `}
+            `}
+        >
+            {children}
+        </span>
+    );
+};
+
+const initialValue: Descendant[] = [
+    {
+        type: "paragraph",
+        children: [
+            {
+                text: `import math
+name = 'Daniel'
+print(name + "asd;flkjas;ldkjfl;kajsd")`,
+            },
+        ],
+    },
+];
+
+// modifications and additions to prism library
+
+Prism.languages.python = Prism.languages.extend("python", {});
+Prism.languages.insertBefore("python", "prolog", {
+    comment: { pattern: /##[^\n]*/, alias: "comment" },
+});
+Prism.languages.javascript = Prism.languages.extend("javascript", {});
+Prism.languages.insertBefore("javascript", "prolog", {
+    comment: { pattern: /\/\/[^\n]*/, alias: "comment" },
+});
+
 
 const Home: NextPage = () => {
-    const [translationPerformed, setTranslationPerformed] = useState<boolean>(false);
+    const [translationPerformed, setTranslationPerformed] =
+        useState<boolean>(false);
 
-    const [codeInput, setCodeInput] = useState<any>(null);
+    const [codeInput, setCodeInput] = useState<any>(initialValue);
     const [codeOutput, setCodeOutput] = useState<any>(null);
-    const [languageFrom, setLanguageFrom] = useState<any>(null);
-    const [languageTo, setLanguageTo] = useState<any>(null);
+    const [languageFrom, setLanguageFrom] = useState<any>("python");
+    const [languageTo, setLanguageTo] = useState<any>("python");
 
     const handleChange1 = (event: SelectChangeEvent) => {
         setLanguageFrom(event.target.value as string);
@@ -35,13 +134,15 @@ const Home: NextPage = () => {
         setLanguageTo(event.target.value as string);
     };
 
-    const [defaultOutputMessage, setDefaultOutputMessage] = useState<boolean>(true);
+    const [defaultOutputMessage, setDefaultOutputMessage] =
+        useState<boolean>(true);
 
     const translate = (
         codeInput: string,
         languageFrom: string,
         languageTo: string
     ) => {
+        console.log("as;dlfkjas;ldkfj");
         let codeOutput: string = codeInput;
         let codeOutputLines: Array<any>;
 
@@ -54,7 +155,7 @@ const Home: NextPage = () => {
             linesChecked[i] = "unmodified";
         }
 
-        if (languageTo === "Java" || languageTo === "JavaScript") {
+        if (languageTo === "java" || languageTo === "javascript") {
             // * better way to add semicolon to each line then convert to string
             codeOutputLines = codeOutputLines.map((item) => `${item};`);
 
@@ -75,8 +176,8 @@ const Home: NextPage = () => {
             // ? argument being a string, but I don't believe I'll need this
             codeOutput = codeOutput.replaceAll(
                 "print",
-                // * what it's replaced with depends on whether it's to JS or Java
-                languageTo === "Java" ? "System.out.println" : "console.log"
+                // * what it's replaced with depends on whether it's to JS or java
+                languageTo === "java" ? "System.out.println" : "console.log"
             );
         }
 
@@ -116,6 +217,42 @@ const Home: NextPage = () => {
             });
     };
 
+    const renderLeaf = useCallback((props) => <Leaf {...props} />, []);
+    const editor = useMemo(() => withHistory(withReact(createEditor())), []);
+
+    // decorate function depends on the language selected
+    const decorate = useCallback(
+        ([node, path]) => {
+            const ranges = [];
+            if (!Text.isText(node)) {
+                return ranges;
+            }
+            const tokens = Prism.tokenize(
+                node.text,
+                Prism.languages[languageFrom]
+            );
+            let start = 0;
+
+            for (const token of tokens) {
+                const length = getLength(token);
+                const end = start + length;
+
+                if (typeof token !== "string") {
+                    ranges.push({
+                        [token.type]: true,
+                        anchor: { path, offset: start },
+                        focus: { path, offset: end },
+                    });
+                }
+
+                start = end;
+            }
+
+            return ranges;
+        },
+        [languageFrom]
+    );
+
     return (
         <div className={styles.container}>
             <Head>
@@ -124,7 +261,6 @@ const Home: NextPage = () => {
                     name="description"
                     content="Generated by create next app"
                 />
-                <link rel="icon" href="/favicon.ico" />
             </Head>
 
             <main className={styles.main}>
@@ -135,7 +271,7 @@ const Home: NextPage = () => {
                 <Link
                     href={{
                         pathname: "/complaint",
-                        query: {languageFrom, languageTo},
+                        query: { languageFrom, languageTo },
                     }}
                 >
                     <button
@@ -153,26 +289,24 @@ const Home: NextPage = () => {
                             Language From
                         </InputLabel>
                         <Select
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
-                            value={languageFrom}
-                            label="Age"
+                            // labelId="demo-simple-select-label"
+                            // id="demo-simple-select"
+                            // value={languageFrom}
                             onChange={handleChange1}
                         >
-                            <MenuItem value={"Python"}>Python</MenuItem>
-                            <MenuItem value={"Java"}>Java</MenuItem>
-                            <MenuItem value={"JavaScript"}>JavaScript</MenuItem>
+                            <MenuItem value={"python"}>Python</MenuItem>
+                            <MenuItem value={"java"}>Java</MenuItem>
+                            <MenuItem value={"javascript"}>JavaScript</MenuItem>
                             {/* <MenuItem value={"C++"}>C++</MenuItem> */}
                         </Select>
                     </FormControl>
-
-                    <div className="multiline">
-                        <TextBoxComponent
-                            multiline={true}
-                            placeholder="Paste code here (Cmd/Ctrl + V) or enter it manually"
+                    <Slate editor={editor} value={codeInput}>
+                        <Editable
+                            decorate={decorate}
+                            renderLeaf={renderLeaf}
                             onChange={setCodeInput}
                         />
-                    </div>
+                    </Slate>
                 </Box>
                 <Box component="form" style={{ padding: "10px" }}>
                     <FormControl fullWidth>
@@ -185,9 +319,9 @@ const Home: NextPage = () => {
                             label="Age"
                             onChange={handleChange2}
                         >
-                            <MenuItem value={"Python"}>Python</MenuItem>
-                            <MenuItem value={"Java"}>Java</MenuItem>
-                            <MenuItem value={"JavaScript"}>JavaScript</MenuItem>
+                            <MenuItem value={"python"}>Python</MenuItem>
+                            <MenuItem value={"java"}>Java</MenuItem>
+                            <MenuItem value={"javascript"}>javascript</MenuItem>
                             {/* <MenuItem value={"C++"}>C++</MenuItem> */}
                         </Select>
                     </FormControl>
