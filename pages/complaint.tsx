@@ -284,7 +284,7 @@ const Complaint: NextPage = () => {
         : "javascript";
     const languageTo = router.query.languageTo
         ? router.query.languageTo
-        : "Python";
+        : "python";
 
     const renderElement = useCallback((props) => <Element {...props} />, []);
     const renderLeaf = useCallback((props) => <Leaf {...props} />, []);

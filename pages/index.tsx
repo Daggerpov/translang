@@ -117,24 +117,23 @@ Prism.languages.insertBefore("javascript", "prolog", {
     comment: { pattern: /\/\/[^\n]*/, alias: "comment" },
 });
 
-
 const Home: NextPage = () => {
     const [translationPerformed, setTranslationPerformed] =
         useState<boolean>(false);
 
-    const initialValue: Descendant[] = ([
-    {
-        type: "paragraph",
-        children: [
-            {
-                text: `import random
+    const initialValue: Descendant[] = [
+        {
+            type: "paragraph",
+            children: [
+                {
+                    text: `import random
 name = 'Daniel'
 favorite_number = random.randint(0, 10)
 print(f"{name}'s favorite number is: {favorite_number}")`,
-            },
-        ],
-    },
-]);
+                },
+            ],
+        },
+    ];
     const [codeInput, setCodeInput] = useState<string>(`import random
 name = 'Daniel'
 favorite_number = random.randint(0, 10)
@@ -151,11 +150,6 @@ print(f"{name}'s favorite number is: {favorite_number}")`);
         setLanguageTo(event.target.value as string);
     };
 
-    const handleCodeInputChange = (event) => {
-        setCodeInput(event.target.value as string);
-        console.log("code updated: " + event.target.value as string);
-    }
-
     const [defaultOutputMessage, setDefaultOutputMessage] =
         useState<boolean>(true);
 
@@ -164,14 +158,13 @@ print(f"{name}'s favorite number is: {favorite_number}")`);
         languageFrom: string,
         languageTo: string
     ) => {
-        // console.log("as;dlfkjas;ldkfj");
-
-        //console.log("this is the initialValue value: " + initialValue[0].children[0].text); this accessing works
-        // console.log(codeInput);
         let codeOutput: string = codeInput;
+
         let codeOutputLines: Array<any>;
 
         codeOutputLines = codeOutput.split(/[\r\n]+/); // RegEx for splitting by line
+
+        console.log("lines split: " + codeOutputLines);
 
         // this is a dictionary to keep track of the lines that have been adjusted
         const linesChecked: { [lineNumber: number]: string } = {};
@@ -196,7 +189,7 @@ print(f"{name}'s favorite number is: {favorite_number}")`);
             codeOutput = filteredCodeOutputLines.join("\n");
         }
 
-        if (languageFrom === "Python") {
+        if (languageFrom === "python") {
             // ? could alternatively use RegEx (Regular Expressions) instead of the first
             // ? argument being a string, but I don't believe I'll need this
             codeOutput = codeOutput.replaceAll(
@@ -206,7 +199,7 @@ print(f"{name}'s favorite number is: {favorite_number}")`);
             );
         }
 
-        // * this will be useful when I get into errors later console.log(linesChecked); 
+        console.log(linesChecked);
 
         if (codeInput != codeOutput) {
             setCodeOutput(codeOutput);
@@ -245,9 +238,10 @@ print(f"{name}'s favorite number is: {favorite_number}")`);
     const renderLeaf = useCallback((props) => <Leaf {...props} />, []);
     const editor = useMemo(() => withHistory(withReact(createEditor())), []);
 
-    useEffect(() => {
-        console.log("this is the current code: " + codeInput); // [0].children
-    });
+    // * useful for checking the code upon any changes, will remove soon since I'm almost done with this section
+    // useEffect(() => {
+    //     console.log("this is the current code: " + codeInput); // [0].children
+    // });
 
     // decorate function depends on the language selected
     const decorate = useCallback(
@@ -260,31 +254,13 @@ print(f"{name}'s favorite number is: {favorite_number}")`);
                 node.text,
                 Prism.languages[languageFrom]
             );
-            // console.log("node: " + node.text);
 
-            if (codeInput === ""){
+            if (codeInput === "") {
                 setCodeInput(initialValue[0].children[0].text);
             } else {
                 setCodeInput(node.text);
             }
 
-            console.log("the: " + codeInput);
-
-            // try {
-            //     copiedArray[0].children[0].text = node.text;
-            // } catch (err) {
-            //     Object.defineProperty(copiedArray[0].children[0], "text", {
-
-            //         configurable: true,
-            //         writable: true,
-            //         value: node.text,
-            //     });
-            // }
-            // setCodeInput(copiedArray);
-
-            // setCodeInput(copiedArray);
-            // setCodeInput(node.text);
-            // console.log("final: " + codeInput);
             let start = 0;
 
             for (const token of tokens) {
