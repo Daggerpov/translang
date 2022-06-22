@@ -5,7 +5,7 @@ import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import { TextBoxComponent } from "@syncfusion/ej2-react-inputs";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // ? Material UI is a component library for easier styling and with some custom components
 import Box from "@mui/material/Box";
@@ -97,9 +97,10 @@ const initialValue: Descendant[] = [
         type: "paragraph",
         children: [
             {
-                text: `import math
+                text: `import random
 name = 'Daniel'
-print(name + "asd;flkjas;ldkjfl;kajsd")`,
+favorite_number = random.randint(0, 10)
+print(f"{name}'s favorite number is: {favorite_number}")`,
             },
         ],
     },
@@ -121,7 +122,13 @@ const Home: NextPage = () => {
     const [translationPerformed, setTranslationPerformed] =
         useState<boolean>(false);
 
-    const [codeInput, setCodeInput] = useState<any>(initialValue);
+    const [codyCode, setCodyCode] = useState<string>(
+        `import randomname = 'Daniel'favorite_number = 
+        random.randint(0, 10)print(f"{name}'s favorite number is: 
+        {favorite_number}")`
+    );
+
+    const [codeInput, setCodeInput] = useState<string>(null);
     const [codeOutput, setCodeOutput] = useState<any>(null);
     const [languageFrom, setLanguageFrom] = useState<any>("python");
     const [languageTo, setLanguageTo] = useState<any>("python");
@@ -143,6 +150,9 @@ const Home: NextPage = () => {
         languageTo: string
     ) => {
         console.log("as;dlfkjas;ldkfj");
+
+        //console.log("this is the initialValue value: " + initialValue[0].children[0].text); this accessing works
+        console.log(codeInput);
         let codeOutput: string = codeInput;
         let codeOutputLines: Array<any>;
 
@@ -220,6 +230,10 @@ const Home: NextPage = () => {
     const renderLeaf = useCallback((props) => <Leaf {...props} />, []);
     const editor = useMemo(() => withHistory(withReact(createEditor())), []);
 
+    useEffect(() => {
+        console.log(codyCode);
+    });
+
     // decorate function depends on the language selected
     const decorate = useCallback(
         ([node, path]) => {
@@ -231,6 +245,10 @@ const Home: NextPage = () => {
                 node.text,
                 Prism.languages[languageFrom]
             );
+            console.log("node: " + node.text);
+            
+            setCodyCode("indistinguishable code, bruv");
+            console.log("final: " + codyCode);
             let start = 0;
 
             for (const token of tokens) {
@@ -300,11 +318,11 @@ const Home: NextPage = () => {
                             {/* <MenuItem value={"C++"}>C++</MenuItem> */}
                         </Select>
                     </FormControl>
-                    <Slate editor={editor} value={codeInput}>
+                    <Slate editor={editor} value={initialValue}>
                         <Editable
                             decorate={decorate}
                             renderLeaf={renderLeaf}
-                            onChange={setCodeInput}
+                            // onChange={setCodeInput}
                         />
                     </Slate>
                 </Box>
