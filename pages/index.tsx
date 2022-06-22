@@ -122,13 +122,23 @@ const Home: NextPage = () => {
     const [translationPerformed, setTranslationPerformed] =
         useState<boolean>(false);
 
-    const [codyCode, setCodyCode] = useState<string>(
-        `import randomname = 'Daniel'favorite_number = 
-        random.randint(0, 10)print(f"{name}'s favorite number is: 
-        {favorite_number}")`
-    );
-
-    const [codeInput, setCodeInput] = useState<string>(null);
+    const initialValue: Descendant[] = ([
+    {
+        type: "paragraph",
+        children: [
+            {
+                text: `import random
+name = 'Daniel'
+favorite_number = random.randint(0, 10)
+print(f"{name}'s favorite number is: {favorite_number}")`,
+            },
+        ],
+    },
+]);
+    const [codeInput, setCodeInput] = useState<string>(`import random
+name = 'Daniel'
+favorite_number = random.randint(0, 10)
+print(f"{name}'s favorite number is: {favorite_number}")`);
     const [codeOutput, setCodeOutput] = useState<any>(null);
     const [languageFrom, setLanguageFrom] = useState<any>("python");
     const [languageTo, setLanguageTo] = useState<any>("python");
@@ -141,6 +151,11 @@ const Home: NextPage = () => {
         setLanguageTo(event.target.value as string);
     };
 
+    const handleCodeInputChange = (event) => {
+        setCodeInput(event.target.value as string);
+        console.log("code updated: " + event.target.value as string);
+    }
+
     const [defaultOutputMessage, setDefaultOutputMessage] =
         useState<boolean>(true);
 
@@ -149,10 +164,10 @@ const Home: NextPage = () => {
         languageFrom: string,
         languageTo: string
     ) => {
-        console.log("as;dlfkjas;ldkfj");
+        // console.log("as;dlfkjas;ldkfj");
 
         //console.log("this is the initialValue value: " + initialValue[0].children[0].text); this accessing works
-        console.log(codeInput);
+        // console.log(codeInput);
         let codeOutput: string = codeInput;
         let codeOutputLines: Array<any>;
 
@@ -191,7 +206,7 @@ const Home: NextPage = () => {
             );
         }
 
-        console.log(linesChecked);
+        // * this will be useful when I get into errors later console.log(linesChecked); 
 
         if (codeInput != codeOutput) {
             setCodeOutput(codeOutput);
@@ -231,7 +246,7 @@ const Home: NextPage = () => {
     const editor = useMemo(() => withHistory(withReact(createEditor())), []);
 
     useEffect(() => {
-        console.log(codyCode);
+        console.log("this is the current code: " + codeInput); // [0].children
     });
 
     // decorate function depends on the language selected
@@ -245,10 +260,31 @@ const Home: NextPage = () => {
                 node.text,
                 Prism.languages[languageFrom]
             );
-            console.log("node: " + node.text);
-            
-            setCodyCode("indistinguishable code, bruv");
-            console.log("final: " + codyCode);
+            // console.log("node: " + node.text);
+
+            if (codeInput === ""){
+                setCodeInput(initialValue[0].children[0].text);
+            } else {
+                setCodeInput(node.text);
+            }
+
+            console.log("the: " + codeInput);
+
+            // try {
+            //     copiedArray[0].children[0].text = node.text;
+            // } catch (err) {
+            //     Object.defineProperty(copiedArray[0].children[0], "text", {
+
+            //         configurable: true,
+            //         writable: true,
+            //         value: node.text,
+            //     });
+            // }
+            // setCodeInput(copiedArray);
+
+            // setCodeInput(copiedArray);
+            // setCodeInput(node.text);
+            // console.log("final: " + codeInput);
             let start = 0;
 
             for (const token of tokens) {
@@ -315,14 +351,13 @@ const Home: NextPage = () => {
                             <MenuItem value={"python"}>Python</MenuItem>
                             <MenuItem value={"java"}>Java</MenuItem>
                             <MenuItem value={"javascript"}>JavaScript</MenuItem>
-                            {/* <MenuItem value={"C++"}>C++</MenuItem> */}
                         </Select>
                     </FormControl>
                     <Slate editor={editor} value={initialValue}>
                         <Editable
                             decorate={decorate}
                             renderLeaf={renderLeaf}
-                            // onChange={setCodeInput}
+                            onChange={(e) => setCodeInput(e.target.value)}
                         />
                     </Slate>
                 </Box>
@@ -387,7 +422,7 @@ const Home: NextPage = () => {
                     onClick={() =>
                         // this gets only the codeInput's actual text value,
                         // which is all I care about for now
-                        translate(codeInput.value, languageFrom, languageTo)
+                        translate(codeInput, languageFrom, languageTo)
                     }
                     style={styles.button}
                 >
