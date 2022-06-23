@@ -180,9 +180,7 @@ print(f"{name}'s favorite number is: {favorite_number}")`);
             // this filters out the semicolon-only lines from the output after having added
             // these semicolons to every line with the language conversion (prevents empty lines
             // at the end of the code block)
-            let filteredCodeOutputLines = codeOutputLines.filter(function (
-                element
-            ) {
+            let filteredCodeOutputLines = codeOutputLines.filter(function (element) {
                 return element != ";";
             });
 
@@ -301,7 +299,7 @@ print(f"{name}'s favorite number is: {favorite_number}")`);
                 <Link
                     href={{
                         pathname: "/complaint",
-                        query: { languageFrom, languageTo },
+                        query: { languageFrom, languageTo, codeOutput },
                     }}
                 >
                     <button
@@ -380,7 +378,7 @@ print(f"{name}'s favorite number is: {favorite_number}")`);
                         <Link
                             href={{
                                 pathname: "/complaint",
-                                query: { languageFrom, languageTo },
+                                query: { languageFrom, languageTo, codeOutput },
                             }}
                         >
                             <button

@@ -30,6 +30,7 @@ import {
     createEditor,
     Descendant,
     Element as SlateElement,
+    Text
 } from "slate";
 import { withHistory } from "slate-history";
 import { Button, Icon, Toolbar } from "@mui/material";
@@ -45,6 +46,13 @@ import FormatAlignLeftOutlinedIcon from "@mui/icons-material/FormatAlignLeftOutl
 import FormatAlignCenterOutlinedIcon from "@mui/icons-material/FormatAlignCenterOutlined";
 import FormatAlignRightOutlinedIcon from "@mui/icons-material/FormatAlignRightOutlined";
 import FormatAlignJustifyOutlinedIcon from "@mui/icons-material/FormatAlignJustifyOutlined";
+
+import Rating from "react-rating-scale";
+
+import Prism from "prismjs";
+import "prismjs/components/prism-python";
+import "prismjs/components/prism-java";
+import { css } from "@emotion/css";
 
 // for the slate text editor:
 const HOTKEYS = {
@@ -277,6 +285,82 @@ and feel free to utilize the tools above to `,
     },
 ];
 
+// * the rest of these constants are for the code text editor:
+
+const codeGetLength = (token) => {
+    if (typeof token === "string") {
+        return token.length;
+    } else if (typeof token.content === "string") {
+        return token.content.length;
+    } else {
+        return token.content.reduce((l, t) => l + codeGetLength(t), 0);
+    }
+};
+
+// different token types, styles found on Prismjs website
+const CodeLeaf = ({ attributes, children, leaf }) => {
+    return (
+        <span
+            {...attributes}
+            className={css`
+                font-family: monospace;
+                background: hsla(0, 0%, 100%, 0.5);
+                ${leaf.comment &&
+                css`
+                    color: slategray;
+                `}
+                ${(leaf.operator || leaf.url) &&
+                css`
+                    color: #9a6e3a;
+                `}
+        ${leaf.keyword &&
+                css`
+                    color: #07a;
+                `}
+        ${(leaf.variable || leaf.regex) &&
+                css`
+                    color: #e90;
+                `}
+        ${(leaf.number ||
+                    leaf.boolean ||
+                    leaf.tag ||
+                    leaf.constant ||
+                    leaf.symbol ||
+                    leaf["attr-name"] ||
+                    leaf.selector) &&
+                css`
+                    color: #905;
+                `}
+        ${leaf.punctuation &&
+                css`
+                    color: #999;
+                `}
+        ${(leaf.string || leaf.char) &&
+                css`
+                    color: #690;
+                `}
+        ${(leaf.function || leaf["class-name"]) &&
+                css`
+                    color: #dd4a68;
+                `}
+            `}
+        >
+            {children}
+        </span>
+    );
+};
+
+// modifications and additions to prism library
+
+Prism.languages.python = Prism.languages.extend("python", {});
+Prism.languages.insertBefore("python", "prolog", {
+    comment: { pattern: /##[^\n]*/, alias: "comment" },
+});
+Prism.languages.javascript = Prism.languages.extend("javascript", {});
+Prism.languages.insertBefore("javascript", "prolog", {
+    comment: { pattern: /\/\/[^\n]*/, alias: "comment" },
+});
+
 const Complaint: NextPage = () => {
     const router = useRouter();
     const languageFrom = router.query.languageFrom
@@ -285,10 +369,72 @@ const Complaint: NextPage = () => {
     const languageTo = router.query.languageTo
         ? router.query.languageTo
         : "python";
+    const codeOutput = router.query.codeOutput;
+
+    const codeInitialValue: Descendant[] = [
+        {
+            type: "paragraph",
+            children: [
+                {
+                    text: codeOutput,
+                },
+            ],
+        },
+    ];
+
+    const [submissionCode, setSubmissionCode] = useState<string>(codeOutput);
 
     const renderElement = useCallback((props) => <Element {...props} />, []);
     const renderLeaf = useCallback((props) => <Leaf {...props} />, []);
     const editor = useMemo(() => withHistory(withReact(createEditor())), []);
+
+    const codeRenderLeaf = useCallback((props) => <CodeLeaf {...props} />, []);
+    const codeEditor = useMemo(() => withHistory(withReact(createEditor())), []);
+
+    // * useful for checking the code upon any changes, will remove soon since I'm almost done with this section
+    // useEffect(() => {
+    //     console.log("this is the current code: " + codeInput); // [0].children
+    // });
+
+    // decorate function depends on the language selected
+    const codeDecorate = useCallback(
+        ([node, path]) => {
+            const ranges = [];
+            if (!Text.isText(node)) {
+                return ranges;
+            }
+            const tokens = Prism.tokenize(
+                node.text,
+                Prism.languages[languageFrom]
+            );
+
+            if (submissionCode === "") {
+                setSubmissionCode(initialValue[0].children[0].text);
+            } else {
+                setSubmissionCode(node.text);
+            }
+
+            let start = 0;
+
+            for (const token of tokens) {
+                const length = codeGetLength(token);
+                const end = start + length;
+
+                if (typeof token !== "string") {
+                    ranges.push({
+                        [token.type]: true,
+                        anchor: { path, offset: start },
+                        focus: { path, offset: end },
+                    });
+                }
+
+                start = end;
+            }
+
+            return ranges;
+        },
+        [languageFrom]
+    );
 
     return (
         <>
@@ -314,6 +460,15 @@ const Complaint: NextPage = () => {
                 <h1>
                     You translated from: {languageFrom} to: {languageTo}
                 </h1>
+
+                <Slate editor={codeEditor} value={codeInitialValue}>
+                    <Editable
+                        decorate={codeDecorate}
+                        renderLeaf={codeRenderLeaf}
+                        onChange={(e) => setSubmissionCode(e.target.value)}
+                    />
+                </Slate>
+                <br />
 
                 <Box
                     component="form"
@@ -351,6 +506,13 @@ const Complaint: NextPage = () => {
                         />
                     </Slate>
                 </Box>
+
+                <div>
+                    <p>
+                        Rate the urgency of this complaint: <br></br>
+                        <Rating length="5" />
+                    </p>
+                </div>
             </main>
 
             <footer className={styles.footer}>
