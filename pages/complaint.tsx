@@ -5,7 +5,7 @@ import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import { TextBoxComponent } from "@syncfusion/ej2-react-inputs";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 // ? Material UI is a component library for easier styling and with some custom components
 import Box from "@mui/material/Box";
@@ -30,7 +30,7 @@ import {
     createEditor,
     Descendant,
     Element as SlateElement,
-    Text
+    Text,
 } from "slate";
 import { withHistory } from "slate-history";
 import { Button, Icon, Toolbar } from "@mui/material";
@@ -53,6 +53,15 @@ import Prism from "prismjs";
 import "prismjs/components/prism-python";
 import "prismjs/components/prism-java";
 import { css } from "@emotion/css";
+
+import Checkbox from "@material-ui/core/Checkbox";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+
+import { makeStyles } from "@material-ui/core/styles";
+
+import { MenuProps, useStyles } from "./utils/multiselect";
+// import clientPromise from "../mongodb";
 
 // for the slate text editor:
 const HOTKEYS = {
@@ -268,19 +277,19 @@ const initialValue: Descendant[] = [
         children: [
             { text: "This is " },
             { text: "editable ", italic: true },
-            { text: "rich", bold: true },
-            { text: " text" },
-            { text: "!" },
+            { text: "rich text!" },
         ],
     },
     {
         type: "paragraph",
         children: [
+            { text: "Please leave " },
             {
-                text: `Please leave any other comments that you'd like to include,
-and feel free to utilize the tools above to `,
+                text: "any other comments that you'd like to include ",
+                bold: true,
+                underline: true,
             },
-            { text: "format", bold: true },
+            { text: "and be sure to utilize the tools above" },
         ],
     },
 ];
@@ -361,7 +370,7 @@ Prism.languages.insertBefore("javascript", "prolog", {
     comment: { pattern: /\/\/[^\n]*/, alias: "comment" },
 });
 
-const Complaint: NextPage = () => {
+const Complaint: NextPage = (users) => {
     const router = useRouter();
     const languageFrom = router.query.languageFrom
         ? router.query.languageFrom
@@ -370,6 +379,7 @@ const Complaint: NextPage = () => {
         ? router.query.languageTo
         : "python";
     const codeOutput = router.query.codeOutput;
+    const numLines = router.query.numLines;
 
     const codeInitialValue: Descendant[] = [
         {
@@ -383,13 +393,17 @@ const Complaint: NextPage = () => {
     ];
 
     const [submissionCode, setSubmissionCode] = useState<string>(codeOutput);
+    const [additionalNotes, setAdditionalNotes] = useState<string>();
 
     const renderElement = useCallback((props) => <Element {...props} />, []);
     const renderLeaf = useCallback((props) => <Leaf {...props} />, []);
     const editor = useMemo(() => withHistory(withReact(createEditor())), []);
 
     const codeRenderLeaf = useCallback((props) => <CodeLeaf {...props} />, []);
-    const codeEditor = useMemo(() => withHistory(withReact(createEditor())), []);
+    const codeEditor = useMemo(
+        () => withHistory(withReact(createEditor())),
+        []
+    );
 
     // * useful for checking the code upon any changes, will remove soon since I'm almost done with this section
     // useEffect(() => {
@@ -436,6 +450,28 @@ const Complaint: NextPage = () => {
         [languageFrom]
     );
 
+    useEffect(() => {
+        console.log("these are the current users: " + users);
+    });
+    //all for the multi-select input:
+
+    const options = Array.from({ length: numLines }, (_, i) => i + 1);
+
+    const [selected, setSelected] = useState([]);
+    const isAllSelected =
+        options.length > 0 && selected.length === options.length;
+
+    const handleChange = (event) => {
+        const value = event.target.value;
+        if (value[value.length - 1] === "all") {
+            setSelected(selected.length === options.length ? [] : options);
+            return;
+        }
+        setSelected(value);
+    };
+
+    const classes = useStyles();
+
     return (
         <>
             <main className={styles.main}>
@@ -444,30 +480,82 @@ const Complaint: NextPage = () => {
                     <Link
                         href={{
                             pathname: "/",
-                            // query: { languageFrom, languageTo },
+                            query: users,
                         }}
                     >
-                        <button
-                            // onClick={}
-                            // style={}
-                            className="btn"
-                        >
+                        <button className="btn">
                             Make another translation
                         </button>
                     </Link>
                 </h2>
 
                 <h1>
-                    You translated from: {languageFrom} to: {languageTo}
+                    You translated from: {languageFrom} to: {languageTo} and had{" "}
+                    {numLines} lines of code
                 </h1>
 
-                <Slate editor={codeEditor} value={codeInitialValue}>
-                    <Editable
-                        decorate={codeDecorate}
-                        renderLeaf={codeRenderLeaf}
-                        onChange={(e) => setSubmissionCode(e.target.value)}
-                    />
-                </Slate>
+                <FormControl>
+                    <InputLabel id="mutiple-select-label">
+                        Multiple Select
+                    </InputLabel>
+                    <Select
+                        labelId="mutiple-select-label"
+                        multiple
+                        value={selected}
+                        onChange={handleChange}
+                        renderValue={(selected) => selected.join(", ")}
+                        MenuProps={MenuProps}
+                    >
+                        <MenuItem
+                            value="all"
+                            classes={{
+                                root: isAllSelected ? classes.selectedAll : "",
+                            }}
+                        >
+                            <ListItemIcon>
+                                <Checkbox
+                                    classes={{
+                                        indeterminate:
+                                            classes.indeterminateColor,
+                                    }}
+                                    checked={isAllSelected}
+                                    indeterminate={
+                                        selected.length > 0 &&
+                                        selected.length < options.length
+                                    }
+                                />
+                            </ListItemIcon>
+                            <ListItemText
+                                classes={{ primary: classes.selectAllText }}
+                                primary="Select All"
+                            />
+                        </MenuItem>
+                        {options.map((option) => (
+                            <MenuItem key={option} value={option}>
+                                <ListItemIcon>
+                                    <Checkbox
+                                        checked={selected.indexOf(option) > -1}
+                                    />
+                                </ListItemIcon>
+                                <ListItemText primary={option} />
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
+
+                <Box
+                    component="form"
+                    style={{ padding: "10px", border: "1px solid grey" }}
+                >
+                    <Slate editor={codeEditor} value={codeInitialValue}>
+                        <Editable
+                            decorate={codeDecorate}
+                            renderLeaf={codeRenderLeaf}
+                            onChange={(e) => setSubmissionCode(e.target.value)}
+                        />
+                    </Slate>
+                </Box>
+
                 <br />
 
                 <Box
@@ -503,6 +591,7 @@ const Complaint: NextPage = () => {
                                     }
                                 }
                             }}
+                            onChange={(e) => setAdditionalNotes(e.target.value)}
                         />
                     </Slate>
                 </Box>
@@ -513,6 +602,16 @@ const Complaint: NextPage = () => {
                         <Rating length="5" />
                     </p>
                 </div>
+
+                <Link
+                    href={{
+                        pathname: "/submitted",
+                    }}
+                >
+                    <button className="btn" onClick={createComplaint}>
+                        Submit for validation
+                    </button>
+                </Link>
             </main>
 
             <footer className={styles.footer}>
@@ -535,5 +634,28 @@ const Complaint: NextPage = () => {
         </>
     );
 };
-
 export default Complaint;
+
+async function createComplaint(newComplaint, user) {
+    const client = await clientPromise;
+    console.log("yay");
+    const today = new Date();
+    client
+        .db("Database")
+        .collection("RequestsAndResponses")
+        .insertOne({ username: user, complaint: newComplaint, date: today });
+}
+
+// // this is for mongoDB
+// export async function getServerSideProps(context) {
+//     const client = await clientPromise;
+
+//     const db = client.db("Database");
+
+//     let users = await db.collection("UserInfo").find({}).toArray();
+//     users = JSON.parse(JSON.stringify(users));
+
+//     return {
+//         props: { users },
+//     };
+// }

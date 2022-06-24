@@ -29,6 +29,8 @@ import { Text, createEditor, Element as SlateElement, Descendant } from "slate";
 import { withHistory } from "slate-history";
 import { css } from "@emotion/css";
 
+import clientPromise from "../mongodb";
+
 const getLength = (token) => {
     if (typeof token === "string") {
         return token.length;
@@ -117,30 +119,31 @@ Prism.languages.insertBefore("javascript", "prolog", {
     comment: { pattern: /\/\/[^\n]*/, alias: "comment" },
 });
 
-const Home: NextPage = () => {
+const Home: NextPage = (users) => {
     const [translationPerformed, setTranslationPerformed] =
         useState<boolean>(false);
+
+    const [codeInput, setCodeInput] = useState<string>(`import random
+name = 'Daniel'
+favorite_number = random.randint(0, 10)
+print(f"{name}'s favorite number is: {favorite_number}")`);
 
     const initialValue: Descendant[] = [
         {
             type: "paragraph",
             children: [
                 {
-                    text: `import random
-name = 'Daniel'
-favorite_number = random.randint(0, 10)
-print(f"{name}'s favorite number is: {favorite_number}")`,
+                    text: codeInput,
                 },
             ],
         },
     ];
-    const [codeInput, setCodeInput] = useState<string>(`import random
-name = 'Daniel'
-favorite_number = random.randint(0, 10)
-print(f"{name}'s favorite number is: {favorite_number}")`);
+
     const [codeOutput, setCodeOutput] = useState<any>(null);
     const [languageFrom, setLanguageFrom] = useState<any>("python");
-    const [languageTo, setLanguageTo] = useState<any>("python");
+    const [languageTo, setLanguageTo] = useState<any>("java");
+
+    const [numLines, setNumLines] = useState<number>(0);
 
     const handleChange1 = (event: SelectChangeEvent) => {
         setLanguageFrom(event.target.value as string);
@@ -164,7 +167,9 @@ print(f"{name}'s favorite number is: {favorite_number}")`);
 
         codeOutputLines = codeOutput.split(/[\r\n]+/); // RegEx for splitting by line
 
-        console.log("lines split: " + codeOutputLines);
+        setNumLines(codeOutputLines.length);
+
+        console.log("lines split: " + codeOutputLines + numLines);
 
         // this is a dictionary to keep track of the lines that have been adjusted
         const linesChecked: { [lineNumber: number]: string } = {};
@@ -180,7 +185,9 @@ print(f"{name}'s favorite number is: {favorite_number}")`);
             // this filters out the semicolon-only lines from the output after having added
             // these semicolons to every line with the language conversion (prevents empty lines
             // at the end of the code block)
-            let filteredCodeOutputLines = codeOutputLines.filter(function (element) {
+            let filteredCodeOutputLines = codeOutputLines.filter(function (
+                element
+            ) {
                 return element != ";";
             });
 
@@ -238,10 +245,20 @@ print(f"{name}'s favorite number is: {favorite_number}")`);
 
     // * useful for checking the code upon any changes, will remove soon since I'm almost done with this section
     // useEffect(() => {
-    //     console.log("this is the current code: " + codeInput); // [0].children
+    //     users.map((user, index) => {
+    //         console.log(user.username, index);
+    //     });
     // });
 
+    useEffect(() => {
+        try{
+            setPostsState(posts);
+            console.log(posts);
+        } catch(e){}
+    }, []);
+
     // decorate function depends on the language selected
+    // this decorates the code, as in highlights the
     const decorate = useCallback(
         ([node, path]) => {
             const ranges = [];
@@ -281,6 +298,28 @@ print(f"{name}'s favorite number is: {favorite_number}")`);
         [languageFrom]
     );
 
+    const [postsState, setPostsState] = useState([]);
+    const [title, setTitle] = useState("");
+    const [content, setContent] = useState("");
+    const [loading, setLoading] = useState(false);
+
+    let submitForm = async (e) => {
+        setLoading(true);
+        e.preventDefault();
+        let res = await fetch("http://localhost:3000/api/posts", {
+            method: "POST",
+            body: JSON.stringify({
+                title: title,
+                content: content,
+            }),
+        });
+        res = await res.json();
+        setPostsState([...postsState, res]);
+        setTitle("");
+        setContent("");
+        setLoading(false);
+    };
+
     return (
         <div className={styles.container}>
             <Head>
@@ -296,10 +335,10 @@ print(f"{name}'s favorite number is: {favorite_number}")`);
                     translang - the programming language converter
                 </h1>
 
-                <Link
+                {/* <Link
                     href={{
                         pathname: "/complaint",
-                        query: { languageFrom, languageTo, codeOutput },
+                        query: { languageFrom, languageTo, codeOutput, numLines },
                     }}
                 >
                     <button
@@ -309,19 +348,14 @@ print(f"{name}'s favorite number is: {favorite_number}")`);
                     >
                         Fake Complaint
                     </button>
-                </Link>
+                </Link> */}
 
                 <Box component="form" style={{ padding: "10px" }}>
                     <FormControl fullWidth>
                         <InputLabel id="demo-simple-select-label">
                             Language From
                         </InputLabel>
-                        <Select
-                            // labelId="demo-simple-select-label"
-                            // id="demo-simple-select"
-                            // value={languageFrom}
-                            onChange={handleChange1}
-                        >
+                        <Select value={languageFrom} onChange={handleChange1}>
                             <MenuItem value={"python"}>Python</MenuItem>
                             <MenuItem value={"java"}>Java</MenuItem>
                             <MenuItem value={"javascript"}>JavaScript</MenuItem>
@@ -340,12 +374,7 @@ print(f"{name}'s favorite number is: {favorite_number}")`);
                         <InputLabel id="demo-simple-select-label">
                             Language To
                         </InputLabel>
-                        <Select
-                            id="outlined-multiline-flexible"
-                            value={languageTo}
-                            label="Age"
-                            onChange={handleChange2}
-                        >
+                        <Select value={languageTo} onChange={handleChange2}>
                             <MenuItem value={"python"}>Python</MenuItem>
                             <MenuItem value={"java"}>Java</MenuItem>
                             <MenuItem value={"javascript"}>javascript</MenuItem>
@@ -378,7 +407,12 @@ print(f"{name}'s favorite number is: {favorite_number}")`);
                         <Link
                             href={{
                                 pathname: "/complaint",
-                                query: { languageFrom, languageTo, codeOutput },
+                                query: {
+                                    languageFrom,
+                                    languageTo,
+                                    codeOutput,
+                                    numLines,
+                                },
                             }}
                         >
                             <button
@@ -402,6 +436,59 @@ print(f"{name}'s favorite number is: {favorite_number}")`);
                 >
                     Translate!
                 </LoadingButton>
+
+                <div className="container">
+                    <div>
+                        {/* {users} */}
+                        {Object.keys(users).map((user, index) => {
+                            <div className="card" key={index}>
+                                <h2>{user.username}</h2>
+                                <p>{user.password}</p>
+                                <p>{user.dateCreated}</p>
+                            </div>;
+                        })}
+                    </div>
+                </div>
+                <div className="container">
+                    <div>
+                        <div>
+                            {postsState.map((post, index) => {
+                                return (
+                                    <div className="card" key={index}>
+                                        <h2>{post.title}</h2>
+                                        <p>{post.content}</p>
+                                    </div>
+                                );
+                            })}
+                        </div>
+
+                        <div className="add-form">
+                            <form onSubmit={submitForm}>
+                                <input
+                                    type="text"
+                                    name="title"
+                                    placeholder="Title"
+                                    value={title}
+                                    onChange={(e) => setTitle(e.target.value)}
+                                />
+                                <textarea
+                                    type="text"
+                                    name="content"
+                                    rows="10"
+                                    placeholder="Content"
+                                    value={content}
+                                    onChange={(e) => setContent(e.target.value)}
+                                />
+                                <button
+                                    type="submit"
+                                    disabled={loading ? true : false}
+                                >
+                                    {loading ? "Adding" : "Add"}
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </main>
 
             <footer className={styles.footer}>
@@ -426,3 +513,18 @@ print(f"{name}'s favorite number is: {favorite_number}")`);
 };
 
 export default Home;
+
+// this is for mongoDB
+export async function getServerSideProps(context) {
+    let res = await fetch("http://localhost:3000/api/posts", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    let posts = await res.json();
+  
+    return {
+      props: { posts },
+    };
+  }
