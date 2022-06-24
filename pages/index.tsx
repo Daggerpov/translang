@@ -14,6 +14,8 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { LoadingButton } from "@mui/lab";
+import MailIcon from "@material-ui/icons/Mail";
+import Badge from "@mui/material/Badge";
 
 //import { TextField } from "@mui/material";
 import { TextareaAutosize } from "@material-ui/core";
@@ -120,6 +122,8 @@ Prism.languages.insertBefore("javascript", "prolog", {
 });
 
 const Home: NextPage = (users) => {
+    const [numNotifications, setNumNotifications] = useState<number>(0);
+
     const [translationPerformed, setTranslationPerformed] =
         useState<boolean>(false);
 
@@ -251,10 +255,10 @@ print(f"{name}'s favorite number is: {favorite_number}")`);
     // });
 
     useEffect(() => {
-        try{
+        try {
             setPostsState(posts);
             console.log(posts);
-        } catch(e){}
+        } catch (e) {}
     }, []);
 
     // decorate function depends on the language selected
@@ -298,27 +302,7 @@ print(f"{name}'s favorite number is: {favorite_number}")`);
         [languageFrom]
     );
 
-    const [postsState, setPostsState] = useState([]);
-    const [title, setTitle] = useState("");
-    const [content, setContent] = useState("");
-    const [loading, setLoading] = useState(false);
-
-    let submitForm = async (e) => {
-        setLoading(true);
-        e.preventDefault();
-        let res = await fetch("http://localhost:3000/api/posts", {
-            method: "POST",
-            body: JSON.stringify({
-                title: title,
-                content: content,
-            }),
-        });
-        res = await res.json();
-        setPostsState([...postsState, res]);
-        setTitle("");
-        setContent("");
-        setLoading(false);
-    };
+    
 
     return (
         <div className={styles.container}>
@@ -334,6 +318,24 @@ print(f"{name}'s favorite number is: {favorite_number}")`);
                 <h1 className={styles.title}>
                     translang - the programming language converter
                 </h1>
+
+                <Badge badgeContent={numNotifications} color="primary" max={5}>
+                    <MailIcon color="action" />
+                </Badge>
+
+                <Link
+                    href={{
+                        pathname: "/auth/login",
+                    }}
+                >
+                    <button
+                        // onClick={}
+                        // style={}
+                        className="btn"
+                    >
+                        Login
+                    </button>
+                </Link>
 
                 {/* <Link
                     href={{
@@ -436,59 +438,6 @@ print(f"{name}'s favorite number is: {favorite_number}")`);
                 >
                     Translate!
                 </LoadingButton>
-
-                <div className="container">
-                    <div>
-                        {/* {users} */}
-                        {Object.keys(users).map((user, index) => {
-                            <div className="card" key={index}>
-                                <h2>{user.username}</h2>
-                                <p>{user.password}</p>
-                                <p>{user.dateCreated}</p>
-                            </div>;
-                        })}
-                    </div>
-                </div>
-                <div className="container">
-                    <div>
-                        <div>
-                            {postsState.map((post, index) => {
-                                return (
-                                    <div className="card" key={index}>
-                                        <h2>{post.title}</h2>
-                                        <p>{post.content}</p>
-                                    </div>
-                                );
-                            })}
-                        </div>
-
-                        <div className="add-form">
-                            <form onSubmit={submitForm}>
-                                <input
-                                    type="text"
-                                    name="title"
-                                    placeholder="Title"
-                                    value={title}
-                                    onChange={(e) => setTitle(e.target.value)}
-                                />
-                                <textarea
-                                    type="text"
-                                    name="content"
-                                    rows="10"
-                                    placeholder="Content"
-                                    value={content}
-                                    onChange={(e) => setContent(e.target.value)}
-                                />
-                                <button
-                                    type="submit"
-                                    disabled={loading ? true : false}
-                                >
-                                    {loading ? "Adding" : "Add"}
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
             </main>
 
             <footer className={styles.footer}>
@@ -513,18 +462,3 @@ print(f"{name}'s favorite number is: {favorite_number}")`);
 };
 
 export default Home;
-
-// this is for mongoDB
-export async function getServerSideProps(context) {
-    let res = await fetch("http://localhost:3000/api/posts", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    let posts = await res.json();
-  
-    return {
-      props: { posts },
-    };
-  }

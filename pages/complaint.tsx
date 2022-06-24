@@ -49,10 +49,10 @@ import FormatAlignJustifyOutlinedIcon from "@mui/icons-material/FormatAlignJusti
 
 import Rating from "react-rating-scale";
 
-import Prism from "prismjs";
-import "prismjs/components/prism-python";
-import "prismjs/components/prism-java";
-import { css } from "@emotion/css";
+// import Prism from "prismjs";
+// import "prismjs/components/prism-python";
+// import "prismjs/components/prism-java";
+// import { css } from "@emotion/css";
 
 import Checkbox from "@material-ui/core/Checkbox";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
@@ -61,349 +61,413 @@ import ListItemText from "@material-ui/core/ListItemText";
 import { makeStyles } from "@material-ui/core/styles";
 
 import { MenuProps, useStyles } from "./utils/multiselect";
+import clientPromise from "../mongodb";
+
+import {
+    auth
+} from "../firebase";
+
+// import { getAuth } from "firebase/auth";
+
 // import clientPromise from "../mongodb";
 
+// export default async function handler(req, res) {
+//     console.log("gas");
+//     const client = await clientPromise;
+//     const db = client.db("Database");
+//     switch (req.method) {
+//         case "POST":
+//             let bodyObject = JSON.parse(req.body);
+//             let newPost = await db
+//                 .collection("RequestsAndResponses")
+//                 .insertOne(bodyObject);
+//             res.json(newPost.ops[0]);
+//             break;
+//         case "GET":
+//             const posts = await db
+//                 .collection("RequestsAndResponses")
+//                 .find({})
+//                 .toArray();
+//             res.json(posts);
+//             break;
+//     }
+// }
+
 // for the slate text editor:
-const HOTKEYS = {
-    "mod+b": "bold",
-    "mod+i": "italic",
-    "mod+u": "underline",
-    "mod+`": "code",
-};
+// const HOTKEYS = {
+//     "mod+b": "bold",
+//     "mod+i": "italic",
+//     "mod+u": "underline",
+//     "mod+`": "code",
+// };
 
-const LIST_TYPES = ["numbered-list", "bulleted-list"];
-const TEXT_ALIGN_TYPES = ["left", "center", "right", "justify"];
+// const LIST_TYPES = ["numbered-list", "bulleted-list"];
+// const TEXT_ALIGN_TYPES = ["left", "center", "right", "justify"];
 
-const toggleBlock = (editor, format) => {
-    const isActive = isBlockActive(
-        editor,
-        format,
-        TEXT_ALIGN_TYPES.includes(format) ? "align" : "type"
-    );
-    const isList = LIST_TYPES.includes(format);
+// const toggleBlock = (editor, format) => {
+//     const isActive = isBlockActive(
+//         editor,
+//         format,
+//         TEXT_ALIGN_TYPES.includes(format) ? "align" : "type"
+//     );
+//     const isList = LIST_TYPES.includes(format);
 
-    Transforms.unwrapNodes(editor, {
-        match: (n) =>
-            !Editor.isEditor(n) &&
-            SlateElement.isElement(n) &&
-            LIST_TYPES.includes(n.type) &&
-            !TEXT_ALIGN_TYPES.includes(format),
-        split: true,
-    });
-    let newProperties: Partial<SlateElement>;
-    if (TEXT_ALIGN_TYPES.includes(format)) {
-        newProperties = {
-            align: isActive ? undefined : format,
-        };
-    } else {
-        newProperties = {
-            type: isActive ? "paragraph" : isList ? "list-item" : format,
-        };
-    }
-    Transforms.setNodes<SlateElement>(editor, newProperties);
+//     Transforms.unwrapNodes(editor, {
+//         match: (n) =>
+//             !Editor.isEditor(n) &&
+//             SlateElement.isElement(n) &&
+//             LIST_TYPES.includes(n.type) &&
+//             !TEXT_ALIGN_TYPES.includes(format),
+//         split: true,
+//     });
+//     let newProperties: Partial<SlateElement>;
+//     if (TEXT_ALIGN_TYPES.includes(format)) {
+//         newProperties = {
+//             align: isActive ? undefined : format,
+//         };
+//     } else {
+//         newProperties = {
+//             type: isActive ? "paragraph" : isList ? "list-item" : format,
+//         };
+//     }
+//     Transforms.setNodes<SlateElement>(editor, newProperties);
 
-    if (!isActive && isList) {
-        const block = { type: format, children: [] };
-        Transforms.wrapNodes(editor, block);
-    }
-};
+//     if (!isActive && isList) {
+//         const block = { type: format, children: [] };
+//         Transforms.wrapNodes(editor, block);
+//     }
+// };
 
-const toggleMark = (editor, format) => {
-    const isActive = isMarkActive(editor, format);
+// const toggleMark = (editor, format) => {
+//     const isActive = isMarkActive(editor, format);
 
-    if (isActive) {
-        Editor.removeMark(editor, format);
-    } else {
-        Editor.addMark(editor, format, true);
-    }
-};
+//     if (isActive) {
+//         Editor.removeMark(editor, format);
+//     } else {
+//         Editor.addMark(editor, format, true);
+//     }
+// };
 
-const isBlockActive = (editor, format, blockType = "type") => {
-    const { selection } = editor;
-    if (!selection) return false;
+// const isBlockActive = (editor, format, blockType = "type") => {
+//     const { selection } = editor;
+//     if (!selection) return false;
 
-    const [match] = Array.from(
-        Editor.nodes(editor, {
-            at: Editor.unhangRange(editor, selection),
-            match: (n) =>
-                !Editor.isEditor(n) &&
-                SlateElement.isElement(n) &&
-                n[blockType] === format,
-        })
-    );
+//     const [match] = Array.from(
+//         Editor.nodes(editor, {
+//             at: Editor.unhangRange(editor, selection),
+//             match: (n) =>
+//                 !Editor.isEditor(n) &&
+//                 SlateElement.isElement(n) &&
+//                 n[blockType] === format,
+//         })
+//     );
 
-    return !!match;
-};
+//     return !!match;
+// };
 
-const isMarkActive = (editor, format) => {
-    const marks = Editor.marks(editor);
-    return marks ? marks[format] === true : false;
-};
+// const isMarkActive = (editor, format) => {
+//     const marks = Editor.marks(editor);
+//     return marks ? marks[format] === true : false;
+// };
 
-const Element = ({ attributes, children, element }) => {
-    const style = { textAlign: element.align };
-    switch (element.type) {
-        case "block-quote":
-            return (
-                <blockquote style={style} {...attributes}>
-                    {children}
-                </blockquote>
-            );
-        case "bulleted-list":
-            return (
-                <ul style={style} {...attributes}>
-                    {children}
-                </ul>
-            );
-        case "heading-one":
-            return (
-                <h1 style={style} {...attributes}>
-                    {children}
-                </h1>
-            );
-        case "heading-two":
-            return (
-                <h2 style={style} {...attributes}>
-                    {children}
-                </h2>
-            );
-        case "list-item":
-            return (
-                <li style={style} {...attributes}>
-                    {children}
-                </li>
-            );
-        case "numbered-list":
-            return (
-                <ol style={style} {...attributes}>
-                    {children}
-                </ol>
-            );
-        default:
-            return (
-                <p style={style} {...attributes}>
-                    {children}
-                </p>
-            );
-    }
-};
+// const Element = ({ attributes, children, element }) => {
+//     const style = { textAlign: element.align };
+//     switch (element.type) {
+//         case "block-quote":
+//             return (
+//                 <blockquote style={style} {...attributes}>
+//                     {children}
+//                 </blockquote>
+//             );
+//         case "bulleted-list":
+//             return (
+//                 <ul style={style} {...attributes}>
+//                     {children}
+//                 </ul>
+//             );
+//         case "heading-one":
+//             return (
+//                 <h1 style={style} {...attributes}>
+//                     {children}
+//                 </h1>
+//             );
+//         case "heading-two":
+//             return (
+//                 <h2 style={style} {...attributes}>
+//                     {children}
+//                 </h2>
+//             );
+//         case "list-item":
+//             return (
+//                 <li style={style} {...attributes}>
+//                     {children}
+//                 </li>
+//             );
+//         case "numbered-list":
+//             return (
+//                 <ol style={style} {...attributes}>
+//                     {children}
+//                 </ol>
+//             );
+//         default:
+//             return (
+//                 <p style={style} {...attributes}>
+//                     {children}
+//                 </p>
+//             );
+//     }
+// };
 
-const Leaf = ({ attributes, children, leaf }) => {
-    if (leaf.bold) {
-        children = <strong>{children}</strong>;
-    }
+// const Leaf = ({ attributes, children, leaf }) => {
+//     if (leaf.bold) {
+//         children = <strong>{children}</strong>;
+//     }
 
-    if (leaf.code) {
-        children = <code>{children}</code>;
-    }
+//     if (leaf.code) {
+//         children = <code>{children}</code>;
+//     }
 
-    if (leaf.italic) {
-        children = <em>{children}</em>;
-    }
+//     if (leaf.italic) {
+//         children = <em>{children}</em>;
+//     }
 
-    if (leaf.underline) {
-        children = <u>{children}</u>;
-    }
+//     if (leaf.underline) {
+//         children = <u>{children}</u>;
+//     }
 
-    return <span {...attributes}>{children}</span>;
-};
+//     return <span {...attributes}>{children}</span>;
+// };
 
-const BlockButton = ({ format, icon }) => {
-    const editor = useSlate();
-    return (
-        <Button
-            active={isBlockActive(
-                editor,
-                format,
-                TEXT_ALIGN_TYPES.includes(format) ? "align" : "type"
-            )}
-            onMouseDown={(event) => {
-                event.preventDefault();
-                toggleBlock(editor, format);
-            }}
-        >
-            {format === "block-quote" && (
-                <FormatQuoteOutlinedIcon></FormatQuoteOutlinedIcon>
-            )}
-            {format === "numbered-list" && (
-                <FormatListNumberedOutlinedIcon></FormatListNumberedOutlinedIcon>
-            )}
-            {format === "bulleted-list" && (
-                <FormatListBulletedOutlinedIcon></FormatListBulletedOutlinedIcon>
-            )}
-            {format === "left" && (
-                <FormatAlignLeftOutlinedIcon></FormatAlignLeftOutlinedIcon>
-            )}
-            {format === "center" && (
-                <FormatAlignCenterOutlinedIcon></FormatAlignCenterOutlinedIcon>
-            )}
-            {format === "right" && (
-                <FormatAlignRightOutlinedIcon></FormatAlignRightOutlinedIcon>
-            )}
-            {format === "justify" && (
-                <FormatAlignJustifyOutlinedIcon></FormatAlignJustifyOutlinedIcon>
-            )}
-        </Button>
-    );
-};
+// const BlockButton = ({ format, icon }) => {
+//     const editor = useSlate();
+//     return (
+//         <Button
+//             active={isBlockActive(
+//                 editor,
+//                 format,
+//                 TEXT_ALIGN_TYPES.includes(format) ? "align" : "type"
+//             )}
+//             onMouseDown={(event) => {
+//                 event.preventDefault();
+//                 toggleBlock(editor, format);
+//             }}
+//         >
+//             {format === "block-quote" && (
+//                 <FormatQuoteOutlinedIcon></FormatQuoteOutlinedIcon>
+//             )}
+//             {format === "numbered-list" && (
+//                 <FormatListNumberedOutlinedIcon></FormatListNumberedOutlinedIcon>
+//             )}
+//             {format === "bulleted-list" && (
+//                 <FormatListBulletedOutlinedIcon></FormatListBulletedOutlinedIcon>
+//             )}
+//             {format === "left" && (
+//                 <FormatAlignLeftOutlinedIcon></FormatAlignLeftOutlinedIcon>
+//             )}
+//             {format === "center" && (
+//                 <FormatAlignCenterOutlinedIcon></FormatAlignCenterOutlinedIcon>
+//             )}
+//             {format === "right" && (
+//                 <FormatAlignRightOutlinedIcon></FormatAlignRightOutlinedIcon>
+//             )}
+//             {format === "justify" && (
+//                 <FormatAlignJustifyOutlinedIcon></FormatAlignJustifyOutlinedIcon>
+//             )}
+//         </Button>
+//     );
+// };
 
-const MarkButton = ({ format }) => {
-    const editor = useSlate();
-    return (
-        <Button
-            active={isMarkActive(editor, format)}
-            onMouseDown={(event) => {
-                event.preventDefault();
-                toggleMark(editor, format);
-            }}
-        >
-            {format === "bold" && (
-                <FormatBoldOutlinedIcon></FormatBoldOutlinedIcon>
-            )}
-            {format === "italic" && (
-                <FormatItalicOutlinedIcon></FormatItalicOutlinedIcon>
-            )}
-            {format === "underline" && (
-                <FormatUnderlinedOutlinedIcon></FormatUnderlinedOutlinedIcon>
-            )}
-            {format === "code" && <CodeOutlinedIcon></CodeOutlinedIcon>}
-        </Button>
-    );
-};
+// const MarkButton = ({ format }) => {
+//     const editor = useSlate();
+//     return (
+//         <Button
+//             active={isMarkActive(editor, format)}
+//             onMouseDown={(event) => {
+//                 event.preventDefault();
+//                 toggleMark(editor, format);
+//             }}
+//         >
+//             {format === "bold" && (
+//                 <FormatBoldOutlinedIcon></FormatBoldOutlinedIcon>
+//             )}
+//             {format === "italic" && (
+//                 <FormatItalicOutlinedIcon></FormatItalicOutlinedIcon>
+//             )}
+//             {format === "underline" && (
+//                 <FormatUnderlinedOutlinedIcon></FormatUnderlinedOutlinedIcon>
+//             )}
+//             {format === "code" && <CodeOutlinedIcon></CodeOutlinedIcon>}
+//         </Button>
+//     );
+// };
 
-const initialValue: Descendant[] = [
-    {
-        type: "paragraph",
-        children: [
-            { text: "This is " },
-            { text: "editable ", italic: true },
-            { text: "rich text!" },
-        ],
-    },
-    {
-        type: "paragraph",
-        children: [
-            { text: "Please leave " },
-            {
-                text: "any other comments that you'd like to include ",
-                bold: true,
-                underline: true,
-            },
-            { text: "and be sure to utilize the tools above" },
-        ],
-    },
-];
+// const initialValue: Descendant[] = [
+//     {
+//         type: "paragraph",
+//         children: [
+//             { text: "This is " },
+//             { text: "editable ", italic: true },
+//             { text: "rich text!" },
+//         ],
+//     },
+//     {
+//         type: "paragraph",
+//         children: [
+//             { text: "Please leave " },
+//             {
+//                 text: "any other comments that you'd like to include ",
+//                 bold: true,
+//                 underline: true,
+//             },
+//             { text: "and be sure to utilize the tools above" },
+//         ],
+//     },
+// ];
 
-// * the rest of these constants are for the code text editor:
+// // * the rest of these constants are for the code text editor:
 
-const codeGetLength = (token) => {
-    if (typeof token === "string") {
-        return token.length;
-    } else if (typeof token.content === "string") {
-        return token.content.length;
-    } else {
-        return token.content.reduce((l, t) => l + codeGetLength(t), 0);
-    }
-};
+// const codeGetLength = (token) => {
+//     if (typeof token === "string") {
+//         return token.length;
+//     } else if (typeof token.content === "string") {
+//         return token.content.length;
+//     } else {
+//         return token.content.reduce((l, t) => l + codeGetLength(t), 0);
+//     }
+// };
 
-// different token types, styles found on Prismjs website
-const CodeLeaf = ({ attributes, children, leaf }) => {
-    return (
-        <span
-            {...attributes}
-            className={css`
-                font-family: monospace;
-                background: hsla(0, 0%, 100%, 0.5);
-                ${leaf.comment &&
-                css`
-                    color: slategray;
-                `}
-                ${(leaf.operator || leaf.url) &&
-                css`
-                    color: #9a6e3a;
-                `}
-        ${leaf.keyword &&
-                css`
-                    color: #07a;
-                `}
-        ${(leaf.variable || leaf.regex) &&
-                css`
-                    color: #e90;
-                `}
-        ${(leaf.number ||
-                    leaf.boolean ||
-                    leaf.tag ||
-                    leaf.constant ||
-                    leaf.symbol ||
-                    leaf["attr-name"] ||
-                    leaf.selector) &&
-                css`
-                    color: #905;
-                `}
-        ${leaf.punctuation &&
-                css`
-                    color: #999;
-                `}
-        ${(leaf.string || leaf.char) &&
-                css`
-                    color: #690;
-                `}
-        ${(leaf.function || leaf["class-name"]) &&
-                css`
-                    color: #dd4a68;
-                `}
-            `}
-        >
-            {children}
-        </span>
-    );
-};
+// // different token types, styles found on Prismjs website
+// const CodeLeaf = ({ attributes, children, leaf }) => {
+//     return (
+//         <span
+//             {...attributes}
+//             className={css`
+//                 font-family: monospace;
+//                 background: hsla(0, 0%, 100%, 0.5);
+//                 ${leaf.comment &&
+//                 css`
+//                     color: slategray;
+//                 `}
+//                 ${(leaf.operator || leaf.url) &&
+//                 css`
+//                     color: #9a6e3a;
+//                 `}
+//         ${leaf.keyword &&
+//                 css`
+//                     color: #07a;
+//                 `}
+//         ${(leaf.variable || leaf.regex) &&
+//                 css`
+//                     color: #e90;
+//                 `}
+//         ${(leaf.number ||
+//                     leaf.boolean ||
+//                     leaf.tag ||
+//                     leaf.constant ||
+//                     leaf.symbol ||
+//                     leaf["attr-name"] ||
+//                     leaf.selector) &&
+//                 css`
+//                     color: #905;
+//                 `}
+//         ${leaf.punctuation &&
+//                 css`
+//                     color: #999;
+//                 `}
+//         ${(leaf.string || leaf.char) &&
+//                 css`
+//                     color: #690;
+//                 `}
+//         ${(leaf.function || leaf["class-name"]) &&
+//                 css`
+//                     color: #dd4a68;
+//                 `}
+//             `}
+//         >
+//             {children}
+//         </span>
+//     );
+// };
 
-// modifications and additions to prism library
+// // modifications and additions to prism library
 
-Prism.languages.python = Prism.languages.extend("python", {});
-Prism.languages.insertBefore("python", "prolog", {
-    comment: { pattern: /##[^\n]*/, alias: "comment" },
-});
-Prism.languages.javascript = Prism.languages.extend("javascript", {});
-Prism.languages.insertBefore("javascript", "prolog", {
-    comment: { pattern: /\/\/[^\n]*/, alias: "comment" },
-});
+// Prism.languages.python = Prism.languages.extend("python", {});
+// Prism.languages.insertBefore("python", "prolog", {
+//     comment: { pattern: /##[^\n]*/, alias: "comment" },
+// });
+// Prism.languages.javascript = Prism.languages.extend("javascript", {});
+// Prism.languages.insertBefore("javascript", "prolog", {
+//     comment: { pattern: /\/\/[^\n]*/, alias: "comment" },
+// });
+
+// const auth = getAuth();
+const user = auth.currentUser;
 
 const Complaint: NextPage = (users) => {
-    const router = useRouter();
-    const languageFrom = router.query.languageFrom
-        ? router.query.languageFrom
-        : "javascript";
-    const languageTo = router.query.languageTo
-        ? router.query.languageTo
-        : "python";
-    const codeOutput = router.query.codeOutput;
-    const numLines = router.query.numLines;
+    // Complaint stuff
+    const [postsState, setPostsState] = useState([]);
+    const [username, setUsername] = useState("");
+    const [content, setContent] = useState("");
+    const [loading, setLoading] = useState(false);
 
-    const codeInitialValue: Descendant[] = [
-        {
-            type: "paragraph",
-            children: [
-                {
-                    text: codeOutput,
-                },
-            ],
-        },
-    ];
+    let submitForm = async (e) => {
+        console.log("1st gas");
+        
+        // console.log(user);
+        // setLoading(true);
+        e.preventDefault();
+        console.log("2nd gas");
+        let res = await fetch("http://localhost:3000/api/posts", {
+            method: "POST",
+            body: JSON.stringify({
+                username: user,
+                content: content,
+                time: new Date(),
+            }),
+        });
+        if (res.ok) {
+            res = await res.json();
+        }
+    
+        setPostsState([...postsState, res]);
+        setUsername("");
+        setContent("");
+        // setLoading(false);
+    };
 
-    const [submissionCode, setSubmissionCode] = useState<string>(codeOutput);
-    const [additionalNotes, setAdditionalNotes] = useState<string>();
+    // const router = useRouter();
+    // const languageFrom = router.query.languageFrom
+    //     ? router.query.languageFrom
+    //     : "javascript";
+    // const languageTo = router.query.languageTo
+    //     ? router.query.languageTo
+    //     : "python";
+    // const codeOutput = router.query.codeOutput;
+    // const numLines = router.query.numLines;
 
-    const renderElement = useCallback((props) => <Element {...props} />, []);
-    const renderLeaf = useCallback((props) => <Leaf {...props} />, []);
-    const editor = useMemo(() => withHistory(withReact(createEditor())), []);
+    // const codeInitialValue: Descendant[] = [
+    //     {
+    //         type: "paragraph",
+    //         children: [
+    //             {
+    //                 text: codeOutput,
+    //             },
+    //         ],
+    //     },
+    // ];
 
-    const codeRenderLeaf = useCallback((props) => <CodeLeaf {...props} />, []);
-    const codeEditor = useMemo(
-        () => withHistory(withReact(createEditor())),
-        []
-    );
+    // const [submissionCode, setSubmissionCode] = useState<string>(codeOutput);
+    // const [additionalNotes, setAdditionalNotes] = useState<string>();
+
+    // const renderElement = useCallback((props) => <Element {...props} />, []);
+    // const renderLeaf = useCallback((props) => <Leaf {...props} />, []);
+    // const editor = useMemo(() => withHistory(withReact(createEditor())), []);
+
+    // const codeRenderLeaf = useCallback((props) => <CodeLeaf {...props} />, []);
+    // const codeEditor = useMemo(
+    //     () => withHistory(withReact(createEditor())),
+    //     []
+    // );
 
     // * useful for checking the code upon any changes, will remove soon since I'm almost done with this section
     // useEffect(() => {
@@ -411,71 +475,71 @@ const Complaint: NextPage = (users) => {
     // });
 
     // decorate function depends on the language selected
-    const codeDecorate = useCallback(
-        ([node, path]) => {
-            const ranges = [];
-            if (!Text.isText(node)) {
-                return ranges;
-            }
-            const tokens = Prism.tokenize(
-                node.text,
-                Prism.languages[languageFrom]
-            );
+    // const codeDecorate = useCallback(
+    //     ([node, path]) => {
+    //         const ranges = [];
+    //         if (!Text.isText(node)) {
+    //             return ranges;
+    //         }
+    //         const tokens = Prism.tokenize(
+    //             node.text,
+    //             Prism.languages[languageFrom]
+    //         );
 
-            if (submissionCode === "") {
-                setSubmissionCode(initialValue[0].children[0].text);
-            } else {
-                setSubmissionCode(node.text);
-            }
+    //         if (submissionCode === "") {
+    //             setSubmissionCode(initialValue[0].children[0].text);
+    //         } else {
+    //             setSubmissionCode(node.text);
+    //         }
 
-            let start = 0;
+    //         let start = 0;
 
-            for (const token of tokens) {
-                const length = codeGetLength(token);
-                const end = start + length;
+    //         for (const token of tokens) {
+    //             const length = codeGetLength(token);
+    //             const end = start + length;
 
-                if (typeof token !== "string") {
-                    ranges.push({
-                        [token.type]: true,
-                        anchor: { path, offset: start },
-                        focus: { path, offset: end },
-                    });
-                }
+    //             if (typeof token !== "string") {
+    //                 ranges.push({
+    //                     [token.type]: true,
+    //                     anchor: { path, offset: start },
+    //                     focus: { path, offset: end },
+    //                 });
+    //             }
 
-                start = end;
-            }
+    //             start = end;
+    //         }
 
-            return ranges;
-        },
-        [languageFrom]
-    );
+    //         return ranges;
+    //     },
+    //     [languageFrom]
+    // );
 
     useEffect(() => {
         console.log("these are the current users: " + users);
     });
     //all for the multi-select input:
 
-    const options = Array.from({ length: numLines }, (_, i) => i + 1);
+    // const options = Array.from({ length: numLines }, (_, i) => i + 1);
 
-    const [selected, setSelected] = useState([]);
-    const isAllSelected =
-        options.length > 0 && selected.length === options.length;
+    // const [selected, setSelected] = useState([]);
+    // const isAllSelected =
+    //     options.length > 0 && selected.length === options.length;
 
-    const handleChange = (event) => {
-        const value = event.target.value;
-        if (value[value.length - 1] === "all") {
-            setSelected(selected.length === options.length ? [] : options);
-            return;
-        }
-        setSelected(value);
-    };
+    // const handleChange = (event) => {
+    //     const value = event.target.value;
+    //     if (value[value.length - 1] === "all") {
+    //         setSelected(selected.length === options.length ? [] : options);
+    //         return;
+    //     }
+    //     setSelected(value);
+    // };
 
-    const classes = useStyles();
+    // const classes = useStyles();
 
     return (
         <>
             <main className={styles.main}>
-                <h1>Submit a Complaint here</h1>
+                {/* <h1>Submit a Complaint here</h1>
                 <h2>
                     <Link
                         href={{
@@ -547,22 +611,22 @@ const Complaint: NextPage = (users) => {
                     component="form"
                     style={{ padding: "10px", border: "1px solid grey" }}
                 >
-                    <Slate editor={codeEditor} value={codeInitialValue}>
+                    {/* <Slate editor={codeEditor} value={codeInitialValue}>
                         <Editable
                             decorate={codeDecorate}
                             renderLeaf={codeRenderLeaf}
                             onChange={(e) => setSubmissionCode(e.target.value)}
                         />
-                    </Slate>
-                </Box>
+                    </Slate> 
+                </Box>*/}
 
-                <br />
+                {/* <br /> */}
 
-                <Box
+                {/* <Box
                     component="form"
                     style={{ padding: "10px", border: "1px solid grey" }}
-                >
-                    <Slate editor={editor} value={initialValue}>
+                > */}
+                {/* <Slate editor={editor} value={initialValue}>
                         <Toolbar>
                             <MarkButton format="bold" />
                             <MarkButton format="italic" />
@@ -593,10 +657,10 @@ const Complaint: NextPage = (users) => {
                             }}
                             onChange={(e) => setAdditionalNotes(e.target.value)}
                         />
-                    </Slate>
-                </Box>
+                    </Slate> */}
+                {/* </Box> */}
 
-                <div>
+                {/* <div>
                     <p>
                         Rate the urgency of this complaint: <br></br>
                         <Rating length="5" />
@@ -608,10 +672,45 @@ const Complaint: NextPage = (users) => {
                         pathname: "/submitted",
                     }}
                 >
-                    <button className="btn" onClick={createComplaint}>
+                    <button
+                        className="btn"
+                        // onClick={createComplaint}
+                    >
                         Submit for validation
                     </button>
-                </Link>
+                </Link> */}
+                <div className="container">
+                    <div>
+                        <div>
+                            {postsState.map((post, index) => {
+                                return (
+                                    <div className="card" key={index}>
+                                        <p>{post.content}</p>
+                                    </div>
+                                );
+                            })}
+                        </div>
+
+                        <div className="add-form">
+                            <form onSubmit={submitForm}>
+                                <textarea
+                                    type="text"
+                                    name="content"
+                                    rows="10"
+                                    placeholder="Content"
+                                    value={content}
+                                    onChange={(e) => setContent(e.target.value)}
+                                />
+                                <button
+                                    type="submit"
+                                    disabled={loading ? true : false}
+                                >
+                                    {loading ? "Adding" : "Add"}
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </main>
 
             <footer className={styles.footer}>
@@ -636,26 +735,41 @@ const Complaint: NextPage = (users) => {
 };
 export default Complaint;
 
-async function createComplaint(newComplaint, user) {
-    const client = await clientPromise;
-    console.log("yay");
-    const today = new Date();
-    client
-        .db("Database")
-        .collection("RequestsAndResponses")
-        .insertOne({ username: user, complaint: newComplaint, date: today });
+export async function getServerSideProps(context) {
+    let res = await fetch("http://localhost:3000/api/posts", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    });
+    let posts = await res.json();
+
+    return {
+        props: { posts },
+    };
 }
 
-// // this is for mongoDB
-// export async function getServerSideProps(context) {
-//     const client = await clientPromise;
+// let submitForm = async (e) => {
+//     console.log("1st gas");
+    
+//     // console.log(user);
+//     // setLoading(true);
+//     e.preventDefault();
+//     console.log("2nd gas");
+//     let res = await fetch("http://localhost:3000/api/posts", {
+//         method: "POST",
+//         body: JSON.stringify({
+//             username: user,
+//             content: content,
+//             time: new Date(),
+//         }),
+//     });
+//     if (res.ok) {
+//         res = await res.json();
+//     }
 
-//     const db = client.db("Database");
-
-//     let users = await db.collection("UserInfo").find({}).toArray();
-//     users = JSON.parse(JSON.stringify(users));
-
-//     return {
-//         props: { users },
-//     };
-// }
+//     setPostsState([...postsState, res]);
+//     setUsername("");
+//     setContent("");
+//     // setLoading(false);
+// };
