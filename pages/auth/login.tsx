@@ -13,7 +13,6 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import styles from "../../styles/Home.module.css";
 import Image from "next/image";
 
-
 import Router from "next/router";
 import { TextBox } from "@syncfusion/ej2-react-inputs";
 function Login() {
@@ -41,11 +40,16 @@ function Login() {
                     marginTop: "7px",
                 }}
             >
-                <div style={{ marginTop: "7px", display: "flex",
-  flexDirection: "column",
-  textAlign: "center",
-  backgroundColor: "#dcdcdc",
-  padding: "30px",}}>
+                <div
+                    style={{
+                        marginTop: "7px",
+                        display: "flex",
+                        flexDirection: "column",
+                        textAlign: "center",
+                        backgroundColor: "#dcdcdc",
+                        padding: "30px",
+                    }}
+                >
                     <input
                         type="text"
                         style={{
@@ -131,4 +135,3 @@ function Login() {
     );
 }
 export default Login;
-

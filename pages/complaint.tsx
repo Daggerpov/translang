@@ -376,9 +376,6 @@ const Complaint: NextPage = (users) => {
     const [rating, setRating] = useState<number>(0);
     const [loading, setLoading] = useState(false);
 
-    
-    
-
 
     let submitForm = async (e) => {
         setComplaintsState([...complaintsState, res]);
@@ -481,7 +478,7 @@ const Complaint: NextPage = (users) => {
     );
 
     useEffect(() => {
-        console.log("these are the current users: " + users);
+        console.log("this is the current user: " + user);
     });
     // all for the multi-select input:
 
@@ -542,7 +539,7 @@ const Complaint: NextPage = (users) => {
 
                 <FormControl>
                     <InputLabel id="mutiple-select-label">
-                        Multiple Select
+                        Faulty Lines
                     </InputLabel>
                     <Select
                         labelId="mutiple-select-label"
@@ -657,8 +654,6 @@ const Complaint: NextPage = (users) => {
                             />
                         </FormControl> */}
                         <Rating
-                            emptySymbol="fa fa-thumbs-down fa-2x"
-                            fullSymbol="fa fa-thumbs-up fa-2x"
                         />
                     </p>
                 </div>

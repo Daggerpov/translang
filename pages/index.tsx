@@ -180,7 +180,7 @@ print(f"{name}'s favorite number is: {favorite_number}")`);
 
         setNumLines(codeOutputLines.length);
 
-        console.log("lines split: " + codeOutputLines + numLines);
+        // console.log("lines split: " + codeOutputLines + numLines);
 
         // this is a dictionary to keep track of the lines that have been adjusted
         const linesChecked: { [lineNumber: number]: string } = {};
@@ -215,7 +215,7 @@ print(f"{name}'s favorite number is: {favorite_number}")`);
             );
         }
 
-        console.log(linesChecked);
+        // console.log(linesChecked);
 
         if (codeInput != codeOutput) {
             setCodeOutput(codeOutput);
@@ -256,9 +256,13 @@ print(f"{name}'s favorite number is: {favorite_number}")`);
 
     // * useful for checking the code upon any changes, will remove soon since I'm almost done with this section
     // useEffect(() => {
-    //     users.map((user, index) => {
-    //         console.log(user.username, index);
-    //     });
+        // users.map((user, index) => {
+        //     console.log(user.username, index);
+        // });
+        // try{
+        //     console.log("username:" + JSON.parse(JSON.stringify(complaintsState)).username);
+        // } catch(e){}
+        
     // });
 
     useEffect(() => {
@@ -308,7 +312,7 @@ print(f"{name}'s favorite number is: {favorite_number}")`);
         },
         [languageFrom]
     );
-    const [complaintsState, setComplaintsState] = useState([]);
+    const [complaintsState, setComplaintsState] = useState();
     const [submissionCode, setSubmissionCode] = useState("");
     const [additionalNotes, setAdditionalNotes] = useState("");
 
@@ -319,7 +323,7 @@ print(f"{name}'s favorite number is: {favorite_number}")`);
                 transformResponse: [(v) => v],
             })
             .then((res) => {
-                setComplaintsState(res.data.split(']')[0].replace("[", ""));
+                setComplaintsState(res.data.split(']')[0].replaceAll("[", ""));
                 console.log(res.data);
             })
             .catch(function (error) {
@@ -351,7 +355,7 @@ print(f"{name}'s favorite number is: {favorite_number}")`);
                         <MailIcon color="action" />
                     </Badge>
 
-                    {user &&
+                    {user && (
                         <Link
                             href={{
                                 pathname: "/auth/login",
@@ -364,8 +368,8 @@ print(f"{name}'s favorite number is: {favorite_number}")`);
                                 Sign Out
                             </button>
                         </Link>
-                    }
-                    {!user && 
+                    )}
+                    {!user && (
                         <Link
                             href={{
                                 pathname: "/auth/login",
@@ -379,7 +383,23 @@ print(f"{name}'s favorite number is: {favorite_number}")`);
                                 Login
                             </button>
                         </Link>
-                    }
+                    )}
+
+                    <h2>Most recent complaint:</h2>
+
+                    {complaintsState}
+
+                    {/* <div className={styles.container}>
+                        <ul>
+                            {complaints.map((complaint, i) => (
+                                return (
+                                    <div className="card" key={index}>
+                                        <h2>{complaint}</h2>
+                                    </div>
+                                );
+                            ));}
+                        </ul>
+                </div> */}
 
                     {/* <div className={styles.container}>
                         <ul>
@@ -394,12 +414,12 @@ print(f"{name}'s favorite number is: {favorite_number}")`);
                     )}}
                 </div> */}
 
-                    <ul>
-                        {complaintsState}
+                    {/* <ul>
+                        
                         {/* {complaintsState.map((complaint) => (
                         <li key={complaint}></li>
-                    ))} */}
-                    </ul>
+                    ))} 
+                    </ul> */}
 
                     {/* <Link
                     href={{
