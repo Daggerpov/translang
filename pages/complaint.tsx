@@ -15,7 +15,7 @@ import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { LoadingButton } from "@mui/lab";
 
-//import { TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 import { TextareaAutosize } from "@material-ui/core";
 
 import Link from "next/link";
@@ -33,7 +33,7 @@ import {
     Text,
 } from "slate";
 import { withHistory } from "slate-history";
-import { Button, Icon, Toolbar } from "@mui/material";
+import { Button, FormControlLabel, Icon, Toolbar } from "@mui/material";
 
 import FormatBoldOutlinedIcon from "@mui/icons-material/FormatBoldOutlined";
 import FormatItalicOutlinedIcon from "@mui/icons-material/FormatItalicOutlined";
@@ -376,6 +376,10 @@ const Complaint: NextPage = (users) => {
     const [rating, setRating] = useState<number>(0);
     const [loading, setLoading] = useState(false);
 
+    
+    
+
+
     let submitForm = async (e) => {
         setComplaintsState([...complaintsState, res]);
         setSubmissionCode("");
@@ -389,10 +393,12 @@ const Complaint: NextPage = (users) => {
             method: "POST",
             body: JSON.stringify({
                 username: user,
+                // title: title,
                 submissionCode: submissionCode,
                 additionalNotes: additionalNotes,
                 rating: rating,
                 time: new Date(),
+                isAccepted: false,
             }),
         });
         if (res.ok) {
@@ -494,12 +500,28 @@ const Complaint: NextPage = (users) => {
         setSelected(value);
     };
 
+    const handleRatingChange = (value) => {
+        setRating(value);
+    };
+
+    // _handleTextFieldChange: function(e) {
+    //     this.setState({
+    //         textFieldValue: e.target.value
+    //     });
+    // },
+
     const classes = useStyles();
 
     return (
         <>
             <main className={styles.main}>
-                <h1>Submit a Complaint here</h1>
+                {/* <TextField
+                    id="standard-basic"
+                    label="Title"
+                    variant="standard"
+                    onChange={setTitle}
+                /> */}
+
                 <h2>
                     <Link
                         href={{
@@ -623,15 +645,25 @@ const Complaint: NextPage = (users) => {
                 <div>
                     <p>
                         Rate the urgency of this complaint: <br></br>
-                        <Rating />
+                        {/* <FormControl>
+                            <FormControlLabel id="starRating">
+                                Rate the Facility
+                            </FormControlLabel>
+                            <br />
+                            <Rating
+                                name="starRating"
+                                value={3}
+                                // onChange={handleRatingChange()}
+                            />
+                        </FormControl> */}
+                        <Rating
+                            emptySymbol="fa fa-thumbs-down fa-2x"
+                            fullSymbol="fa fa-thumbs-up fa-2x"
+                        />
                     </p>
                 </div>
                 <form onSubmit={submitForm}>
-                    <button
-                        className="btn"
-                        // onClick={submitForm()}
-                        disabled={loading ? true : false}
-                    >
+                    <button className="btn" disabled={loading ? true : false}>
                         {loading ? "Submitted" : "Submit for validation"}
                     </button>
                 </form>
@@ -651,7 +683,7 @@ const Complaint: NextPage = (users) => {
                     })}
                 </div> */}
 
-                        {/* <div className="add-form">
+                {/* <div className="add-form">
                             <form onSubmit={submitForm}>
                                 <textarea
                                     type="text"
@@ -669,7 +701,6 @@ const Complaint: NextPage = (users) => {
                                 </button>
                             </form>
                         </div> */}
-
             </main>
 
             <footer className={styles.footer}>

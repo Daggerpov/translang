@@ -1,5 +1,7 @@
 // @ts-nocheck
 
+import axios from "axios";
+
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
@@ -301,8 +303,25 @@ print(f"{name}'s favorite number is: {favorite_number}")`);
         },
         [languageFrom]
     );
+    const [complaintsState, setComplaintsState] = useState([]);
+    const [submissionCode, setSubmissionCode] = useState("");
+    const [additionalNotes, setAdditionalNotes] = useState("");
+    // const [loading, setLoading] = useState(false);
 
-    
+    useEffect(() => {
+        axios
+            .get("http://localhost:3000/api/handler", {
+                responseType: "text",
+                transformResponse: [(v) => v],
+            })
+            .then((res) => {
+                setComplaintsState(res.data.split(']')[0].replace("[", ""));
+                console.log(res.data);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }); //[0].submissionCode
 
     return (
         <div className={styles.container}>
@@ -336,6 +355,26 @@ print(f"{name}'s favorite number is: {favorite_number}")`);
                         Login
                     </button>
                 </Link>
+
+                {/* <div className={styles.container}>
+                        <ul>
+                            {complaints.map((complaint, i) => (
+                                return (
+                                    <div className="card" key={index}>
+                                        <h2>{complaint.submissionCode}</h2>
+                                    </div>
+                                );
+                            ))}
+                        </ul>
+                    )}}
+                </div> */}
+
+                <ul>
+                    {complaintsState}
+                    {/* {complaintsState.map((complaint) => (
+                        <li key={complaint}></li>
+                    ))} */}
+                </ul>
 
                 {/* <Link
                     href={{
@@ -462,3 +501,41 @@ print(f"{name}'s favorite number is: {favorite_number}")`);
 };
 
 export default Home;
+
+export async function getServerSideProps(context) {
+    let res = await fetch("http://localhost:3000/api/handler", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    });
+    let complaints = await res.json();
+
+    return {
+        props: { complaints },
+    };
+}
+
+async function getComplaints(req, res) {
+    try {
+        // connect to the database
+        let { db } = await connectToDatabase();
+        // fetch the posts
+        let complaints = await db
+            .collection("RequestsAndResponses")
+            .find({})
+            .sort({ published: -1 })
+            .toArray();
+        // return the posts
+        return res.json({
+            message: JSON.parse(JSON.stringify(complaints)),
+            success: true,
+        });
+    } catch (error) {
+        // return the error
+        return res.json({
+            message: new Error(error).message,
+            success: false,
+        });
+    }
+}
