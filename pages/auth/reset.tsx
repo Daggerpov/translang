@@ -7,6 +7,7 @@ import Link from "next/link";
 import { auth, sendPasswordResetEmail } from "../../firebase";
 import Image from "next/image";
 import Router from "next/router";
+import styles from "../../styles/Home.module.css";
 
 function Reset() {
     const [email, setEmail] = useState("");
@@ -48,19 +49,25 @@ function Reset() {
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="E-mail Address"
                     />
-                    <button
-                        style={{
-                            padding: "10px",
-                            fontSize: "18px",
-                            marginBottom: "10px",
-                            border: "none",
-                            color: "white",
-                            backgroundColor: "black",
+                    <Link
+                        href={{
+                            pathname: "/auth/login",
                         }}
-                        onClick={() => sendPasswordResetEmail(auth, email)}
                     >
-                        Send password reset email
-                    </button>
+                        <button
+                            style={{
+                                padding: "10px",
+                                fontSize: "18px",
+                                marginBottom: "10px",
+                                border: "none",
+                                color: "white",
+                                backgroundColor: "black",
+                            }}
+                            onClick={() => sendPasswordResetEmail(auth, email)}
+                        >
+                            Send password reset email
+                        </button>
+                    </Link>
                     <div style={{ marginTop: "7px" }}>
                         Don't have an account?{" "}
                         <Link href={{ pathname: "/auth/register" }}>
