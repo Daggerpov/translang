@@ -360,30 +360,34 @@ print(f"{name}'s favorite number is: {favorite_number}")`);
                         translang - the programming language converter
                     </h1>
 
-                    
-                    <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+                    <Box
+                        sx={{
+                            width: "100%",
+                            maxWidth: 360,
+                            bgcolor: "background.paper",
+                        }}
+                    >
                         <nav aria-label="main mailbox folders">
                             <List>
-                            <ListItem disablePadding>
-                                <ListItemButton>
-                                <ListItemIcon>
-                                    <InboxIcon />
-                                </ListItemIcon>
-                                <ListItemText primary="Inbox" />
-                                </ListItemButton>
-                            </ListItem>
-                            <ListItem disablePadding>
-                                <ListItemButton>
-                                <ListItemIcon>
-                                    <DraftsIcon />
-                                </ListItemIcon>
-                                <ListItemText primary="Submitted Complaints" />
-                                </ListItemButton>
-                            </ListItem>
+                                <ListItem disablePadding>
+                                    <ListItemButton>
+                                        <ListItemIcon>
+                                            <InboxIcon />
+                                        </ListItemIcon>
+                                        <ListItemText primary="Inbox" />
+                                    </ListItemButton>
+                                </ListItem>
+                                <ListItem disablePadding>
+                                    <ListItemButton>
+                                        <ListItemIcon>
+                                            <DraftsIcon />
+                                        </ListItemIcon>
+                                        <ListItemText primary="Submitted Complaints" />
+                                    </ListItemButton>
+                                </ListItem>
                             </List>
                         </nav>
                     </Box>
-                    
 
                     {user && (
                         <Link
@@ -466,90 +470,100 @@ print(f"{name}'s favorite number is: {favorite_number}")`);
                     </button>
                 </Link> */}
 
-                    <Box component="form" style={{ padding: "10px" }}>
-                        <FormControl fullWidth>
-                            <InputLabel id="demo-simple-select-label">
-                                Language From
-                            </InputLabel>
-                            <Select
-                                value={languageFrom}
-                                onChange={handleChange1}
+                    {/* <Box component="form" style={{ padding: "10px" }}> */}
+                    {/* this is the selection dropdown for language from */}
+                    <FormControl sx={{ m: 1, minWidth: 120 }}>
+                        <InputLabel id="demo-simple-select-autowidth-label">
+                            Language From
+                        </InputLabel>
+                        <Select
+                            value={languageFrom}
+                            onChange={handleChange1}
+                            labelId="demo-simple-select-autowidth-label"
+                            id="demo-simple-select-autowidth"
+                            autoWidth
+                            label="language from"
+                        >
+                            <MenuItem value={"python"}>Python</MenuItem>
+                            <MenuItem value={"java"}>Java</MenuItem>
+                            <MenuItem value={"javascript"}>JavaScript</MenuItem>
+                        </Select>
+                    </FormControl>
+
+                    {/* this is the code editor from */}
+
+                    <Slate editor={editor} value={initialValue}>
+                        <Editable
+                            decorate={decorate}
+                            renderLeaf={renderLeaf}
+                            onChange={(e) => setCodeInput(e.target.value)}
+                        />
+                    </Slate>
+                    {/* </Box> */}
+                    {/* <Box component="form" style={{ padding: "10px" }}> */}
+
+                    <FormControl sx={{ m: 1, minWidth: 120 }}>
+                        <InputLabel id="demo-simple-select-autowidth-label">
+                            Language To
+                        </InputLabel>
+                        <Select
+                            value={languageTo}
+                            onChange={handleChange2}
+                            labelId="demo-simple-select-autowidth-label"
+                            id="demo-simple-select-autowidth"
+                            autoWidth
+                            label="language to"
+                        >
+                        <MenuItem value={"python"}>Python</MenuItem>
+                        <MenuItem value={"java"}>Java</MenuItem>
+                        <MenuItem value={"javascript"}>javascript</MenuItem>
+                        </Select>
+                    </FormControl>
+
+                    <div>
+                        <TextareaAutosize
+                            // id="outlined-multiline-flexible"
+                            placeholder={
+                                defaultOutputMessage
+                                    ? "This is where your code will be output"
+                                    : "No conversion was performed"
+                            }
+                            minRows={3}
+                            maxRows={10}
+                            value={codeOutput}
+                            disabled={true}
+                        />
+                    </div>
+                    {/* the following is only displayed upon translation execution */}
+                    {translationPerformed && (
+                        <input
+                            type="button"
+                            onClick={handleCopyClick}
+                            value={isCopied ? "Copied!" : "Copy to Clipboard"}
+                        />
+                    )}
+                    {translationPerformed && (
+                        <Link
+                            href={{
+                                pathname: "/complaint",
+                                query: {
+                                    languageFrom,
+                                    languageTo,
+                                    codeOutput,
+                                    numLines,
+                                },
+                            }}
+                        >
+                            <button
+                                // onClick={}
+                                // style={}
+                                className="btn"
                             >
-                                <MenuItem value={"python"}>Python</MenuItem>
-                                <MenuItem value={"java"}>Java</MenuItem>
-                                <MenuItem value={"javascript"}>
-                                    JavaScript
-                                </MenuItem>
-                            </Select>
-                        </FormControl>
-                        <Slate editor={editor} value={initialValue}>
-                            <Editable
-                                decorate={decorate}
-                                renderLeaf={renderLeaf}
-                                onChange={(e) => setCodeInput(e.target.value)}
-                            />
-                        </Slate>
-                    </Box>
-                    <Box component="form" style={{ padding: "10px" }}>
-                        <FormControl fullWidth>
-                            <InputLabel id="demo-simple-select-label">
-                                Language To
-                            </InputLabel>
-                            <Select value={languageTo} onChange={handleChange2}>
-                                <MenuItem value={"python"}>Python</MenuItem>
-                                <MenuItem value={"java"}>Java</MenuItem>
-                                <MenuItem value={"javascript"}>
-                                    javascript
-                                </MenuItem>
-                                {/* <MenuItem value={"C++"}>C++</MenuItem> */}
-                            </Select>
-                        </FormControl>
-                        <div>
-                            <TextareaAutosize
-                                // id="outlined-multiline-flexible"
-                                placeholder={
-                                    defaultOutputMessage
-                                        ? "This is where your code will be output"
-                                        : "No conversion was performed"
-                                }
-                                minRows={3}
-                                maxRows={10}
-                                value={codeOutput}
-                                disabled={true}
-                            />
-                        </div>
-                        {/* the following is only displayed upon translation execution */}
-                        {translationPerformed && (
-                            <input
-                                type="button"
-                                onClick={handleCopyClick}
-                                value={
-                                    isCopied ? "Copied!" : "Copy to Clipboard"
-                                }
-                            />
-                        )}
-                        {translationPerformed && (
-                            <Link
-                                href={{
-                                    pathname: "/complaint",
-                                    query: {
-                                        languageFrom,
-                                        languageTo,
-                                        codeOutput,
-                                        numLines,
-                                    },
-                                }}
-                            >
-                                <button
-                                    // onClick={}
-                                    // style={}
-                                    className="btn"
-                                >
-                                    Submit a Complaint
-                                </button>
-                            </Link>
-                        )}
-                    </Box>
+                                Submit a Complaint
+                            </button>
+                        </Link>
+                    )}
+                    {/* </Box> */}
 
                     <LoadingButton
                         onClick={() =>

@@ -15,6 +15,8 @@ import Image from "next/image";
 
 import Router from "next/router";
 import { TextBox } from "@syncfusion/ej2-react-inputs";
+
+
 function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
