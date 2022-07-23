@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 
 // ? Material UI is a component library for easier styling and with some custom components
 import Box from "@mui/material/Box";
+import List from "@mui/material/List";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -37,6 +38,14 @@ import clientPromise from "../mongodb";
 
 import { useAuthState } from "react-firebase-hooks/auth";
 import {auth, logout} from "../firebase";
+
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import InboxIcon from "@mui/icons-material/Inbox";
+import DraftsIcon from "@mui/icons-material/Drafts";
+
 
 const getLength = (token) => {
     if (typeof token === "string") {
@@ -251,6 +260,10 @@ print(f"{name}'s favorite number is: {favorite_number}")`);
             });
     };
 
+    const openNotifications = () => {
+        console.log("hello these are the notifications being opened");
+    };
+
     const renderLeaf = useCallback((props) => <Leaf {...props} />, []);
     const editor = useMemo(() => withHistory(withReact(createEditor())), []);
 
@@ -347,13 +360,30 @@ print(f"{name}'s favorite number is: {favorite_number}")`);
                         translang - the programming language converter
                     </h1>
 
-                    <Badge
-                        badgeContent={numNotifications}
-                        color="primary"
-                        max={5}
-                    >
-                        <MailIcon color="action" />
-                    </Badge>
+                    
+                    <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+                        <nav aria-label="main mailbox folders">
+                            <List>
+                            <ListItem disablePadding>
+                                <ListItemButton>
+                                <ListItemIcon>
+                                    <InboxIcon />
+                                </ListItemIcon>
+                                <ListItemText primary="Inbox" />
+                                </ListItemButton>
+                            </ListItem>
+                            <ListItem disablePadding>
+                                <ListItemButton>
+                                <ListItemIcon>
+                                    <DraftsIcon />
+                                </ListItemIcon>
+                                <ListItemText primary="Submitted Complaints" />
+                                </ListItemButton>
+                            </ListItem>
+                            </List>
+                        </nav>
+                    </Box>
+                    
 
                     {user && (
                         <Link

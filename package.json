@@ -25,6 +25,7 @@
     "firebase": "^9.8.4",
     "firebase-tools": "^11.1.0",
     "joi": "^17.6.0",
+    "material-ui-notifications": "^0.1.4",
     "mongodb": "^4.7.0",
     "mongodb-core": "^3.2.7",
     "mongoose": "^6.3.8",
