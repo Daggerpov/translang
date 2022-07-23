@@ -1,4 +1,4 @@
-// // @ts-nocheck
+// @ts-nocheck
 
 // import type { NextPage } from "next";
 // import Image from "next/image";
@@ -6,7 +6,7 @@
 // import { TextBoxComponent } from "@syncfusion/ej2-react-inputs";
 // import { useEffect, useState } from "react";
 
-// // ? Material UI is a component library for easier styling and with some custom components
+// ? Material UI is a component library for easier styling and with some custom components
 // import Box from "@mui/material/Box";
 // import InputLabel from "@mui/material/InputLabel";
 // import MenuItem from "@mui/material/MenuItem";
@@ -14,7 +14,7 @@
 // import Select, { SelectChangeEvent } from "@mui/material/Select";
 // import { LoadingButton } from "@mui/lab";
 
-// //import { TextField } from "@mui/material";
+//import { TextField } from "@mui/material";
 // import { TextareaAutosize } from "@material-ui/core";
 
 // import Link from "next/link";
@@ -25,7 +25,7 @@
 // import type { NextPage } from "next";
 // import Head from "next/head";
 
-// // ? Material UI is a component library for easier styling and with some custom components
+// ? Material UI is a component library for easier styling and with some custom components
 // import { useRouter } from "next/router";
 // import isHotkey from "is-hotkey";
 // import {
