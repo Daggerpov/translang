@@ -1,10 +1,8 @@
 // @ts-nocheck
 
 import type { NextPage } from "next";
-import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
-import { TextBoxComponent } from "@syncfusion/ej2-react-inputs";
 import { useState, useEffect } from "react";
 
 // ? Material UI is a component library for easier styling and with some custom components
@@ -15,10 +13,6 @@ import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
 import { styled } from '@mui/material/styles';
-import { LoadingButton } from "@mui/lab";
-
-import { TextField } from "@mui/material";
-import { TextareaAutosize } from "@material-ui/core";
 
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -49,24 +43,15 @@ import FormatAlignCenterOutlinedIcon from "@mui/icons-material/FormatAlignCenter
 import FormatAlignRightOutlinedIcon from "@mui/icons-material/FormatAlignRightOutlined";
 import FormatAlignJustifyOutlinedIcon from "@mui/icons-material/FormatAlignJustifyOutlined";
 
-// import Prism from "prismjs";
-// import "prismjs/components/prism-python";
-// import "prismjs/components/prism-java";
 import { css } from "@emotion/css";
 
 import Checkbox from "@material-ui/core/Checkbox";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 
-import { makeStyles } from "@material-ui/core/styles";
-
 import { MenuProps, useStyles } from "./utils/multiselect";
 
 import { auth } from "../firebase";
-
-import clientPromise from "../mongodb";
-
-// import Rating from "react-rating";
 
 import Rating from "@mui/material/Rating";
 import Typography from "@mui/material/Typography";
