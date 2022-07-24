@@ -500,7 +500,7 @@ const Complaint: NextPage = (users) => {
     const isAllSelected =
         options.length > 0 && selected.length === options.length;
 
-    const handleChange = (event) => {
+    const handleChange = (event: SelectChangeEvent) => {
         const value = event.target.value;
         if (value[value.length - 1] === "all") {
             setSelected(selected.length === options.length ? [] : options);
@@ -509,9 +509,9 @@ const Complaint: NextPage = (users) => {
         setSelected(value);
     };
 
-    const handleRatingChange = (value) => {
-        setRating(value);
-    };
+    // const handleRatingChange = (value) => {
+    //     setRating(value);
+    // };
 
     // _handleTextFieldChange: function(e) {
     //     this.setState({
@@ -549,12 +549,15 @@ const Complaint: NextPage = (users) => {
                     {numLines} lines of code
                 </h1>
 
-                <FormControl>
-                    <InputLabel id="mutiple-select-label">
+                <FormControl sx={{ m: 1, minWidth: 140 }}>
+                    <InputLabel id="simple-select-autowidth-label">
                         Faulty Lines
                     </InputLabel>
                     <Select
-                        labelId="mutiple-select-label"
+                        labelId="simple-select-autowidth-label"
+                        id="simple-select-autowidth"
+                        autoWidth
+                        label="faulty lines"
                         multiple
                         value={selected}
                         onChange={handleChange}
@@ -662,16 +665,18 @@ const Complaint: NextPage = (users) => {
                             setRating(newValue);
                         }}
                     /> */}
-                    { <StyledRating
-                        name="customized-color"
-                        defaultValue={2}
-                        getLabelText={(value: number) =>
-                            `${value} Heart${value !== 1 ? "s" : ""}`
-                        }
-                        precision={1}
-                        icon={<PriorityHighIcon fontSize="inherit" />}
-                        emptyIcon={<PriorityHighIcon fontSize="inherit" />}
-                    /> }
+                    {
+                        <StyledRating
+                            name="customized-color"
+                            defaultValue={2}
+                            getLabelText={(value: number) =>
+                                `${value} Heart${value !== 1 ? "s" : ""}`
+                            }
+                            precision={1}
+                            icon={<PriorityHighIcon fontSize="inherit" />}
+                            emptyIcon={<PriorityHighIcon fontSize="inherit" />}
+                        />
+                    }
                 </div>
                 <form onSubmit={submitForm}>
                     <button className="btn" disabled={loading ? true : false}>

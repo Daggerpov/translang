@@ -475,14 +475,14 @@ print(f"{name}'s favorite number is: {favorite_number}")`);
                     {/* <Box component="form" style={{ padding: "10px" }}> */}
                     {/* this is the selection dropdown for language from */}
                     <FormControl sx={{ m: 1, minWidth: 120 }}>
-                        <InputLabel id="demo-simple-select-autowidth-label">
+                        <InputLabel id="simple-select-autowidth-label">
                             Language From
                         </InputLabel>
                         <Select
                             value={languageFrom}
                             onChange={handleChange1}
-                            labelId="demo-simple-select-autowidth-label"
-                            id="demo-simple-select-autowidth"
+                            labelId="simple-select-autowidth-label"
+                            id="simple-select-autowidth"
                             autoWidth
                             label="language from"
                         >
@@ -505,14 +505,14 @@ print(f"{name}'s favorite number is: {favorite_number}")`);
                     {/* <Box component="form" style={{ padding: "10px" }}> */}
 
                     <FormControl sx={{ m: 1, minWidth: 120 }}>
-                        <InputLabel id="demo-simple-select-autowidth-label">
+                        <InputLabel id="simple-select-autowidth-label">
                             Language To
                         </InputLabel>
                         <Select
                             value={languageTo}
                             onChange={handleChange2}
-                            labelId="demo-simple-select-autowidth-label"
-                            id="demo-simple-select-autowidth"
+                            labelId="simple-select-autowidth-label"
+                            id="simple-select-autowidth"
                             autoWidth
                             label="language to"
                         >
