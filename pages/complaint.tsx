@@ -13,6 +13,8 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
+import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
+import { styled } from '@mui/material/styles';
 import { LoadingButton } from "@mui/lab";
 
 import { TextField } from "@mui/material";
@@ -370,14 +372,14 @@ Prism.languages.insertBefore("javascript", "prolog", {
 
 const user = auth.currentUser;
 
-// const StyledRating = styled(Rating)({
-//     "& .MuiRating-iconFilled": {
-//         color: "#ff6d75",
-//     },
-//     "& .MuiRating-iconHover": {
-//         color: "#ff3d47",
-//     },
-// });
+const StyledRating = styled(Rating)({
+    "& .MuiRating-iconFilled": {
+        color: "#ff6d75",
+    },
+    "& .MuiRating-iconHover": {
+        color: "#ff3d47",
+    },
+});
 
 const Complaint: NextPage = (users) => {
     // Complaint rows into database
@@ -649,27 +651,27 @@ const Complaint: NextPage = (users) => {
                     </Slate>
                 </Box>
 
-                <div>
+                <div align="center">
                     <Typography component="legend">
                         Rate the urgency of this complaint:
                     </Typography>
-                    <Rating
+                    {/* <Rating
                         name="urgency-rating"
                         value={rating}
                         onChange={(event, newValue) => {
                             setRating(newValue);
                         }}
-                    />
-                    {/* <StyledRating
+                    /> */}
+                    { <StyledRating
                         name="customized-color"
                         defaultValue={2}
                         getLabelText={(value: number) =>
                             `${value} Heart${value !== 1 ? "s" : ""}`
                         }
-                        precision={0.5}
-                        icon={<FavoriteIcon fontSize="inherit" />}
-                        emptyIcon={<FavoriteBorderIcon fontSize="inherit" />}
-                    /> */}
+                        precision={1}
+                        icon={<PriorityHighIcon fontSize="inherit" />}
+                        emptyIcon={<PriorityHighIcon fontSize="inherit" />}
+                    /> }
                 </div>
                 <form onSubmit={submitForm}>
                     <button className="btn" disabled={loading ? true : false}>
