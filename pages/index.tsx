@@ -1,5 +1,4 @@
 // @ts-nocheck
-
 import axios from "axios";
 
 import type { NextPage } from "next";
@@ -19,6 +18,8 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { LoadingButton } from "@mui/lab";
 import MailIcon from "@material-ui/icons/Mail";
 import Badge from "@mui/material/Badge";
+import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
 
 //import { TextField } from "@mui/material";
 import { TextareaAutosize } from "@material-ui/core";
@@ -395,12 +396,13 @@ print(f"{name}'s favorite number is: {favorite_number}")`);
                                 pathname: "/auth/login",
                             }}
                         >
-                            <button
+                            <Button
                                 // style={}
+                                variant="outlined"
                                 className="btn"
                             >
                                 Sign Out
-                            </button>
+                            </Button>
                         </Link>
                     )}
                     {!user && (
@@ -409,13 +411,13 @@ print(f"{name}'s favorite number is: {favorite_number}")`);
                                 pathname: "/auth/login",
                             }}
                         >
-                            <button
+                            <Button variant="outlined"
                                 onClick={logout()}
                                 // style={}
                                 className="btn"
                             >
                                 Login
-                            </button>
+                            </Button>
                         </Link>
                     )}
 
