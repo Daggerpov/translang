@@ -538,9 +538,9 @@ const Complaint: NextPage = (users) => {
                             query: users,
                         }}
                     >
-                        <button className="btn">
+                        <Button variant="outlined" className="btn">
                             Make another translation
-                        </button>
+                        </Button>
                     </Link>
                 </h2>
 
@@ -679,9 +679,9 @@ const Complaint: NextPage = (users) => {
                     }
                 </div>
                 <form onSubmit={submitForm}>
-                    <button className="btn" disabled={loading ? true : false}>
+                    <Button variant="outlined" type="submit" className="btn" disabled={loading ? true : false}>
                         {loading ? "Submitted" : "Submit for validation"}
-                    </button>
+                    </Button>
                 </form>
 
                 {/* <div>

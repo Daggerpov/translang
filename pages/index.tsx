@@ -538,11 +538,12 @@ print(f"{name}'s favorite number is: {favorite_number}")`);
                     </div>
                     {/* the following is only displayed upon translation execution */}
                     {translationPerformed && (
-                        <input
-                            type="button"
+                        <Button
+                            variant="outlined"
                             onClick={handleCopyClick}
-                            value={isCopied ? "Copied!" : "Copy to Clipboard"}
-                        />
+                        >
+                            {isCopied ? "Copied!" : "Copy to Clipboard"}
+                        </Button>
                     )}
                     {translationPerformed && (
                         <Link
@@ -556,13 +557,14 @@ print(f"{name}'s favorite number is: {favorite_number}")`);
                                 },
                             }}
                         >
-                            <button
+                            <Button 
+                                variant="outlined"
                                 // onClick={}
                                 // style={}
                                 className="btn"
                             >
                                 Submit a Complaint
-                            </button>
+                            </Button>
                         </Link>
                     )}
                     {/* </Box> */}
