@@ -18,8 +18,8 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { LoadingButton } from "@mui/lab";
 import MailIcon from "@material-ui/icons/Mail";
 import Badge from "@mui/material/Badge";
-import Button from '@mui/material/Button';
-import Stack from '@mui/material/Stack';
+import Button from "@mui/material/Button";
+import Stack from "@mui/material/Stack";
 
 //import { TextField } from "@mui/material";
 import { TextareaAutosize } from "@material-ui/core";
@@ -38,7 +38,7 @@ import { css } from "@emotion/css";
 import clientPromise from "../mongodb";
 
 import { useAuthState } from "react-firebase-hooks/auth";
-import {auth, logout} from "../firebase";
+import { auth, logout } from "../firebase";
 
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
@@ -46,7 +46,6 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/Inbox";
 import DraftsIcon from "@mui/icons-material/Drafts";
-
 
 const getLength = (token) => {
     if (typeof token === "string") {
@@ -118,8 +117,8 @@ const initialValue: Descendant[] = [
             {
                 text: `import random
 name = 'Daniel'
-favorite_number = random.randint(0, 10)
-print(f"{name}'s favorite number is: {favorite_number}")`,
+favourite_number = random.randint(0, 10)
+print(f"{name}'s favourite number is: {favourite_number}")`,
             },
         ],
     },
@@ -146,8 +145,8 @@ const Home: NextPage = (users) => {
 
     const [codeInput, setCodeInput] = useState<string>(`import random
 name = 'Daniel'
-favorite_number = random.randint(0, 10)
-print(f"{name}'s favorite number is: {favorite_number}")`);
+favourite_number = random.randint(0, 10)
+print(f"{name}'s favourite number is: {favourite_number}")`);
 
     const initialValue: Descendant[] = [
         {
@@ -270,13 +269,13 @@ print(f"{name}'s favorite number is: {favorite_number}")`);
 
     // * useful for checking the code upon any changes, will remove soon since I'm almost done with this section
     // useEffect(() => {
-        // users.map((user, index) => {
-        //     console.log(user.username, index);
-        // });
-        // try{
-        //     console.log("username:" + JSON.parse(JSON.stringify(complaintsState)).username);
-        // } catch(e){}
-        
+    // users.map((user, index) => {
+    //     console.log(user.username, index);
+    // });
+    // try{
+    //     console.log("username:" + JSON.parse(JSON.stringify(complaintsState)).username);
+    // } catch(e){}
+
     // });
 
     useEffect(() => {
@@ -337,7 +336,7 @@ print(f"{name}'s favorite number is: {favorite_number}")`);
                 transformResponse: [(v) => v],
             })
             .then((res) => {
-                setComplaintsState(res.data.split(']')[0].replaceAll("[", ""));
+                setComplaintsState(res.data.split("]")[0].replaceAll("[", ""));
                 console.log(res.data);
             })
             .catch(function (error) {
@@ -411,7 +410,8 @@ print(f"{name}'s favorite number is: {favorite_number}")`);
                                 pathname: "/auth/login",
                             }}
                         >
-                            <Button variant="outlined"
+                            <Button
+                                variant="outlined"
                                 onClick={logout()}
                                 // style={}
                                 className="btn"
@@ -516,9 +516,9 @@ print(f"{name}'s favorite number is: {favorite_number}")`);
                             autoWidth
                             label="language to"
                         >
-                        <MenuItem value={"python"}>Python</MenuItem>
-                        <MenuItem value={"java"}>Java</MenuItem>
-                        <MenuItem value={"javascript"}>javascript</MenuItem>
+                            <MenuItem value={"python"}>Python</MenuItem>
+                            <MenuItem value={"java"}>Java</MenuItem>
+                            <MenuItem value={"javascript"}>javascript</MenuItem>
                         </Select>
                     </FormControl>
 
@@ -538,10 +538,7 @@ print(f"{name}'s favorite number is: {favorite_number}")`);
                     </div>
                     {/* the following is only displayed upon translation execution */}
                     {translationPerformed && (
-                        <Button
-                            variant="outlined"
-                            onClick={handleCopyClick}
-                        >
+                        <Button variant="outlined" onClick={handleCopyClick}>
                             {isCopied ? "Copied!" : "Copy to Clipboard"}
                         </Button>
                     )}
@@ -557,7 +554,7 @@ print(f"{name}'s favorite number is: {favorite_number}")`);
                                 },
                             }}
                         >
-                            <Button 
+                            <Button
                                 variant="outlined"
                                 // onClick={}
                                 // style={}

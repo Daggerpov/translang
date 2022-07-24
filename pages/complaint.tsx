@@ -658,28 +658,30 @@ const Complaint: NextPage = (users) => {
                     <Typography component="legend">
                         Rate the urgency of this complaint:
                     </Typography>
-                    {/* <Rating
-                        name="urgency-rating"
-                        value={rating}
-                        onChange={(event, newValue) => {
-                            setRating(newValue);
-                        }}
-                    /> */}
                     {
                         <StyledRating
                             name="customized-color"
                             defaultValue={2}
+                            value={rating}
                             getLabelText={(value: number) =>
                                 `${value} Heart${value !== 1 ? "s" : ""}`
                             }
                             precision={1}
                             icon={<PriorityHighIcon fontSize="inherit" />}
                             emptyIcon={<PriorityHighIcon fontSize="inherit" />}
+                            onChange={(event, newValue) => {
+                                setRating(newValue);
+                            }}
                         />
                     }
                 </div>
                 <form onSubmit={submitForm}>
-                    <Button variant="outlined" type="submit" className="btn" disabled={loading ? true : false}>
+                    <Button
+                        variant="outlined"
+                        type="submit"
+                        className="btn"
+                        disabled={loading ? true : false}
+                    >
                         {loading ? "Submitted" : "Submit for validation"}
                     </Button>
                 </form>
