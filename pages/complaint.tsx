@@ -64,7 +64,10 @@ import { auth } from "../firebase";
 
 import clientPromise from "../mongodb";
 
-import Rating from "react-rating";
+// import Rating from "react-rating";
+
+import Rating from "@mui/material/Rating";
+import Typography from "@mui/material/Typography";
 
 // for the slate text editor:
 const HOTKEYS = {
@@ -367,6 +370,15 @@ Prism.languages.insertBefore("javascript", "prolog", {
 
 const user = auth.currentUser;
 
+// const StyledRating = styled(Rating)({
+//     "& .MuiRating-iconFilled": {
+//         color: "#ff6d75",
+//     },
+//     "& .MuiRating-iconHover": {
+//         color: "#ff3d47",
+//     },
+// });
+
 const Complaint: NextPage = (users) => {
     // Complaint rows into database
     const [submissionCode, setSubmissionCode] = useState<string>(codeOutput);
@@ -382,7 +394,6 @@ const Complaint: NextPage = (users) => {
         setSubmissionCode("");
         setAdditionalNotes(initialValue);
 
-        console.log("1st gas");
         setLoading(true);
         e.preventDefault();
 
@@ -401,8 +412,7 @@ const Complaint: NextPage = (users) => {
         if (res.ok) {
             res = await res.json();
         }
-        console.log("2nd gas");
-
+        
         setLoading(false);
     };
 
@@ -640,22 +650,26 @@ const Complaint: NextPage = (users) => {
                 </Box>
 
                 <div>
-                    <p>
-                        Rate the urgency of this complaint: <br></br>
-                        {/* <FormControl>
-                            <FormControlLabel id="starRating">
-                                Rate the Facility
-                            </FormControlLabel>
-                            <br />
-                            <Rating
-                                name="starRating"
-                                value={3}
-                                // onChange={handleRatingChange()}
-                            />
-                        </FormControl> */}
-                        <Rating
-                        />
-                    </p>
+                    <Typography component="legend">
+                        Rate the urgency of this complaint:
+                    </Typography>
+                    <Rating
+                        name="urgency-rating"
+                        value={rating}
+                        onChange={(event, newValue) => {
+                            setRating(newValue);
+                        }}
+                    />
+                    {/* <StyledRating
+                        name="customized-color"
+                        defaultValue={2}
+                        getLabelText={(value: number) =>
+                            `${value} Heart${value !== 1 ? "s" : ""}`
+                        }
+                        precision={0.5}
+                        icon={<FavoriteIcon fontSize="inherit" />}
+                        emptyIcon={<FavoriteBorderIcon fontSize="inherit" />}
+                    /> */}
                 </div>
                 <form onSubmit={submitForm}>
                     <button className="btn" disabled={loading ? true : false}>
