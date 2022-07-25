@@ -380,12 +380,16 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
         <>
             <div align="right">
                 {user && (
-
                     <div>
                         <AppBar position="static">
                             <Container maxWidth="xl">
                                 <Toolbar>
-                                    <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+                                    <AdbIcon
+                                        sx={{
+                                            display: { xs: "none", md: "flex" },
+                                            mr: 1,
+                                        }}
+                                    />
                                     <Typography
                                         variant="h6"
                                         noWrap
@@ -393,82 +397,103 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
                                         href="/"
                                         sx={{
                                             mr: 2,
-                                            display: { xs: 'none', md: 'flex' },
-                                            fontFamily: 'monospace',
+                                            display: { xs: "none", md: "flex" },
+                                            fontFamily: "monospace",
                                             fontWeight: 700,
-                                            letterSpacing: '.3rem',
-                                            color: 'inherit',
-                                            textDecoration: 'none',
+                                            letterSpacing: ".3rem",
+                                            color: "inherit",
+                                            textDecoration: "none",
                                         }}
                                     >
                                         TRANSLANG
                                     </Typography>
 
-                                    <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-                                    </Box>
-                                    <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                                    </Box>
+                                    <Box
+                                        sx={{
+                                            flexGrow: 1,
+                                            display: { xs: "flex", md: "none" },
+                                        }}
+                                    ></Box>
+                                    <Box
+                                        sx={{
+                                            flexGrow: 1,
+                                            display: { xs: "none", md: "flex" },
+                                        }}
+                                    ></Box>
 
                                     <Box sx={{ flexGrow: 1 }}>
                                         <Tooltip title="Open settings">
-                                            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                                            <IconButton
+                                                onClick={handleOpenUserMenu}
+                                                sx={{ p: 0 }}
+                                            >
+                                                <Avatar
+                                                    alt="Remy Sharp"
+                                                    src="/static/images/avatar/2.jpg"
+                                                />
                                             </IconButton>
                                         </Tooltip>
                                         <Menu
-                                            sx={{ mt: '45px' }}
+                                            sx={{ mt: "45px" }}
                                             id="menu-appbar"
                                             anchorEl={anchorElUser}
                                             anchorOrigin={{
-                                                vertical: 'top',
-                                                horizontal: 'right',
+                                                vertical: "top",
+                                                horizontal: "right",
                                             }}
                                             keepMounted
                                             transformOrigin={{
-                                                vertical: 'top',
-                                                horizontal: 'right',
+                                                vertical: "top",
+                                                horizontal: "right",
                                             }}
                                             open={Boolean(anchorElUser)}
                                             onClose={handleCloseUserMenu}
                                         >
                                             {settings.map((setting) => (
-                                                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                                                    <Typography textAlign="center">{setting}</Typography>
+                                                <MenuItem
+                                                    key={setting}
+                                                    onClick={
+                                                        handleCloseUserMenu
+                                                    }
+                                                >
+                                                    <Typography textAlign="center">
+                                                        {setting}
+                                                    </Typography>
                                                 </MenuItem>
                                             ))}
                                         </Menu>
-                                        <Link
-                                            href={{
-                                                pathname: "/auth/login",
-                                            }}
-                                        >
-                                            <Button
-                                                // style={}
-                                                color="inherit"
-                                                variant="outlined"
-                                                className="btn"
+                                        {user && (
+                                            <Link
+                                                href={{
+                                                    pathname: "/auth/login",
+                                                }}
                                             >
-                                                Sign Out
-                                            </Button>
-                                        </Link>
+                                                <Button
+                                                    // style={}
+                                                    color="inherit"
+                                                    variant="outlined"
+                                                    className="btn"
+                                                >
+                                                    Sign Out
+                                                </Button>
+                                            </Link>
+                                        )}
                                     </Box>
                                 </Toolbar>
                             </Container>
                         </AppBar>
-                        {/* <Button
-                        // style={}
-                        variant="outlined"
-                        className="btn"
-                    >
-                        Sign Out
-                    </Button> */}
                     </div>
                 )}
                 {!user && (
                     <AppBar position="static">
                         <Container maxWidth="xl">
                             <Toolbar>
-                                <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+                                <AdbIcon
+                                    sx={{
+                                        display: { xs: "none", md: "flex" },
+                                        mr: 1,
+                                    }}
+                                />
                                 <Typography
                                     variant="h6"
                                     noWrap
@@ -476,35 +501,35 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
                                     href="/"
                                     sx={{
                                         mr: 2,
-                                        display: { xs: 'none', md: 'flex' },
-                                        fontFamily: 'monospace',
+                                        display: { xs: "none", md: "flex" },
+                                        fontFamily: "monospace",
                                         fontWeight: 700,
-                                        letterSpacing: '.3rem',
-                                        color: 'inherit',
-                                        textDecoration: 'none',
+                                        letterSpacing: ".3rem",
+                                        color: "inherit",
+                                        textDecoration: "none",
                                     }}
                                 >
                                     TRANSLANG
                                 </Typography>
-                                <Box component="div" sx={{ flexGrow: 1 }}>
-                                </Box>
-                                <Link
-                                    href={{
-                                        pathname: "/auth/login",
-                                    }}
-                                >
-                                    <Button
-                                        align="right"
-                                        variant="outlined"
-                                        color="inherit"
-                                        onClick={logout()}
-                                        // style={}
-                                        className="btn"
+                                <Box component="div" sx={{ flexGrow: 1 }}></Box>
+                                {!user && (
+                                    <Link
+                                        href={{
+                                            pathname: "/auth/login",
+                                        }}
                                     >
-                                        Login
-                                    </Button>
-                                </Link>
-
+                                        <Button
+                                            align="right"
+                                            variant="outlined"
+                                            color="inherit"
+                                            onClick={logout()}
+                                            // style={}
+                                            className="btn"
+                                        >
+                                            Login
+                                        </Button>
+                                    </Link>
+                                )}
                             </Toolbar>
                         </Container>
                     </AppBar>
@@ -553,38 +578,6 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
                             </List>
                         </nav>
                     </Box>
-
-                    {user && (
-                        <Link
-                            href={{
-                                pathname: "/auth/login",
-                            }}
-                        >
-                            <Button
-                                // style={}
-                                variant="outlined"
-                                className="btn"
-                            >
-                                Sign Out
-                            </Button>
-                        </Link>
-                    )}
-                    {!user && (
-                        <Link
-                            href={{
-                                pathname: "/auth/login",
-                            }}
-                        >
-                            <Button
-                                variant="outlined"
-                                onClick={logout()}
-                                // style={}
-                                className="btn"
-                            >
-                                Login
-                            </Button>
-                        </Link>
-                    )}
 
                     <h2>Most recent complaint:</h2>
 
