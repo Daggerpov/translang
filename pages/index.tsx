@@ -550,35 +550,6 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
                         translang - the programming language converter
                     </h1>
 
-                    <Box
-                        sx={{
-                            width: "100%",
-                            maxWidth: 360,
-                            bgcolor: "background.paper",
-                        }}
-                    >
-                        <nav aria-label="main mailbox folders">
-                            <List>
-                                <ListItem disablePadding>
-                                    <ListItemButton>
-                                        <ListItemIcon>
-                                            <InboxIcon />
-                                        </ListItemIcon>
-                                        <ListItemText primary="Inbox" />
-                                    </ListItemButton>
-                                </ListItem>
-                                <ListItem disablePadding>
-                                    <ListItemButton>
-                                        <ListItemIcon>
-                                            <DraftsIcon />
-                                        </ListItemIcon>
-                                        <ListItemText primary="Submitted Complaints" />
-                                    </ListItemButton>
-                                </ListItem>
-                            </List>
-                        </nav>
-                    </Box>
-
                     <h2>Most recent complaint:</h2>
 
                     {complaintsState}
