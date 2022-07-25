@@ -61,6 +61,7 @@ const Inbox: NextPage = (users) => {
     return (
         <>
             <main className={styles.main}>
+                <p>inbox page</p>
             </main>
 
             <footer className={styles.footer}>

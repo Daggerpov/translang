@@ -59,7 +59,10 @@ import Typography from "@mui/material/Typography";
 const SubmittedComplaints: NextPage = (users) => {
     return (
         <>
-            <main className={styles.main}></main>
+            <main className={styles.main}>
+                <p>submitted complaints page</p>
+
+            </main>
 
             <footer className={styles.footer}>
                 <a

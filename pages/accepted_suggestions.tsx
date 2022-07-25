@@ -59,7 +59,9 @@ import Typography from "@mui/material/Typography";
 const AcceptedSuggestions: NextPage = (users) => {
     return (
         <>
-            <main className={styles.main}></main>
+            <main className={styles.main}>
+                <p>accepted suggestions page</p>
+            </main>
 
             <footer className={styles.footer}>
                 <a

@@ -289,6 +289,10 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
     // });
 
     useEffect(() => {
+        if (user){
+            console.log(auth.currentUser.photoURL);
+        }
+        
         try {
             setPostsState(posts);
             console.log(posts);
@@ -340,7 +344,6 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
     const [additionalNotes, setAdditionalNotes] = useState("");
 
     const pages = [];
-    const settings = ['Inbox', 'Submitted Complaints', 'Accepted Suggestions', 'Logout'];
     
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
@@ -427,9 +430,19 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
                                                 onClick={handleOpenUserMenu}
                                                 sx={{ p: 0 }}
                                             >
+                                                <img
+                                                    alt="pfp"
+                                                    src={
+                                                        auth.currentUser
+                                                            .photoURL
+                                                    }
+                                                />
                                                 <Avatar
-                                                    alt="Remy Sharp"
-                                                    src="/static/images/avatar/2.jpg"
+                                                    alt="Google Photo/Initial"
+                                                    src={
+                                                        auth.currentUser
+                                                            .photoURL
+                                                    }
                                                 />
                                             </IconButton>
                                         </Tooltip>
@@ -449,18 +462,52 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
                                             open={Boolean(anchorElUser)}
                                             onClose={handleCloseUserMenu}
                                         >
-                                            {settings.map((setting) => (
+                                            <Link
+                                                href={{
+                                                    pathname: "/inbox",
+                                                }}
+                                            >
+                                                <MenuItem key="Inbox">
+                                                    <Typography textAlign="center">
+                                                        Inbox
+                                                    </Typography>
+                                                </MenuItem>
+                                            </Link>
+                                            <Link
+                                                href={{
+                                                    pathname:
+                                                        "/submitted_complaints",
+                                                }}
+                                            >
                                                 <MenuItem
-                                                    key={setting}
+                                                    key="Submitted Complaints"
                                                     onClick={
                                                         handleCloseUserMenu
                                                     }
                                                 >
                                                     <Typography textAlign="center">
-                                                        {setting}
+                                                        Submitted Complaints
                                                     </Typography>
                                                 </MenuItem>
-                                            ))}
+                                            </Link>
+                                            <Link
+                                                href={{
+                                                    pathname:
+                                                        "/submitted_complaints",
+                                                }}
+                                            >
+                                                <MenuItem
+                                                    key="Accepted Suggestions"
+                                                    onClick={
+                                                        handleCloseUserMenu
+                                                    }
+                                                >
+                                                    <Typography textAlign="center">
+                                                        Accepted Suggestions
+                                                    </Typography>
+                                                </MenuItem>
+                                            </Link>
+                                            
                                         </Menu>
                                         {user && (
                                             <Link
