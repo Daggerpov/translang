@@ -20,6 +20,16 @@ import MailIcon from "@material-ui/icons/Mail";
 import Badge from "@mui/material/Badge";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import Menu from '@mui/material/Menu';
+import MenuIcon from '@mui/icons-material/Menu';
+import Container from '@mui/material/Container';
+import Avatar from '@mui/material/Avatar';
+import Tooltip from '@mui/material/Tooltip';
+import AdbIcon from '@mui/icons-material/Adb';
 
 //import { TextField } from "@mui/material";
 import { TextareaAutosize } from "@material-ui/core";
@@ -329,6 +339,28 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
     const [submissionCode, setSubmissionCode] = useState("");
     const [additionalNotes, setAdditionalNotes] = useState("");
 
+    const pages = [];
+    const settings = ['Inbox', 'Submitted Complaints', 'Accepted Suggestions', 'Logout'];
+    
+    const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
+    const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+
+    const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorElNav(event.currentTarget);
+    };
+    const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorElUser(event.currentTarget);
+    };
+
+    const handleCloseNavMenu = () => {
+    setAnchorElNav(null);
+    };
+
+    const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+    };
+
+
     useEffect(() => {
         axios
             .get("http://localhost:3000/api/handler", {
@@ -346,6 +378,139 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
 
     return (
         <>
+            <div align="right">
+                {user && (
+
+                    <div>
+                        <AppBar position="static">
+                            <Container maxWidth="xl">
+                                <Toolbar>
+                                    <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+                                    <Typography
+                                        variant="h6"
+                                        noWrap
+                                        component="a"
+                                        href="/"
+                                        sx={{
+                                            mr: 2,
+                                            display: { xs: 'none', md: 'flex' },
+                                            fontFamily: 'monospace',
+                                            fontWeight: 700,
+                                            letterSpacing: '.3rem',
+                                            color: 'inherit',
+                                            textDecoration: 'none',
+                                        }}
+                                    >
+                                        TRANSLANG
+                                    </Typography>
+
+                                    <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+                                    </Box>
+                                    <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+                                    </Box>
+
+                                    <Box sx={{ flexGrow: 1 }}>
+                                        <Tooltip title="Open settings">
+                                            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                                                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                                            </IconButton>
+                                        </Tooltip>
+                                        <Menu
+                                            sx={{ mt: '45px' }}
+                                            id="menu-appbar"
+                                            anchorEl={anchorElUser}
+                                            anchorOrigin={{
+                                                vertical: 'top',
+                                                horizontal: 'right',
+                                            }}
+                                            keepMounted
+                                            transformOrigin={{
+                                                vertical: 'top',
+                                                horizontal: 'right',
+                                            }}
+                                            open={Boolean(anchorElUser)}
+                                            onClose={handleCloseUserMenu}
+                                        >
+                                            {settings.map((setting) => (
+                                                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                                                    <Typography textAlign="center">{setting}</Typography>
+                                                </MenuItem>
+                                            ))}
+                                        </Menu>
+                                        <Link
+                                            href={{
+                                                pathname: "/auth/login",
+                                            }}
+                                        >
+                                            <Button
+                                                // style={}
+                                                color="inherit"
+                                                variant="outlined"
+                                                className="btn"
+                                            >
+                                                Sign Out
+                                            </Button>
+                                        </Link>
+                                    </Box>
+                                </Toolbar>
+                            </Container>
+                        </AppBar>
+                        {/* <Button
+                        // style={}
+                        variant="outlined"
+                        className="btn"
+                    >
+                        Sign Out
+                    </Button> */}
+                    </div>
+                )}
+                {!user && (
+                    <AppBar position="static">
+                        <Container maxWidth="xl">
+                            <Toolbar>
+                                <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+                                <Typography
+                                    variant="h6"
+                                    noWrap
+                                    component="a"
+                                    href="/"
+                                    sx={{
+                                        mr: 2,
+                                        display: { xs: 'none', md: 'flex' },
+                                        fontFamily: 'monospace',
+                                        fontWeight: 700,
+                                        letterSpacing: '.3rem',
+                                        color: 'inherit',
+                                        textDecoration: 'none',
+                                    }}
+                                >
+                                    TRANSLANG
+                                </Typography>
+                                <Box component="div" sx={{ flexGrow: 1 }}>
+                                </Box>
+                                <Link
+                                    href={{
+                                        pathname: "/auth/login",
+                                    }}
+                                >
+                                    <Button
+                                        align="right"
+                                        variant="outlined"
+                                        color="inherit"
+                                        onClick={logout()}
+                                        // style={}
+                                        className="btn"
+                                    >
+                                        Login
+                                    </Button>
+                                </Link>
+
+                            </Toolbar>
+                        </Container>
+                    </AppBar>
+                )}
+            </div>
+
             <div className={styles.container}>
                 <Head>
                     <title>translang</title>
