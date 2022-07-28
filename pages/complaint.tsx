@@ -56,6 +56,9 @@ import { auth } from "../firebase-config";
 import Rating from "@mui/material/Rating";
 import Typography from "@mui/material/Typography";
 
+import Prism from "prismjs";
+
+
 // for the slate text editor:
 const HOTKEYS = {
     "mod+b": "bold",
