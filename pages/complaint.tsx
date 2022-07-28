@@ -370,6 +370,14 @@ const StyledRating = styled(Rating)({
 });
 
 const Complaint: NextPage = (users) => {
+    const router = useRouter();
+    const languageFrom = router.query.languageFrom
+        ? router.query.languageFrom
+        : "javascript";
+    const languageTo = router.query.languageTo ? router.query.languageTo : "python";
+    const codeOutput = router.query.codeOutput;
+    const numLines = router.query.numLines;
+
     // Complaint rows into database
     const [submissionCode, setSubmissionCode] = useState<string>(codeOutput);
     const [additionalNotes, setAdditionalNotes] =
@@ -406,15 +414,7 @@ const Complaint: NextPage = (users) => {
         setLoading(false);
     };
 
-    const router = useRouter();
-    const languageFrom = router.query.languageFrom
-        ? router.query.languageFrom
-        : "javascript";
-    const languageTo = router.query.languageTo
-        ? router.query.languageTo
-        : "python";
-    const codeOutput = router.query.codeOutput;
-    const numLines = router.query.numLines;
+    
 
     const codeInitialValue: Descendant[] = [
         {
