@@ -430,13 +430,6 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
                                                 onClick={handleOpenUserMenu}
                                                 sx={{ p: 0 }}
                                             >
-                                                <img
-                                                    alt="pfp"
-                                                    src={
-                                                        auth.currentUser
-                                                            .photoURL
-                                                    }
-                                                />
                                                 <Avatar
                                                     alt="Google Photo/Initial"
                                                     src={

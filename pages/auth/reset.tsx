@@ -22,7 +22,7 @@ function Reset() {
                 style={{
                     height: "100vh",
                     width: "100vw",
-                    display: "flex",
+                    display: "fGlex",
                     alignItems: "center",
                     justifyContent: "center",
                     marginTop: "7px",
@@ -69,6 +69,7 @@ function Reset() {
                         </button>
                     </Link>
                     <div style={{ marginTop: "7px" }}>
+                        {/* eslint-disable-next-line react/no-unescaped-entities */}
                         Don't have an account?{" "}
                         <Link href={{ pathname: "/auth/register" }}>
                             Register
