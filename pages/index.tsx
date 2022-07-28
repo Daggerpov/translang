@@ -48,7 +48,7 @@ import { css } from "@emotion/css";
 import clientPromise from "../mongodb";
 
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth, logout } from "../firebase";
+import { auth, logout } from "../firebase-config";
 
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";

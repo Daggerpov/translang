@@ -8,7 +8,7 @@ import {
     auth,
     registerWithEmailAndPassword,
     signInWithGoogle,
-} from "../../firebase";
+} from "../../firebase-config";
 
 import styles from "../../styles/Home.module.css";
 import Router from "next/router";

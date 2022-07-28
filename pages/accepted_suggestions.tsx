@@ -51,7 +51,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 
 import { MenuProps, useStyles } from "./utils/multiselect";
 
-import { auth } from "../firebase";
+import { auth } from "../firebase-config";
 
 import Rating from "@mui/material/Rating";
 import Typography from "@mui/material/Typography";

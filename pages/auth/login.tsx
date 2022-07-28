@@ -7,7 +7,7 @@ import {
     auth,
     logInWithEmailAndPassword,
     signInWithGoogle,
-} from "../../firebase";
+} from "../../firebase-config";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 import styles from "../../styles/Home.module.css";

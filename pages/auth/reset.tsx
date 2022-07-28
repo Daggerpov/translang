@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
 import Link from "next/link";
-import { auth, sendPasswordResetEmail } from "../../firebase";
+import { auth, sendPasswordResetEmail } from "../../firebase-config";
 import Image from "next/image";
 import Router from "next/router";
 import styles from "../../styles/Home.module.css";
