@@ -49,7 +49,7 @@ import Checkbox from "@material-ui/core/Checkbox";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 
-import { MenuProps, useStyles } from "./utils/multiselect";
+import { MenuProps, useStyles } from "../utils/multiselect";
 
 import { auth } from "../firebase-config";
 
