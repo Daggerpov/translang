@@ -55,7 +55,8 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/Inbox";
-import DraftsIcon from "@mui/icons-material/Drafts";
+import DoneAllIcon from '@mui/icons-material/DoneAll';
+import UploadFileIcon from '@mui/icons-material/UploadFile';
 
 const getLength = (token) => {
     if (typeof token === "string") {
@@ -424,19 +425,12 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
                                         }}
                                     ></Box>
 
-                                    <Box sx={{ flexGrow: 1 }}>
+                                    <Box sx={{ flexGrow: 0, px: "15px"}}>
                                         <Tooltip title="Open settings">
                                             <IconButton
                                                 onClick={handleOpenUserMenu}
-                                                sx={{ p: 0 }}
+                                                sx={{ px: "15px" }}
                                             >
-                                                <img
-                                                    alt="pfp"
-                                                    src={
-                                                        auth.currentUser
-                                                            .photoURL
-                                                    }
-                                                />
                                                 <Avatar
                                                     alt="Google Photo/Initial"
                                                     src={
@@ -447,11 +441,11 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
                                             </IconButton>
                                         </Tooltip>
                                         <Menu
-                                            sx={{ mt: "45px" }}
+                                            sx={{ mt: "0" }}
                                             id="menu-appbar"
                                             anchorEl={anchorElUser}
                                             anchorOrigin={{
-                                                vertical: "top",
+                                                vertical: "bottom",
                                                 horizontal: "right",
                                             }}
                                             keepMounted
@@ -468,6 +462,7 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
                                                 }}
                                             >
                                                 <MenuItem key="Inbox">
+                                                    <InboxIcon sx={{ pr: "5px" }}></InboxIcon>
                                                     <Typography textAlign="center">
                                                         Inbox
                                                     </Typography>
@@ -484,7 +479,8 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
                                                     onClick={
                                                         handleCloseUserMenu
                                                     }
-                                                >
+                                                >   
+                                                    <UploadFileIcon sx={{ pr: "5px" }}></UploadFileIcon>
                                                     <Typography textAlign="center">
                                                         Submitted Complaints
                                                     </Typography>
@@ -502,6 +498,7 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
                                                         handleCloseUserMenu
                                                     }
                                                 >
+                                                    <DoneAllIcon sx={{ pr: "5px" }}></DoneAllIcon>
                                                     <Typography textAlign="center">
                                                         Accepted Suggestions
                                                     </Typography>
@@ -509,23 +506,23 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
                                             </Link>
                                             
                                         </Menu>
-                                        {user && (
-                                            <Link
-                                                href={{
-                                                    pathname: "/auth/login",
-                                                }}
-                                            >
-                                                <Button
-                                                    // style={}
-                                                    color="inherit"
-                                                    variant="outlined"
-                                                    className="btn"
-                                                >
-                                                    Sign Out
-                                                </Button>
-                                            </Link>
-                                        )}
                                     </Box>
+                                    {user && (
+                                        <Link
+                                            href={{
+                                                pathname: "/auth/login",
+                                            }}
+                                        >
+                                            <Button sx={{ px: "15px" }}
+                                                // style={}
+                                                color="inherit"
+                                                variant="outlined"
+                                                className="btn"
+                                            >
+                                                Sign Out
+                                            </Button>
+                                        </Link>
+                                    )}
                                 </Toolbar>
                             </Container>
                         </AppBar>
