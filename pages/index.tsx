@@ -433,8 +433,7 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
                                                 <Avatar
                                                     alt="Google Photo/Initial"
                                                     src={
-                                                        auth.currentUser
-                                                            .photoURL
+                                                        auth.currentUser.photoURL
                                                     }
                                                 />
                                             </IconButton>

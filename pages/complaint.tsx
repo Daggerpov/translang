@@ -414,14 +414,15 @@ const Complaint: NextPage = (users) => {
         setLoading(false);
     };
 
-    
-
     const codeInitialValue: Descendant[] = [
         {
             type: "paragraph",
             children: [
                 {
-                    text: codeOutput,
+                    text: `import random
+name = 'Daniel'
+favourite_number = random.randint(0, 10)
+print(f"{name}'s favourite number is: {favourite_number}")`,
                 },
             ],
         },
@@ -477,9 +478,6 @@ const Complaint: NextPage = (users) => {
         [languageFrom]
     );
 
-    useEffect(() => {
-        console.log("this is the current user: " + user);
-    });
     // all for the multi-select input:
 
     const options = Array.from({ length: numLines }, (_, i) => i + 1);
