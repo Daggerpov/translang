@@ -395,21 +395,18 @@ const Complaint: NextPage = (users) => {
         setLoading(true);
         e.preventDefault();
 
-        let res = await fetch(
-            `${process.env.API_PREFIX}/api/handler`,
-            {
-                method: "POST",
-                body: JSON.stringify({
-                    username: user,
-                    // title: title,
-                    submissionCode: submissionCode,
-                    additionalNotes: additionalNotes,
-                    rating: rating,
-                    time: new Date(),
-                    isAccepted: false,
-                }),
-            }
-        );
+        let res = await fetch(process.env.API_PREFIX+"/api/handler", {
+            method: "POST",
+            body: JSON.stringify({
+                username: user,
+                // title: title,
+                submissionCode: submissionCode,
+                additionalNotes: additionalNotes,
+                rating: rating,
+                time: new Date(),
+                isAccepted: false,
+            }),
+        });
         if (res.ok) {
             res = await res.json();
         }

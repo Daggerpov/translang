@@ -360,7 +360,7 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
 
     useEffect(() => {
         axios
-            .get(`${process.env.API_PREFIX}/api/handler`, {
+            .get("/api/handler", {
                 responseType: "text",
                 transformResponse: [(v) => v],
             })
@@ -371,7 +371,7 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
             .catch(function (error) {
                 console.log(error);
             });
-    }); //[0].submissionCode
+    }); 
 
     return (
         <>
@@ -775,15 +775,12 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
 export default Home;
 
 export async function getServerSideProps(context) {
-    let res = await fetch(
-        `${process.env.API_PREFIX}/api/handler`,
-        {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        }
-    );
+    let res = await fetch(process.env.API_PREFIX+"/api/handler", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    });
     let complaints = await res.json();
 
     return {
