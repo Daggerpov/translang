@@ -775,7 +775,7 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
 export default Home;
 
 export async function getServerSideProps(context) {
-    let res = await fetch(process.env.API_PREFIX+"/api/handler", {
+    let res = await fetch("/api/handler", {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
