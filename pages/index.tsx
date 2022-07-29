@@ -359,7 +359,7 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
 
     useEffect(() => {
         axios
-            .get("http://localhost:3000/api/handler", {
+            .get("http://translang-daggerpov.herokuapp.com/api/handler", {
                 responseType: "text",
                 transformResponse: [(v) => v],
             })
@@ -767,7 +767,7 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
 export default Home;
 
 export async function getServerSideProps(context) {
-    let res = await fetch("http://localhost:3000/api/handler", {
+    let res = await fetch("http://translang-daggerpov.herokuapp.com/api/handler", {
         method: "GET",
         headers: {
             "Content-Type": "application/json",

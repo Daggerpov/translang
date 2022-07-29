@@ -395,18 +395,21 @@ const Complaint: NextPage = (users) => {
         setLoading(true);
         e.preventDefault();
 
-        let res = await fetch("http://localhost:3000/api/handler", {
-            method: "POST",
-            body: JSON.stringify({
-                username: user,
-                // title: title,
-                submissionCode: submissionCode,
-                additionalNotes: additionalNotes,
-                rating: rating,
-                time: new Date(),
-                isAccepted: false,
-            }),
-        });
+        let res = await fetch(
+            "http://translang-daggerpov.herokuapp.com/api/handler",
+            {
+                method: "POST",
+                body: JSON.stringify({
+                    username: user,
+                    // title: title,
+                    submissionCode: submissionCode,
+                    additionalNotes: additionalNotes,
+                    rating: rating,
+                    time: new Date(),
+                    isAccepted: false,
+                }),
+            }
+        );
         if (res.ok) {
             res = await res.json();
         }
