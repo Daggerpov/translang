@@ -396,7 +396,7 @@ const Complaint: NextPage = (users) => {
         e.preventDefault();
 
         let res = await fetch(
-            "http://translang-daggerpov.herokuapp.com/api/handler",
+            `${process.env.API_PREFIX}/api/handler`,
             {
                 method: "POST",
                 body: JSON.stringify({

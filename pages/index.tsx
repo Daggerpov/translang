@@ -20,16 +20,16 @@ import MailIcon from "@material-ui/icons/Mail";
 import Badge from "@mui/material/Badge";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
-import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
-import Tooltip from '@mui/material/Tooltip';
-import AdbIcon from '@mui/icons-material/Adb';
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import Menu from "@mui/material/Menu";
+import MenuIcon from "@mui/icons-material/Menu";
+import Container from "@mui/material/Container";
+import Avatar from "@mui/material/Avatar";
+import Tooltip from "@mui/material/Tooltip";
+import AdbIcon from "@mui/icons-material/Adb";
 
 //import { TextField } from "@mui/material";
 import { TextareaAutosize } from "@material-ui/core";
@@ -55,8 +55,8 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/Inbox";
-import DoneAllIcon from '@mui/icons-material/DoneAll';
-import UploadFileIcon from '@mui/icons-material/UploadFile';
+import DoneAllIcon from "@mui/icons-material/DoneAll";
+import UploadFileIcon from "@mui/icons-material/UploadFile";
 
 const getLength = (token) => {
     if (typeof token === "string") {
@@ -290,10 +290,10 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
     // });
 
     useEffect(() => {
-        if (user){
+        if (user) {
             console.log(auth.currentUser.photoURL);
         }
-        
+
         try {
             setPostsState(posts);
             console.log(posts);
@@ -345,21 +345,22 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
     const [additionalNotes, setAdditionalNotes] = useState("");
 
     const pages = [];
-    
-    const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+
+    const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
+        null
+    );
 
     const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElUser(event.currentTarget);
+        setAnchorElUser(event.currentTarget);
     };
 
     const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
+        setAnchorElUser(null);
     };
-
 
     useEffect(() => {
         axios
-            .get("http://translang-daggerpov.herokuapp.com/api/handler", {
+            .get(`${process.env.API_PREFIX}/api/handler`, {
                 responseType: "text",
                 transformResponse: [(v) => v],
             })
@@ -417,7 +418,7 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
                                         }}
                                     ></Box>
 
-                                    <Box sx={{ flexGrow: 0, px: "15px"}}>
+                                    <Box sx={{ flexGrow: 0, px: "15px" }}>
                                         <Tooltip title="Open settings">
                                             <IconButton
                                                 onClick={handleOpenUserMenu}
@@ -426,7 +427,8 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
                                                 <Avatar
                                                     alt="Google Photo/Initial"
                                                     src={
-                                                        auth.currentUser.photoURL
+                                                        auth.currentUser
+                                                            .photoURL
                                                     }
                                                 />
                                             </IconButton>
@@ -453,7 +455,9 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
                                                 }}
                                             >
                                                 <MenuItem key="Inbox">
-                                                    <InboxIcon sx={{ pr: "5px" }}></InboxIcon>
+                                                    <InboxIcon
+                                                        sx={{ pr: "5px" }}
+                                                    ></InboxIcon>
                                                     <Typography textAlign="center">
                                                         Inbox
                                                     </Typography>
@@ -470,8 +474,10 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
                                                     onClick={
                                                         handleCloseUserMenu
                                                     }
-                                                >   
-                                                    <UploadFileIcon sx={{ pr: "5px" }}></UploadFileIcon>
+                                                >
+                                                    <UploadFileIcon
+                                                        sx={{ pr: "5px" }}
+                                                    ></UploadFileIcon>
                                                     <Typography textAlign="center">
                                                         Submitted Complaints
                                                     </Typography>
@@ -489,13 +495,14 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
                                                         handleCloseUserMenu
                                                     }
                                                 >
-                                                    <DoneAllIcon sx={{ pr: "5px" }}></DoneAllIcon>
+                                                    <DoneAllIcon
+                                                        sx={{ pr: "5px" }}
+                                                    ></DoneAllIcon>
                                                     <Typography textAlign="center">
                                                         Accepted Suggestions
                                                     </Typography>
                                                 </MenuItem>
                                             </Link>
-                                            
                                         </Menu>
                                     </Box>
                                     {user && (
@@ -504,7 +511,8 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
                                                 pathname: "/auth/login",
                                             }}
                                         >
-                                            <Button sx={{ px: "15px" }}
+                                            <Button
+                                                sx={{ px: "15px" }}
                                                 // style={}
                                                 color="inherit"
                                                 variant="outlined"
@@ -576,7 +584,7 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
                     <title>translang</title>
                     <meta
                         name="description"
-                        content="Generated by create next app"
+                        content="An online code converter between Python, Java, and JavaScript code, with complaint submission + logins and notifications"
                     />
                 </Head>
 
@@ -767,12 +775,15 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
 export default Home;
 
 export async function getServerSideProps(context) {
-    let res = await fetch("http://translang-daggerpov.herokuapp.com/api/handler", {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-        },
-    });
+    let res = await fetch(
+        `${process.env.API_PREFIX}/api/handler`,
+        {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        }
+    );
     let complaints = await res.json();
 
     return {
