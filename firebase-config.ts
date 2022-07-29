@@ -82,8 +82,13 @@ const sendPasswordReset = async (email) => {
   }
 };
 
-const logout = () => {
-  signOut(auth);
+const logout = async () => {
+  try {
+    await signOut(auth);
+    console.log("user logged out");
+  } catch (error) {
+    console.log(error.message);
+  }
 };
 
 export {

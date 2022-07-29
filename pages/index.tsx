@@ -290,10 +290,6 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
     // });
 
     useEffect(() => {
-        if (user) {
-            console.log(auth.currentUser.photoURL);
-        }
-
         try {
             setPostsState(posts);
             console.log(posts);
@@ -366,7 +362,7 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
             })
             .then((res) => {
                 setComplaintsState(res.data.split("]")[0].replaceAll("[", ""));
-                console.log(res.data);
+                // console.log(res.data);
             })
             .catch(function (error) {
                 console.log(error);
@@ -523,6 +519,7 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
                                             <Button
                                                 sx={{ px: "15px" }}
                                                 // style={}
+                                                onClick={() => {logout();}}
                                                 color="inherit"
                                                 variant="outlined"
                                                 className="btn"
@@ -574,7 +571,6 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
                                             align="right"
                                             variant="outlined"
                                             color="inherit"
-                                            onClick={logout()}
                                             // style={}
                                             className="btn"
                                         >
