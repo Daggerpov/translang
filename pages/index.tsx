@@ -422,8 +422,17 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
                                         <Tooltip title="Open settings">
                                             <IconButton
                                                 onClick={handleOpenUserMenu}
-                                                sx={{ px: "15px" }}
+                                                sx={{ px: "15px" }} // only changed line
                                             >
+                                                <Typography
+                                                    textAlign="center"
+                                                    sx={{ mr: "5px" }}
+                                                >
+                                                    {
+                                                        auth.currentUser
+                                                            .displayName
+                                                    }
+                                                </Typography>
                                                 <Avatar
                                                     alt="Google Photo/Initial"
                                                     src={
