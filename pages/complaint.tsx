@@ -395,7 +395,7 @@ const Complaint: NextPage = (users) => {
         setLoading(true);
         e.preventDefault();
 
-        let res = await fetch("/api/handler", {
+        let res = await fetch(process.env.API_PREFIX + "/api/handler", {
             method: "POST",
             body: JSON.stringify({
                 username: user,
