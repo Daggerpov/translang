@@ -108,6 +108,7 @@ function Login() {
                         </Link>
                     </div>
                     <div style={{ marginTop: "7px" }}>
+                        {/* eslint-disable-next-line react/no-unescaped-entities */}
                         Don't have an account?{" "}
                         <Link href={{ pathname: "/auth/register" }}>
                             Register

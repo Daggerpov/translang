@@ -49,12 +49,15 @@ import Checkbox from "@material-ui/core/Checkbox";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 
-import { MenuProps, useStyles } from "./utils/multiselect";
+import { MenuProps, useStyles } from "../utils/multiselect";
 
 import { auth } from "../firebase-config";
 
 import Rating from "@mui/material/Rating";
 import Typography from "@mui/material/Typography";
+
+import Prism from "prismjs";
+
 
 // for the slate text editor:
 const HOTKEYS = {
@@ -367,6 +370,14 @@ const StyledRating = styled(Rating)({
 });
 
 const Complaint: NextPage = (users) => {
+    const router = useRouter();
+    const languageFrom = router.query.languageFrom
+        ? router.query.languageFrom
+        : "javascript";
+    const languageTo = router.query.languageTo ? router.query.languageTo : "python";
+    const codeOutput = router.query.codeOutput;
+    const numLines = router.query.numLines;
+
     // Complaint rows into database
     const [submissionCode, setSubmissionCode] = useState<string>(codeOutput);
     const [additionalNotes, setAdditionalNotes] =
@@ -403,22 +414,15 @@ const Complaint: NextPage = (users) => {
         setLoading(false);
     };
 
-    const router = useRouter();
-    const languageFrom = router.query.languageFrom
-        ? router.query.languageFrom
-        : "javascript";
-    const languageTo = router.query.languageTo
-        ? router.query.languageTo
-        : "python";
-    const codeOutput = router.query.codeOutput;
-    const numLines = router.query.numLines;
-
     const codeInitialValue: Descendant[] = [
         {
             type: "paragraph",
             children: [
                 {
-                    text: codeOutput,
+                    text: `import random
+name = 'Daniel'
+favourite_number = random.randint(0, 10)
+print(f"{name}'s favourite number is: {favourite_number}")`,
                 },
             ],
         },
@@ -474,9 +478,6 @@ const Complaint: NextPage = (users) => {
         [languageFrom]
     );
 
-    useEffect(() => {
-        console.log("this is the current user: " + user);
-    });
     // all for the multi-select input:
 
     const options = Array.from({ length: numLines }, (_, i) => i + 1);
