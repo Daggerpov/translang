@@ -416,10 +416,7 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
 
                                     <Box sx={{ flexGrow: 0, px: "15px" }}>
                                         <Tooltip title="Open settings">
-                                            <IconButton
-                                                onClick={handleOpenUserMenu}
-                                                sx={{ px: "15px" }} // only changed line
-                                            >
+                                            <Button variant="contained" onClick={handleOpenUserMenu}>
                                                 <Typography
                                                     textAlign="center"
                                                     sx={{ mr: "5px" }}
@@ -436,7 +433,7 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
                                                             .photoURL
                                                     }
                                                 />
-                                            </IconButton>
+                                            </Button>
                                         </Tooltip>
                                         <Menu
                                             sx={{ mt: "0" }}
