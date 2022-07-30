@@ -508,11 +508,11 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
                                         </Menu>
                                     </Box>
                                     {user && (
-                                        <Link
-                                            href={{
-                                                pathname: "/auth/login",
-                                            }}
-                                        >
+                                        // <Link
+                                        //     href={{
+                                        //         pathname: "/auth/login",
+                                        //     }}
+                                        // >
                                             <Button
                                                 sx={{ px: "15px" }}
                                                 // style={}
@@ -523,7 +523,7 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
                                             >
                                                 Sign Out
                                             </Button>
-                                        </Link>
+                                        // </Link>
                                     )}
                                 </Toolbar>
                             </Container>

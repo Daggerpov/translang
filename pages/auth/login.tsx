@@ -7,8 +7,9 @@ import {
     auth,
     logInWithEmailAndPassword,
     signInWithGoogle,
+    signInWithGithub,
 } from "../../firebase-config";
-import { useAuthState } from "react-firebase-hooks/auth";
+import { useAuthState, useSignInWithGithub } from "react-firebase-hooks/auth";
 
 import styles from "../../styles/Home.module.css";
 import Image from "next/image";
@@ -81,7 +82,7 @@ function Login() {
                             marginBottom: "10px",
                             border: "none",
                             color: "white",
-                            backgroundColor: "black",
+                            backgroundColor: "red",
                         }}
                         onClick={() =>
                             logInWithEmailAndPassword(email, password)
@@ -101,6 +102,19 @@ function Login() {
                         onClick={signInWithGoogle}
                     >
                         Login with Google
+                    </button>
+                    <button
+                        style={{
+                            padding: "10px",
+                            fontSize: "18px",
+                            marginBottom: "10px",
+                            border: "none",
+                            color: "white",
+                            backgroundColor: "black",
+                        }}
+                        onClick={signInWithGithub}
+                    >
+                        Login with Github
                     </button>
                     <div style={{ marginTop: "7px" }}>
                         <Link href={{ pathname: "/auth/reset" }}>

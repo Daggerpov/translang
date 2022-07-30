@@ -7,6 +7,7 @@ import Image from "next/image";
 import {
     auth,
     registerWithEmailAndPassword,
+    signInWithGithub,
     signInWithGoogle,
 } from "../../firebase-config";
 
@@ -88,7 +89,7 @@ function Register() {
                             marginBottom: "10px",
                             border: "none",
                             color: "white",
-                            backgroundColor: "black",
+                            backgroundColor: "red",
                         }}
                         onClick={register}
                     >
@@ -106,6 +107,19 @@ function Register() {
                         onClick={signInWithGoogle}
                     >
                         Register with Google
+                    </button>
+                    <button
+                        style={{
+                            padding: "10px",
+                            fontSize: "18px",
+                            marginBottom: "10px",
+                            border: "none",
+                            color: "white",
+                            backgroundColor: "black",
+                        }}
+                        onClick={signInWithGithub}
+                    >
+                        Register with Github
                     </button>
                     <div style={{ marginTop: "7px" }}>
                         Already have an account?{" "}
