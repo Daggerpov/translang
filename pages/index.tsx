@@ -30,6 +30,7 @@ import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
 import Tooltip from "@mui/material/Tooltip";
 import AdbIcon from "@mui/icons-material/Adb";
+//import TextareaAutosize from '@mui/material/TextareaAutosize';
 
 //import { TextField } from "@mui/material";
 import { TextareaAutosize } from "@material-ui/core";
@@ -595,9 +596,6 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
                         translang
                     </h1>
 
-                    <h2>Most recent complaint:</h2>
-
-                    {complaintsState}
 
                     {/* <div className={styles.container}>
                         <ul>
@@ -648,108 +646,132 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
 
                     {/* <Box component="form" style={{ padding: "10px" }}> */}
                     {/* this is the selection dropdown for language from */}
-                    <FormControl sx={{ m: 1, minWidth: 120 }}>
-                        <InputLabel id="simple-select-autowidth-label">
-                            Language From
-                        </InputLabel>
-                        <Select
-                            value={languageFrom}
-                            onChange={handleChange1}
-                            labelId="simple-select-autowidth-label"
-                            id="simple-select-autowidth"
-                            autoWidth
-                            label="language from"
-                        >
-                            <MenuItem value={"python"}>Python</MenuItem>
-                            <MenuItem value={"java"}>Java</MenuItem>
-                            <MenuItem value={"javascript"}>JavaScript</MenuItem>
-                        </Select>
-                    </FormControl>
-
-                    {/* this is the code editor from */}
-
-                    <Slate editor={editor} value={initialValue}>
-                        <Editable
-                            decorate={decorate}
-                            renderLeaf={renderLeaf}
-                            onChange={(e) => setCodeInput(e.target.value)}
-                        />
-                    </Slate>
-                    {/* </Box> */}
-                    {/* <Box component="form" style={{ padding: "10px" }}> */}
-
-                    <FormControl sx={{ m: 1, minWidth: 120 }}>
-                        <InputLabel id="simple-select-autowidth-label">
-                            Language To
-                        </InputLabel>
-                        <Select
-                            value={languageTo}
-                            onChange={handleChange2}
-                            labelId="simple-select-autowidth-label"
-                            id="simple-select-autowidth"
-                            autoWidth
-                            label="language to"
-                        >
-                            <MenuItem value={"python"}>Python</MenuItem>
-                            <MenuItem value={"java"}>Java</MenuItem>
-                            <MenuItem value={"javascript"}>javascript</MenuItem>
-                        </Select>
-                    </FormControl>
-
-                    <div>
-                        <TextareaAutosize
-                            // id="outlined-multiline-flexible"
-                            placeholder={
-                                defaultOutputMessage
-                                    ? "This is where your code will be output"
-                                    : "No conversion was performed"
-                            }
-                            minRows={3}
-                            maxRows={10}
-                            value={codeOutput}
-                            disabled={true}
-                        />
+                    <div style={{ width: "95%"}}>
+                        <div style={{ width: "45%", display: "inline-block"}}> 
+                            <FormControl sx={{ m: 1, minWidth: 120 }}>
+                                <InputLabel id="simple-select-autowidth-label">
+                                    Language From
+                                </InputLabel>
+                                <Select
+                                    value={languageFrom}
+                                    onChange={handleChange1}
+                                    labelId="simple-select-autowidth-label"
+                                    id="simple-select-autowidth"
+                                    autoWidth
+                                    label="language from"
+                                >
+                                    <MenuItem value={"python"}>Python</MenuItem>
+                                    <MenuItem value={"java"}>Java</MenuItem>
+                                    <MenuItem value={"javascript"}>JavaScript</MenuItem>
+                                </Select>
+                            </FormControl>
+                        </div>
+                        <div style={{ width: "10%", display: "inline-block"}}></div>
+                        <div style={{ width: "45%", display: "inline-block"}}> 
+                            <FormControl sx={{ m: 1, minWidth: 120 }}>
+                                <InputLabel id="simple-select-autowidth-label">
+                                    Language To
+                                </InputLabel>
+                                <Select
+                                    value={languageTo}
+                                    onChange={handleChange2}
+                                    labelId="simple-select-autowidth-label"
+                                    id="simple-select-autowidth"
+                                    autoWidth
+                                    label="language to"
+                                >
+                                    <MenuItem value={"python"}>Python</MenuItem>
+                                    <MenuItem value={"java"}>Java</MenuItem>
+                                    <MenuItem value={"javascript"}>javascript</MenuItem>
+                                </Select>
+                            </FormControl>
+                        </div>
                     </div>
+                    
+                    <div style={{ width: "95%"}}>
+                        <div style={{ width: "45%", display: "inline-block"}}> 
+                            
+
+                            {/* this is the code editor from */}
+
+                            <Slate editor={editor} value={initialValue} >
+                                <Editable
+                                    decorate={decorate}
+                                    renderLeaf={renderLeaf}
+                                    onChange={(e) => setCodeInput(e.target.value)}
+                                    style={{ border: "1px solid gray"}}
+                                />
+                            </Slate>
+                        </div>
+                        <div style={{ width: "10%", display: "inline-block" }}></div>
+                        {/* </Box> */}
+                        {/* <Box component="form" style={{ padding: "10px" }}> */}
+                        <div style={{ width: "45%", display: "inline-block"}}> 
+                                <TextareaAutosize
+                                    value={codeOutput} 
+                                    placeholder={
+                                        defaultOutputMessage
+                                            ? "This is where your code will be output"
+                                            : "No conversion was performed"
+                                    }
+                                    style={{
+                                        width: "100%",
+                                        lineHeight: "1.6"
+                                    }}
+                                    disabled
+                                    minRows={4}
+
+                                />
+                        </div>
+                    </div>
+                    <br />
                     {/* the following is only displayed upon translation execution */}
-                    {translationPerformed && (
-                        <Button variant="outlined" onClick={handleCopyClick}>
-                            {isCopied ? "Copied!" : "Copy to Clipboard"}
-                        </Button>
-                    )}
-                    {translationPerformed && (
-                        <Link
-                            href={{
-                                pathname: "/complaint",
-                                query: {
-                                    languageFrom,
-                                    languageTo,
-                                    codeOutput,
-                                    numLines,
-                                },
-                            }}
-                        >
-                            <Button
-                                variant="outlined"
-                                // onClick={}
-                                // style={}
-                                className="btn"
+                    <div style={{ width: "95%"}}>
+                        <div style={{ display: "inline-block"}}>
+                            <LoadingButton
+                                onClick={() =>
+                                    // this gets only the codeInput's actual text value,
+                                    // which is all I care about for now
+                                    translate(codeInput, languageFrom, languageTo)
+                                }
+                                style={styles.button}
                             >
-                                Submit a Complaint
+                                Translate!
+                            </LoadingButton>
+                        </div>
+                        <div style={{ display: "inline-block", float: "right"}}>
+                            <Button variant="outlined" onClick={handleCopyClick} style={{ marginRight: "15px" }}>
+                                {isCopied ? "Copied!" : "Copy to Clipboard"}
                             </Button>
-                        </Link>
-                    )}
+                    
+                            <Link
+                                href={{
+                                    pathname: "/complaint",
+                                    query: {
+                                        languageFrom,
+                                        languageTo,
+                                        codeOutput,
+                                        numLines,
+                                    },
+                                }}
+                            >
+                                <Button
+                                    variant="outlined"
+                                    // onClick={}
+                                    // style={}
+                                    className="btn"
+                                >
+                                    Submit a Complaint
+                                </Button>
+                            </Link>
+                        </div>
+                    </div>
                     {/* </Box> */}
 
-                    <LoadingButton
-                        onClick={() =>
-                            // this gets only the codeInput's actual text value,
-                            // which is all I care about for now
-                            translate(codeInput, languageFrom, languageTo)
-                        }
-                        style={styles.button}
-                    >
-                        Translate!
-                    </LoadingButton>
+                    <div style={{height: "200px"}}></div>
+                    <h2>Most recent complaint:</h2>
+
+                    {complaintsState}
                 </main>
 
                 <footer className={styles.footer}>
