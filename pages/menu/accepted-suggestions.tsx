@@ -2,17 +2,16 @@
 
 import type { NextPage } from "next";
 import Image from "next/image";
-import styles from "../styles/Home.module.css";
+import styles from "../../styles/Home.module.css";
 
 import React from "react";
 
 
-const SubmittedComplaints: NextPage = (users) => {
+const AcceptedSuggestions: NextPage = (users) => {
     return (
         <>
             <main className={styles.main}>
-                <p>submitted complaints page</p>
-
+                <p>accepted suggestions page</p>
             </main>
 
             <footer className={styles.footer}>
@@ -35,4 +34,4 @@ const SubmittedComplaints: NextPage = (users) => {
         </>
     );
 };
-export default SubmittedComplaints;
+export default AcceptedSuggestions;

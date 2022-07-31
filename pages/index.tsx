@@ -453,7 +453,7 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
                                         >
                                             <Link
                                                 href={{
-                                                    pathname: "/inbox",
+                                                    pathname: "/menu/inbox",
                                                 }}
                                             >
                                                 <MenuItem key="Inbox">
@@ -468,7 +468,7 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
                                             <Link
                                                 href={{
                                                     pathname:
-                                                        "/submitted_complaints",
+                                                        "/menu/submitted-complaints",
                                                 }}
                                             >
                                                 <MenuItem
@@ -488,7 +488,7 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
                                             <Link
                                                 href={{
                                                     pathname:
-                                                        "/submitted_complaints",
+                                                        "/menu/accepted-suggestions",
                                                 }}
                                             >
                                                 <MenuItem
