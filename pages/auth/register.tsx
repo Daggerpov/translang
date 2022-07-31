@@ -111,8 +111,13 @@ function Register() {
                         }}
                         onClick={signInWithGoogle}
                     >
+                        <GoogleIcon
+                            style={{
+                                paddingRight: "20px",
+                                fontSize: "55px",
+                            }}
+                        ></GoogleIcon>
                         <p>Register with Google</p>
-                        <GoogleIcon style={{ paddingLeft: "10px", fontSize: "41px", paddingLeft: "8px"}}></GoogleIcon>
                     </button>
                     <button
                         style={{
@@ -127,15 +132,27 @@ function Register() {
                         }}
                         onClick={signInWithGithub}
                     >
+                        <GitHubIcon
+                            style={{
+                                paddingRight: "20px",
+                                fontSize: "55px",
+                            }}
+                        ></GitHubIcon>
                         <p>Register with GitHub</p>
-                        <GitHubIcon style={{ paddingLeft: "10px", fontSize: "40px", paddingLeft: "10px",}}></GitHubIcon>
                     </button>
                     <div style={{ marginTop: "7px" }}>
                         Already have an account?{" "}
-                        <div style={{ display: "inline", color: "blue", textDecoration: "underline" }}>
-                            <Link href={{ pathname: "/auth/login" }}>Login</Link>
-                        </div>
-                        {" "}
+                        <div
+                            style={{
+                                display: "inline",
+                                color: "blue",
+                                textDecoration: "underline",
+                            }}
+                        >
+                            <Link href={{ pathname: "/auth/login" }}>
+                                Login
+                            </Link>
+                        </div>{" "}
                         now.
                     </div>
                 </div>

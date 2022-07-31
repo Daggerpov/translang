@@ -20,6 +20,8 @@ import { TextBox } from "@syncfusion/ej2-react-inputs";
 import GoogleIcon from '@mui/icons-material/Google';
 import GitHubIcon from '@mui/icons-material/GitHub';
 
+
+
 function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -105,8 +107,13 @@ function Login() {
                         }}
                         onClick={signInWithGoogle}
                     >
+                        <GoogleIcon
+                            style={{
+                                paddingRight: "28px",
+                                fontSize: "60px",
+                            }}
+                        ></GoogleIcon>
                         <p>Login with Google</p>
-                        <GoogleIcon style={{ paddingLeft: "10px", fontSize: "41px", paddingLeft: "8px"}}></GoogleIcon>
                     </button>
                     <button
                         style={{
@@ -121,10 +128,21 @@ function Login() {
                         }}
                         onClick={signInWithGithub}
                     >
+                        <GitHubIcon
+                            style={{
+                                fontSize: "60px",
+                                paddingRight: "28px",
+                            }}
+                        ></GitHubIcon>
                         <p>Login with GitHub</p>
-                        <GitHubIcon style={{ paddingLeft: "10px", fontSize: "40px", paddingLeft: "10px",}}></GitHubIcon>
                     </button>
-                    <div style={{ marginTop: "7px", color: "blue", textDecoration: "underline"}}>
+                    <div
+                        style={{
+                            marginTop: "7px",
+                            color: "blue",
+                            textDecoration: "underline",
+                        }}
+                    >
                         <Link href={{ pathname: "/auth/reset" }}>
                             Forgot Password
                         </Link>
@@ -132,12 +150,18 @@ function Login() {
                     <div style={{ marginTop: "7px" }}>
                         {/* eslint-disable-next-line react/no-unescaped-entities */}
                         Don't have an account?{" "}
-                        <div style={{ display: "inline", color: "blue", textDecoration: "underline" }}>
+                        <div
+                            style={{
+                                display: "inline",
+                                color: "blue",
+                                textDecoration: "underline",
+                            }}
+                        >
                             <Link href={{ pathname: "/auth/register" }}>
                                 Register
                             </Link>
-                        </div>
-                        {" "}now.
+                        </div>{" "}
+                        now.
                     </div>
                 </div>
             </div>
