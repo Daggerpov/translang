@@ -14,6 +14,9 @@ import {
 import styles from "../../styles/Home.module.css";
 import Router from "next/router";
 
+import GoogleIcon from '@mui/icons-material/Google';
+import GitHubIcon from '@mui/icons-material/GitHub';
+
 function Register() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -89,7 +92,7 @@ function Register() {
                             marginBottom: "10px",
                             border: "none",
                             color: "white",
-                            backgroundColor: "red",
+                            backgroundColor: "#14b814",
                         }}
                         onClick={register}
                     >
@@ -97,33 +100,42 @@ function Register() {
                     </button>
                     <button
                         style={{
-                            padding: "10px",
                             fontSize: "18px",
                             marginBottom: "10px",
                             border: "none",
                             color: "white",
                             backgroundColor: "#4385f4",
+                            alignItems: "center",
+                            display: "flex",
+                            justifyContent: "center",
                         }}
                         onClick={signInWithGoogle}
                     >
-                        Register with Google
+                        <p>Register with Google</p>
+                        <GoogleIcon style={{ paddingLeft: "10px", fontSize: "41px", paddingLeft: "8px"}}></GoogleIcon>
                     </button>
                     <button
                         style={{
-                            padding: "10px",
                             fontSize: "18px",
                             marginBottom: "10px",
                             border: "none",
                             color: "white",
                             backgroundColor: "black",
+                            alignItems: "center",
+                            display: "flex",
+                            justifyContent: "center",
                         }}
                         onClick={signInWithGithub}
                     >
-                        Register with Github
+                        <p>Register with GitHub</p>
+                        <GitHubIcon style={{ paddingLeft: "10px", fontSize: "40px", paddingLeft: "10px",}}></GitHubIcon>
                     </button>
                     <div style={{ marginTop: "7px" }}>
                         Already have an account?{" "}
-                        <Link href={{ pathname: "/auth/login" }}>Login</Link>{" "}
+                        <div style={{ display: "inline", color: "blue", textDecoration: "underline" }}>
+                            <Link href={{ pathname: "/auth/login" }}>Login</Link>
+                        </div>
+                        {" "}
                         now.
                     </div>
                 </div>
