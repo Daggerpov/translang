@@ -398,7 +398,7 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
                                             textDecoration: "none",
                                         }}
                                     >
-                                        TRANSLANG
+                                        TRANSLANG - THE ONLINE CODE CONVERTER
                                     </Typography>
 
                                     <Box
@@ -555,7 +555,7 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
                                         textDecoration: "none",
                                     }}
                                 >
-                                    TRANSLANG
+                                    TRANSLANG - THE ONLINE CODE CONVERTER
                                 </Typography>
                                 <Box component="div" sx={{ flexGrow: 1 }}></Box>
                                 {!user && (
@@ -592,7 +592,7 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
 
                 <main className={styles.main}>
                     <h1 className={styles.title}>
-                        translang - the programming language converter
+                        translang
                     </h1>
 
                     <h2>Most recent complaint:</h2>
