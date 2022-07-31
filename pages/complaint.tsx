@@ -3,7 +3,7 @@
 import type { NextPage } from "next";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
-import { useState, useEffect } from "react";
+import { useState, setState, useEffect } from "react";
 
 // ? Material UI is a component library for easier styling and with some custom components
 import Box from "@mui/material/Box";
@@ -13,6 +13,14 @@ import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
 import { styled } from '@mui/material/styles';
+import Slide, { SlideProps } from "@mui/material/Slide";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert, { AlertProps } from "@mui/material/Alert";
+
+
+
+import { TransitionProps } from "@mui/material/transitions";
+
 
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -483,6 +491,7 @@ print(f"{name}'s favourite number is: {favourite_number}")`,
     const options = Array.from({ length: numLines }, (_, i) => i + 1);
 
     const [selected, setSelected] = useState([]);
+
     const isAllSelected =
         options.length > 0 && selected.length === options.length;
 
@@ -493,6 +502,52 @@ print(f"{name}'s favourite number is: {favourite_number}")`,
             return;
         }
         setSelected(value);
+    };
+
+    function SlideTransition(props: SlideProps) {
+        return <Slide {...props} direction="up" />;
+    }
+
+    const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
+        props,
+        ref
+    ) {
+        return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+    });
+
+    const [state, setState] = useState<{
+        open: boolean;
+        Transition: React.ComponentType<
+            TransitionProps & {
+                children: React.ReactElement<any, any>;
+            }
+        >;
+    }>({
+        open: false,
+        Transition: Slide,
+    });
+
+    const handleSubmitClick =
+        (
+            Transition: React.ComponentType<
+                TransitionProps & {
+                    children: React.ReactElement<any, any>;
+                }
+            >
+        ) =>
+        () => {
+
+            setState({
+                open: true,
+                Transition,
+            });
+        };
+
+    const handleClose = () => {
+        setState({
+            ...state,
+            open: false,
+        });
     };
 
     // const handleRatingChange = (value) => {
@@ -667,10 +722,33 @@ print(f"{name}'s favourite number is: {favourite_number}")`,
                         type="submit"
                         className="btn"
                         disabled={loading ? true : false}
+                        onClick={handleSubmitClick(SlideTransition)}
                     >
                         {loading ? "Submitted" : "Submit for validation"}
                     </Button>
                 </form>
+
+                {/* <Snackbar
+                    open={state.open}
+                    onClose={handleClose}
+                    TransitionComponent={state.Transition}
+                    message="Submitted"
+                    key={state.Transition.name}
+                /> */}
+
+                <Snackbar
+                    open={state.open}
+                    autoHideDuration={6000}
+                    onClose={handleClose}
+                >
+                    <Alert
+                        onClose={handleClose}
+                        severity="success"
+                        sx={{ width: "100%" }}
+                    >
+                        Your complaint has been submitted! You can now find it in your "Submitted Complaints" and once accepted, it'll find its way to your "Accepted Complaints" 
+                    </Alert>
+                </Snackbar>
 
                 {/* <div>
                     {complaintsState.map((complaint, index) => {
