@@ -17,6 +17,8 @@ import Image from "next/image";
 import Router from "next/router";
 import { TextBox } from "@syncfusion/ej2-react-inputs";
 
+import GoogleIcon from '@mui/icons-material/Google';
+import GitHubIcon from '@mui/icons-material/GitHub';
 
 function Login() {
     const [email, setEmail] = useState("");
@@ -82,7 +84,7 @@ function Login() {
                             marginBottom: "10px",
                             border: "none",
                             color: "white",
-                            backgroundColor: "red",
+                            backgroundColor: "#14b814",
                         }}
                         onClick={() =>
                             logInWithEmailAndPassword(email, password)
@@ -92,41 +94,49 @@ function Login() {
                     </button>
                     <button
                         style={{
-                            padding: "10px",
                             fontSize: "18px",
                             marginBottom: "10px",
                             border: "none",
                             color: "white",
                             backgroundColor: "#4285f4",
+                            alignItems: "center",
+                            display: "flex",
+                            justifyContent: "center",
                         }}
                         onClick={signInWithGoogle}
                     >
-                        Login with Google
+                        <p>Login with Google</p>
+                        <GoogleIcon style={{ paddingLeft: "10px", fontSize: "41px", paddingLeft: "8px"}}></GoogleIcon>
                     </button>
                     <button
                         style={{
-                            padding: "10px",
                             fontSize: "18px",
                             marginBottom: "10px",
                             border: "none",
                             color: "white",
                             backgroundColor: "black",
+                            alignItems: "center",
+                            display: "flex",
+                            justifyContent: "center",
                         }}
                         onClick={signInWithGithub}
                     >
-                        Login with Github
+                        <p>Login with GitHub</p>
+                        <GitHubIcon style={{ paddingLeft: "10px", fontSize: "40px", paddingLeft: "10px",}}></GitHubIcon>
                     </button>
-                    <div style={{ marginTop: "7px" }}>
+                    <div style={{ marginTop: "7px", color: "blue", textDecoration: "underline"}}>
                         <Link href={{ pathname: "/auth/reset" }}>
                             Forgot Password
                         </Link>
                     </div>
-                    <div style={{ marginTop: "7px" }}>
+                    <div style={{ marginTop: "7px", color: "blue"}}>
                         {/* eslint-disable-next-line react/no-unescaped-entities */}
                         Don't have an account?{" "}
-                        <Link href={{ pathname: "/auth/register" }}>
-                            Register
-                        </Link>{" "}
+                        <div style={{display: "inline", textDecoration: "underline"}}>
+                            <Link href={{ pathname: "/auth/register" }}>
+                                Register
+                            </Link>
+                        </div>{" "}
                         now.
                     </div>
                 </div>
