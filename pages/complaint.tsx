@@ -16,6 +16,7 @@ import { styled } from '@mui/material/styles';
 import Slide, { SlideProps } from "@mui/material/Slide";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
+import TextField from '@mui/material/TextField';
 
 
 
@@ -589,59 +590,61 @@ print(f"{name}'s favourite number is: {favourite_number}")`,
                     You translated from: {languageFrom} to: {languageTo} and had{" "}
                     {numLines} lines of code
                 </h1>
-
-                <FormControl sx={{ m: 1, minWidth: 140 }}>
-                    <InputLabel id="simple-select-autowidth-label">
-                        Faulty Lines
-                    </InputLabel>
-                    <Select
-                        labelId="simple-select-autowidth-label"
-                        id="simple-select-autowidth"
-                        autoWidth
-                        label="faulty lines"
-                        multiple
-                        value={selected}
-                        onChange={handleChange}
-                        renderValue={(selected) => selected.join(", ")}
-                        MenuProps={MenuProps}
-                    >
-                        <MenuItem
-                            value="all"
-                            classes={{
-                                root: isAllSelected ? classes.selectedAll : "",
-                            }}
+                <div>
+                    <TextField sx={{ m: 1, minWidth: 140 }} id="outlined-basic" label="Title" variant="outlined"/>
+                    <FormControl sx={{ m: 1, minWidth: 140 }}>
+                        <InputLabel id="simple-select-autowidth-label">
+                            Faulty Lines
+                        </InputLabel>
+                        <Select
+                            labelId="simple-select-autowidth-label"
+                            id="simple-select-autowidth"
+                            autoWidth
+                            label="faulty lines"
+                            multiple
+                            value={selected}
+                            onChange={handleChange}
+                            renderValue={(selected) => selected.join(", ")}
+                            MenuProps={MenuProps}
                         >
-                            <ListItemIcon>
-                                <Checkbox
-                                    classes={{
-                                        indeterminate:
-                                            classes.indeterminateColor,
-                                    }}
-                                    checked={isAllSelected}
-                                    indeterminate={
-                                        selected.length > 0 &&
-                                        selected.length < options.length
-                                    }
-                                />
-                            </ListItemIcon>
-                            <ListItemText
-                                classes={{ primary: classes.selectAllText }}
-                                primary="Select All"
-                            />
-                        </MenuItem>
-                        {options.map((option) => (
-                            <MenuItem key={option} value={option}>
+                            <MenuItem
+                                value="all"
+                                classes={{
+                                    root: isAllSelected ? classes.selectedAll : "",
+                                }}
+                            >
                                 <ListItemIcon>
                                     <Checkbox
-                                        checked={selected.indexOf(option) > -1}
+                                        classes={{
+                                            indeterminate:
+                                                classes.indeterminateColor,
+                                        }}
+                                        checked={isAllSelected}
+                                        indeterminate={
+                                            selected.length > 0 &&
+                                            selected.length < options.length
+                                        }
                                     />
                                 </ListItemIcon>
-                                <ListItemText primary={option} />
+                                <ListItemText
+                                    classes={{ primary: classes.selectAllText }}
+                                    primary="Select All"
+                                />
                             </MenuItem>
-                        ))}
-                    </Select>
-                </FormControl>
-
+                            {options.map((option) => (
+                                <MenuItem key={option} value={option}>
+                                    <ListItemIcon>
+                                        <Checkbox
+                                            checked={selected.indexOf(option) > -1}
+                                        />
+                                    </ListItemIcon>
+                                    <ListItemText primary={option} />
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
+                </div>
+                <br/>
                 <Box
                     component="form"
                     style={{ padding: "10px", border: "1px solid grey" }}
