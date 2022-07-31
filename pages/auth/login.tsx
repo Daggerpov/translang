@@ -129,15 +129,15 @@ function Login() {
                             Forgot Password
                         </Link>
                     </div>
-                    <div style={{ marginTop: "7px", color: "blue"}}>
+                    <div style={{ marginTop: "7px" }}>
                         {/* eslint-disable-next-line react/no-unescaped-entities */}
                         Don't have an account?{" "}
-                        <div style={{display: "inline", textDecoration: "underline"}}>
+                        <div style={{ display: "inline", color: "blue", textDecoration: "underline" }}>
                             <Link href={{ pathname: "/auth/register" }}>
                                 Register
                             </Link>
-                        </div>{" "}
-                        now.
+                        </div>
+                        {" "}now.
                     </div>
                 </div>
             </div>
