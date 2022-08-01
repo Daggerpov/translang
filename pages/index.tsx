@@ -49,7 +49,7 @@ import { css } from "@emotion/css";
 import clientPromise from "../mongodb";
 
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth, logout } from "../firebase-config";
+import { auth, logout, getAllUsers, db } from "../firebase-config";
 
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
@@ -58,6 +58,30 @@ import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/Inbox";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
+
+import {
+    getFirestore,
+    query,
+    getDocs,
+    collection,
+    where,
+    addDoc,
+    onSnapshot,
+} from "firebase/firestore";
+
+// const querySnapshot = await getDocs(collection(firestoreDB, "users"));
+// querySnapshot.forEach((doc) => {
+    // doc.data() is never undefined for query doc snapshots
+//     console.log(doc.id, " => ", doc.data());
+// });
+
+// const querySnapshot = await getDocs(collection(db, "users"));
+// querySnapshot.forEach((doc) => {
+    // doc.data() is never undefined for query doc snapshots
+//     console.log(doc.uid, " => ", doc.data());
+// });
+
+
 
 const getLength = (token) => {
     if (typeof token === "string") {
@@ -272,10 +296,6 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
             });
     };
 
-    const openNotifications = () => {
-        console.log("hello these are the notifications being opened");
-    };
-
     const renderLeaf = useCallback((props) => <Leaf {...props} />, []);
     const editor = useMemo(() => withHistory(withReact(createEditor())), []);
 
@@ -291,10 +311,14 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
     // });
 
     useEffect(() => {
-        try {
-            setPostsState(posts);
-            console.log(posts);
-        } catch (e) {}
+        const q = query(collection(db, "users"))
+        const unsub = onSnapshot(q, (querySnapshot) => {
+            console.log(
+                "Data",
+                querySnapshot.docs//.map((d) => doc.data())
+            );
+        });
+
     }, []);
 
     // decorate function depends on the language selected
@@ -370,6 +394,8 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
             });
     }); 
 
+    // console.log(usersFromDB);
+
     return (
         <>
             <div align="right">
@@ -417,7 +443,10 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
 
                                     <Box sx={{ flexGrow: 0, px: "15px" }}>
                                         <Tooltip title="Open settings">
-                                            <Button variant="contained" onClick={handleOpenUserMenu}>
+                                            <Button
+                                                variant="contained"
+                                                onClick={handleOpenUserMenu}
+                                            >
                                                 <Typography
                                                     textAlign="center"
                                                     sx={{ mr: "5px" }}
@@ -514,16 +543,18 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
                                         //         pathname: "/auth/login",
                                         //     }}
                                         // >
-                                            <Button
-                                                sx={{ px: "15px" }}
-                                                // style={}
-                                                onClick={() => {logout();}}
-                                                color="inherit"
-                                                variant="outlined"
-                                                className="btn"
-                                            >
-                                                Sign Out
-                                            </Button>
+                                        <Button
+                                            sx={{ px: "15px" }}
+                                            // style={}
+                                            onClick={() => {
+                                                logout();
+                                            }}
+                                            color="inherit"
+                                            variant="outlined"
+                                            className="btn"
+                                        >
+                                            Sign Out
+                                        </Button>
                                         // </Link>
                                     )}
                                 </Toolbar>
@@ -592,10 +623,7 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
                 </Head>
 
                 <main className={styles.main}>
-                    <h1 className={styles.title}>
-                        translang
-                    </h1>
-
+                    <h1 className={styles.title}>translang</h1>
 
                     {/* <div className={styles.container}>
                         <ul>
@@ -646,8 +674,8 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
 
                     {/* <Box component="form" style={{ padding: "10px" }}> */}
                     {/* this is the selection dropdown for language from */}
-                    <div style={{ width: "95%"}}>
-                        <div style={{ width: "45%", display: "inline-block"}}> 
+                    <div style={{ width: "95%" }}>
+                        <div style={{ width: "45%", display: "inline-block" }}>
                             <FormControl sx={{ m: 1, minWidth: 120 }}>
                                 <InputLabel id="simple-select-autowidth-label">
                                     Language From
@@ -662,12 +690,16 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
                                 >
                                     <MenuItem value={"python"}>Python</MenuItem>
                                     <MenuItem value={"java"}>Java</MenuItem>
-                                    <MenuItem value={"javascript"}>JavaScript</MenuItem>
+                                    <MenuItem value={"javascript"}>
+                                        JavaScript
+                                    </MenuItem>
                                 </Select>
                             </FormControl>
                         </div>
-                        <div style={{ width: "10%", display: "inline-block"}}></div>
-                        <div style={{ width: "45%", display: "inline-block"}}> 
+                        <div
+                            style={{ width: "10%", display: "inline-block" }}
+                        ></div>
+                        <div style={{ width: "45%", display: "inline-block" }}>
                             <FormControl sx={{ m: 1, minWidth: 120 }}>
                                 <InputLabel id="simple-select-autowidth-label">
                                     Language To
@@ -682,68 +714,81 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
                                 >
                                     <MenuItem value={"python"}>Python</MenuItem>
                                     <MenuItem value={"java"}>Java</MenuItem>
-                                    <MenuItem value={"javascript"}>javascript</MenuItem>
+                                    <MenuItem value={"javascript"}>
+                                        javascript
+                                    </MenuItem>
                                 </Select>
                             </FormControl>
                         </div>
                     </div>
-                    
-                    <div style={{ width: "95%"}}>
-                        <div style={{ width: "45%", display: "inline-block"}}> 
-                            
 
+                    <div style={{ width: "95%" }}>
+                        <div style={{ width: "45%", display: "inline-block" }}>
                             {/* this is the code editor from */}
 
-                            <Slate editor={editor} value={initialValue} >
+                            <Slate editor={editor} value={initialValue}>
                                 <Editable
                                     decorate={decorate}
                                     renderLeaf={renderLeaf}
-                                    onChange={(e) => setCodeInput(e.target.value)}
-                                    style={{ border: "1px solid gray"}}
+                                    onChange={(e) =>
+                                        setCodeInput(e.target.value)
+                                    }
+                                    style={{ border: "1px solid gray" }}
                                 />
                             </Slate>
                         </div>
-                        <div style={{ width: "10%", display: "inline-block" }}></div>
+                        <div
+                            style={{ width: "10%", display: "inline-block" }}
+                        ></div>
                         {/* </Box> */}
                         {/* <Box component="form" style={{ padding: "10px" }}> */}
-                        <div style={{ width: "45%", display: "inline-block"}}> 
-                                <TextareaAutosize
-                                    value={codeOutput} 
-                                    placeholder={
-                                        defaultOutputMessage
-                                            ? "This is where your code will be output"
-                                            : "No conversion was performed"
-                                    }
-                                    style={{
-                                        width: "100%",
-                                        lineHeight: "1.6"
-                                    }}
-                                    disabled
-                                    minRows={4}
-
-                                />
+                        <div style={{ width: "45%", display: "inline-block" }}>
+                            <TextareaAutosize
+                                value={codeOutput}
+                                placeholder={
+                                    defaultOutputMessage
+                                        ? "This is where your code will be output"
+                                        : "No conversion was performed"
+                                }
+                                style={{
+                                    width: "100%",
+                                    lineHeight: "1.6",
+                                }}
+                                disabled
+                                minRows={4}
+                            />
                         </div>
                     </div>
                     <br />
                     {/* the following is only displayed upon translation execution */}
-                    <div style={{ width: "95%"}}>
-                        <div style={{ display: "inline-block"}}>
+                    <div style={{ width: "95%" }}>
+                        <div style={{ display: "inline-block" }}>
                             <LoadingButton
                                 onClick={() =>
                                     // this gets only the codeInput's actual text value,
                                     // which is all I care about for now
-                                    translate(codeInput, languageFrom, languageTo)
+                                    translate(
+                                        codeInput,
+                                        languageFrom,
+                                        languageTo
+                                    )
                                 }
                                 style={styles.button}
                             >
                                 Translate!
                             </LoadingButton>
                         </div>
-                        <div style={{ display: "inline-block", float: "right"}}>
-                            <Button variant="outlined" onClick={handleCopyClick} style={{ marginRight: "15px" }}>
+                        <div
+                            style={{ display: "inline-block", float: "right" }}
+                        >
+                            <Button
+                                variant="outlined"
+                                onClick={handleCopyClick}
+                                style={{ marginRight: "15px" }}
+                            >
                                 {isCopied ? "Copied!" : "Copy to Clipboard"}
                             </Button>
-                    
+
                             <Link
                                 href={{
                                     pathname: "/complaint",
@@ -768,10 +813,23 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
                     </div>
                     {/* </Box> */}
 
-                    <div style={{height: "200px"}}></div>
+                    <div style={{ height: "200px" }}></div>
                     <h2>Most recent complaint:</h2>
 
                     {complaintsState}
+                    <LoadingButton
+                        onClick={() =>
+                            // this gets only the codeInput's actual text value,
+                            // which is all I care about for now
+                            translate(codeInput, languageFrom, languageTo)
+                        }
+                        style={styles.button}
+                    >
+                        Translate!
+                    </LoadingButton>
+                    <Button onClick={() => getAllUsers()} style={styles.button}>
+                        Load Users in Console
+                    </Button>
                 </main>
 
                 <footer className={styles.footer}>

@@ -22,6 +22,7 @@ import {
     where,
     addDoc,
 } from "firebase/firestore";
+import { Admin } from "mongodb";
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 
@@ -42,6 +43,46 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth();
 const db = getFirestore();
 
+// getting all users
+
+// const getAllUsers = () => {
+//     getAuth
+//         .getUsers()
+//         .then((getUsersResult) => {
+//             console.log("Successfully fetched user data:");
+//             getUsersResult.users.forEach((userRecord) => {
+//                 console.log(userRecord);
+//             });
+
+//             console.log(
+//                 "Unable to find users corresponding to these identifiers:"
+//             );
+//             getUsersResult.notFound.forEach((userIdentifier) => {
+//                 console.log(userIdentifier);
+//             });
+//         })
+//         .catch((error) => {
+//             console.log("Error fetching user data:", error);
+//         });
+// }
+
+
+// const getAllUsers = (req, res) => {
+//     const maxResults = 1; // optional arg.
+
+//     auth.listUsers(maxResults)
+//         .then((userRecords) => {
+//             userRecords.users.forEach((user) => console.log(user.toJSON()));
+//             res.end("Retrieved users list successfully.");
+//         })
+//         .catch((error) => console.log(error));
+// };
+
+
+// const functions = firebase.functions();
+
+// making a user an admin
+
 const googleProvider = new GoogleAuthProvider();
 const signInWithGoogle = async () => {
     try {
@@ -55,6 +96,7 @@ const signInWithGoogle = async () => {
                 name: user.displayName,
                 authProvider: "google",
                 email: user.email,
+                superuser: false,
             });
         }
     } catch (err) {
@@ -80,6 +122,7 @@ const signInWithGithub = async () => {
                 name: user.displayName,
                 authProvider: "github",
                 email: user.email,
+                superuser: false,
             });
         }
     } catch (err) {
@@ -106,6 +149,7 @@ const registerWithEmailAndPassword = async (name, email, password) => {
             name,
             authProvider: "local",
             email,
+            superuser: false,
         });
     } catch (err) {
         console.error(err);
@@ -142,4 +186,5 @@ export {
     sendPasswordReset,
     logout,
     sendPasswordResetEmail,
+    getAllUsers,
 };
