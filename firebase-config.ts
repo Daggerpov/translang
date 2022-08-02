@@ -186,5 +186,4 @@ export {
     sendPasswordReset,
     logout,
     sendPasswordResetEmail,
-    getAllUsers,
 };

@@ -827,9 +827,9 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
                     >
                         Translate!
                     </LoadingButton>
-                    <Button onClick={() => getAllUsers()} style={styles.button}>
+                    {/* <Button onClick={() => getAllUsers()} style={styles.button}>
                         Load Users in Console
-                    </Button>
+                    </Button> */}
                 </main>
 
                 <footer className={styles.footer}>
