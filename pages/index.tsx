@@ -781,6 +781,7 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
                         <div
                             style={{ display: "inline-block", float: "right" }}
                         >
+                        {translationPerformed && (
                             <Button
                                 variant="outlined"
                                 onClick={handleCopyClick}
@@ -788,7 +789,8 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
                             >
                                 {isCopied ? "Copied!" : "Copy to Clipboard"}
                             </Button>
-
+                        )}
+                        {translationPerformed && (
                             <Link
                                 href={{
                                     pathname: "/complaint",
@@ -809,6 +811,7 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
                                     Submit a Complaint
                                 </Button>
                             </Link>
+                        )}
                         </div>
                     </div>
                     {/* </Box> */}
