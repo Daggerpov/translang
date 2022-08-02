@@ -781,55 +781,46 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
                         <div
                             style={{ display: "inline-block", float: "right" }}
                         >
-                        {translationPerformed && (
-                            <Button
-                                variant="outlined"
-                                onClick={handleCopyClick}
-                                style={{ marginRight: "15px" }}
-                            >
-                                {isCopied ? "Copied!" : "Copy to Clipboard"}
-                            </Button>
-                        )}
-                        {translationPerformed && (
-                            <Link
-                                href={{
-                                    pathname: "/complaint",
-                                    query: {
-                                        languageFrom,
-                                        languageTo,
-                                        codeOutput,
-                                        numLines,
-                                    },
-                                }}
-                            >
+                            {translationPerformed && (
                                 <Button
                                     variant="outlined"
-                                    // onClick={}
-                                    // style={}
-                                    className="btn"
+                                    onClick={handleCopyClick}
+                                    style={{ marginRight: "15px" }}
                                 >
-                                    Submit a Complaint
+                                    {isCopied ? "Copied!" : "Copy to Clipboard"}
                                 </Button>
-                            </Link>
-                        )}
+                            )}
+                            {translationPerformed && (
+                                <Link
+                                    href={{
+                                        pathname: "/complaint",
+                                        query: {
+                                            languageFrom,
+                                            languageTo,
+                                            codeOutput,
+                                            numLines,
+                                        },
+                                    }}
+                                >
+                                    <Button
+                                        variant="outlined"
+                                        // onClick={}
+                                        // style={}
+                                        className="btn"
+                                    >
+                                        Submit a Complaint
+                                    </Button>
+                                </Link>
+                            )}
                         </div>
                     </div>
                     {/* </Box> */}
 
-                    <div style={{ height: "200px" }}></div>
-                    <h2>Most recent complaint:</h2>
+                    <div style={{ height: "25px" }}></div>
+                    <h2>Most recent accepted complaint:</h2>
 
                     {complaintsState}
-                    <LoadingButton
-                        onClick={() =>
-                            // this gets only the codeInput's actual text value,
-                            // which is all I care about for now
-                            translate(codeInput, languageFrom, languageTo)
-                        }
-                        style={styles.button}
-                    >
-                        Translate!
-                    </LoadingButton>
+
                     {/* <Button onClick={() => getAllUsers()} style={styles.button}>
                         Load Users in Console
                     </Button> */}
