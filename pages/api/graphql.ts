@@ -1,21 +1,20 @@
 // @ts-nocheck
 
-import { ApolloServer, gql } from "apollo-server-micro";
+import { ApolloServer} from "apollo-server-micro";
 import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-core";
 
-// const expressApp = express();
 
-const typeDefs = gql`
-    type Query {
-        hello: String!
-    }
-`;
+import { resolvers } from './resolvers';
+import { typeDefs } from './typeDefs';
+import { User } from "./models/User";
 
-const resolvers = {
-    Query: {
-        hello: () => "hello world",
-    },
-};
+import { mongoose } from "mongoose";
+mongoose.connect(
+    "mongodb+srv://hassan:hassan@translang.kvzy9qg.mongodb.net/?retryWrites=true&w=majority"
+);
+
+const Daggerpov = new User({ displayName: "Daniel Agapov" });
+Daggerpov.save().then(() => console.log("daggerpov is here"));
 
 const apolloServer = new ApolloServer({
     typeDefs,
