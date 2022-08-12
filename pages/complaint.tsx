@@ -407,8 +407,8 @@ const Complaint: NextPage = (users) => {
         let res = await fetch("/api/handler", {
             method: "POST",
             body: JSON.stringify({
-                username: user,
-                // title: title,
+                userInfo: user,
+                title: title,
                 submissionCode: submissionCode,
                 additionalNotes: additionalNotes,
                 rating: rating,

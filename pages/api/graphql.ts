@@ -10,11 +10,11 @@ import { User } from "./models/User";
 
 import { mongoose } from "mongoose";
 mongoose.connect(
-    "mongodb+srv://hassan:hassan@translang.kvzy9qg.mongodb.net/?retryWrites=true&w=majority"
+    process.env.DB_URI
 );
 
-const Daggerpov = new User({ displayName: "Daniel Agapov" });
-Daggerpov.save().then(() => console.log("daggerpov is here"));
+// const Daggerpov = new User({ displayName: "Daniel Agapov" });
+// Daggerpov.save().then(() => console.log("daggerpov is here"));
 
 const apolloServer = new ApolloServer({
     typeDefs,

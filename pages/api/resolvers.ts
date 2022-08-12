@@ -5,5 +5,11 @@ export const resolvers = {
                 id: "Foo",
             };
         },
+        getComplaint: () => {
+            return {
+                time: "this is the time that the complaint was submitted",
+            };
+        },
+
     },
 };
