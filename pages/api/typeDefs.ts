@@ -16,11 +16,12 @@ export const typeDefs = gql`
     type Complaint {
         userInfo: User! #! unsure about the type here
         time: Date!
-        isAccepted: Boolean
+        isAccepted: Boolean!
         submissionCode: String!
         additioanlNotes: String
         title: String
         rating: Int!
+        faultyLines: Array
     }
 
     type Query {

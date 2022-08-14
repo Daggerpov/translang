@@ -579,7 +579,7 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
                     />
                 </Head>
 
-                <main className={styles.main}>
+                <main className={styles.main} style={{ marginLeft: "150px"}}>
                     <h1 className={styles.title}>translang</h1>
 
                     <div style={{ width: "95%" }}>
