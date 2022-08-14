@@ -785,7 +785,7 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
                                 <Button
                                     variant="outlined"
                                     onClick={handleCopyClick}
-                                    style={{ marginRight: "15px" }}
+                                    style={{ marginRight: "15px", color: 'darkgreen', backgroundColor: "#1fd655", borderColor: 'lightblue'}}
                                 >
                                     {isCopied ? "Copied!" : "Copy to Clipboard"}
                                 </Button>
@@ -805,7 +805,7 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
                                     <Button
                                         variant="outlined"
                                         // onClick={}
-                                        // style={}
+                                        style={{ color: 'darkred', backgroundColor: "#FF6863", borderColor: 'lightblue' }}
                                         className="btn"
                                     >
                                         Submit a Complaint
