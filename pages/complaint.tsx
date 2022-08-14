@@ -3,7 +3,7 @@
 import type { NextPage } from "next";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
-import { useState, setState, useEffect } from "react";
+import { useState} from "react";
 
 // ? Material UI is a component library for easier styling and with some custom components
 import Box from "@mui/material/Box";
@@ -18,10 +18,7 @@ import Snackbar from "@mui/material/Snackbar";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import TextField from '@mui/material/TextField';
 
-
-
 import { TransitionProps } from "@mui/material/transitions";
-
 
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -38,7 +35,7 @@ import {
     Text,
 } from "slate";
 import { withHistory } from "slate-history";
-import { Button, FormControlLabel, Icon, Toolbar } from "@mui/material";
+import { Button, Icon, Toolbar } from "@mui/material";
 
 import FormatBoldOutlinedIcon from "@mui/icons-material/FormatBoldOutlined";
 import FormatItalicOutlinedIcon from "@mui/icons-material/FormatItalicOutlined";
@@ -66,7 +63,6 @@ import Rating from "@mui/material/Rating";
 import Typography from "@mui/material/Typography";
 
 import Prism from "prismjs";
-
 
 // for the slate text editor:
 const HOTKEYS = {
@@ -551,27 +547,11 @@ print(f"{name}'s favourite number is: {favourite_number}")`,
         });
     };
 
-    // const handleRatingChange = (value) => {
-    //     setRating(value);
-    // };
-
-    // _handleTextFieldChange: function(e) {
-    //     this.setState({
-    //         textFieldValue: e.target.value
-    //     });
-    // },
-
     const classes = useStyles();
 
     return (
         <>
             <main className={styles.main}>
-                {/* <TextField
-                    id="standard-basic"
-                    label="Title"
-                    variant="standard"
-                    onChange={setTitle}
-                /> */}
 
                 <h2>
                     <Link
@@ -731,14 +711,6 @@ print(f"{name}'s favourite number is: {favourite_number}")`,
                     </Button>
                 </form>
 
-                {/* <Snackbar
-                    open={state.open}
-                    onClose={handleClose}
-                    TransitionComponent={state.Transition}
-                    message="Submitted"
-                    key={state.Transition.name}
-                /> */}
-
                 <Snackbar
                     open={state.open}
                     autoHideDuration={6000}
@@ -753,39 +725,6 @@ print(f"{name}'s favourite number is: {favourite_number}")`,
                     </Alert>
                 </Snackbar>
 
-                {/* <div>
-                    {complaintsState.map((complaint, index) => {
-                        return (
-                            <div className="card" key={index}>
-                                <p>
-                                    {loading ? complaint.submissionCode : ""}
-                                </p>
-                                <p>
-                                    {loading ? complaint.additionalNotes : ""}
-                                </p>
-                            </div>
-                        );
-                    })}
-                </div> */}
-
-                {/* <div className="add-form">
-                            <form onSubmit={submitForm}>
-                                <textarea
-                                    type="text"
-                                    name="content"
-                                    rows="10"
-                                    placeholder="Content"
-                                    value={content}
-                                    onChange={(e) => setContent(e.target.value)}
-                                />
-                                <button
-                                    type="submit"
-                                    disabled={loading ? true : false}
-                                >
-                                    {loading ? "Adding" : "Add"}
-                                </button>
-                            </form>
-                        </div> */}
             </main>
 
             <footer className={styles.footer}>

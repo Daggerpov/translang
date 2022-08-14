@@ -5,34 +5,26 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
-import { TextBoxComponent } from "@syncfusion/ej2-react-inputs";
 import { useEffect, useState } from "react";
 
 // ? Material UI is a component library for easier styling and with some custom components
 import Box from "@mui/material/Box";
-import List from "@mui/material/List";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { LoadingButton } from "@mui/lab";
-import MailIcon from "@material-ui/icons/Mail";
-import Badge from "@mui/material/Badge";
 import Button from "@mui/material/Button";
-import Stack from "@mui/material/Stack";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
-import MenuIcon from "@mui/icons-material/Menu";
+
 import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
 import Tooltip from "@mui/material/Tooltip";
 import AdbIcon from "@mui/icons-material/Adb";
-//import TextareaAutosize from '@mui/material/TextareaAutosize';
 
-//import { TextField } from "@mui/material";
 import { TextareaAutosize } from "@material-ui/core";
 
 import Link from "next/link";
@@ -46,15 +38,10 @@ import { Text, createEditor, Element as SlateElement, Descendant } from "slate";
 import { withHistory } from "slate-history";
 import { css } from "@emotion/css";
 
-import clientPromise from "../mongodb";
 
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth, logout, getAllUsers, db } from "../firebase-config";
+import { auth, logout, db } from "../firebase-config";
 
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/Inbox";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
@@ -68,20 +55,6 @@ import {
     addDoc,
     onSnapshot,
 } from "firebase/firestore";
-
-// const querySnapshot = await getDocs(collection(firestoreDB, "users"));
-// querySnapshot.forEach((doc) => {
-    // doc.data() is never undefined for query doc snapshots
-//     console.log(doc.id, " => ", doc.data());
-// });
-
-// const querySnapshot = await getDocs(collection(db, "users"));
-// querySnapshot.forEach((doc) => {
-    // doc.data() is never undefined for query doc snapshots
-//     console.log(doc.uid, " => ", doc.data());
-// });
-
-
 
 const getLength = (token) => {
     if (typeof token === "string") {
@@ -145,22 +118,6 @@ const Leaf = ({ attributes, children, leaf }) => {
         </span>
     );
 };
-
-const initialValue: Descendant[] = [
-    {
-        type: "paragraph",
-        children: [
-            {
-                text: `import random
-name = 'Daniel'
-favourite_number = random.randint(0, 10)
-print(f"{name}'s favourite number is: {favourite_number}")`,
-            },
-        ],
-    },
-];
-
-// modifications and additions to prism library
 
 Prism.languages.python = Prism.languages.extend("python", {});
 Prism.languages.insertBefore("python", "prolog", {
@@ -625,55 +582,6 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
                 <main className={styles.main}>
                     <h1 className={styles.title}>translang</h1>
 
-                    {/* <div className={styles.container}>
-                        <ul>
-                            {complaints.map((complaint, i) => (
-                                return (
-                                    <div className="card" key={index}>
-                                        <h2>{complaint}</h2>
-                                    </div>
-                                );
-                            ));}
-                        </ul>
-                </div> */}
-
-                    {/* <div className={styles.container}>
-                        <ul>
-                            {complaints.map((complaint, i) => (
-                                return (
-                                    <div className="card" key={index}>
-                                        <h2>{complaint.submissionCode}</h2>
-                                    </div>
-                                );
-                            ))}
-                        </ul>
-                    )}}
-                </div> */}
-
-                    {/* <ul>
-                        
-                        {/* {complaintsState.map((complaint) => (
-                        <li key={complaint}></li>
-                    ))} 
-                    </ul> */}
-
-                    {/* <Link
-                    href={{
-                        pathname: "/complaint",
-                        query: { languageFrom, languageTo, codeOutput, numLines },
-                    }}
-                >
-                    <button
-                        // onClick={}
-                        // style={}
-                        className="btn"
-                    >
-                        Fake Complaint
-                    </button>
-                </Link> */}
-
-                    {/* <Box component="form" style={{ padding: "10px" }}> */}
-                    {/* this is the selection dropdown for language from */}
                     <div style={{ width: "95%" }}>
                         <div style={{ width: "45%", display: "inline-block" }}>
                             <FormControl sx={{ m: 1, minWidth: 120 }}>
@@ -740,8 +648,6 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
                         <div
                             style={{ width: "10%", display: "inline-block" }}
                         ></div>
-                        {/* </Box> */}
-                        {/* <Box component="form" style={{ padding: "10px" }}> */}
                         <div style={{ width: "45%", display: "inline-block" }}>
                             <TextareaAutosize
                                 value={codeOutput}
@@ -821,9 +727,6 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
 
                     {complaintsState}
 
-                    {/* <Button onClick={() => getAllUsers()} style={styles.button}>
-                        Load Users in Console
-                    </Button> */}
                 </main>
 
                 <footer className={styles.footer}>
