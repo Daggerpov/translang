@@ -3,7 +3,7 @@
 import type { NextPage } from "next";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
-import { useState} from "react";
+import { useEffect, useState} from "react";
 
 // ? Material UI is a component library for easier styling and with some custom components
 import Box from "@mui/material/Box";
@@ -408,6 +408,7 @@ const Complaint: NextPage = (users) => {
                 submissionCode: submissionCode,
                 additionalNotes: additionalNotes,
                 rating: rating,
+                faultyLines: faultyLinesSelected,
                 time: new Date(),
                 isAccepted: false,
             }),
@@ -483,17 +484,25 @@ print(f"{name}'s favourite number is: {favourite_number}")`,
         [languageFrom]
     );
 
+    const [title, setTitle] = useState("");
+
+    const handleTitleChange = (event) => {
+        setTitle(event.target.value);
+    };
+
     // all for the multi-select input:
 
     const options = Array.from({ length: numLines }, (_, i) => i + 1);
 
     const [selected, setSelected] = useState([]);
+    const [faultyLinesSelected, setFaultyLinesSelected] = useState();
 
     const isAllSelected =
         options.length > 0 && selected.length === options.length;
 
     const handleChange = (event: SelectChangeEvent) => {
         const value = event.target.value;
+        setFaultyLinesSelected(value); // * working
         if (value[value.length - 1] === "all") {
             setSelected(selected.length === options.length ? [] : options);
             return;
@@ -571,7 +580,8 @@ print(f"{name}'s favourite number is: {favourite_number}")`,
                     {numLines} lines of code
                 </h1>
                 <div>
-                    <TextField sx={{ m: 1, minWidth: 140 }} id="outlined-basic" label="Title" variant="outlined"/>
+                    <TextField sx={{ m: 1, minWidth: 140 }} id="outlined-basic" label="Title" variant="outlined" placeholder="e.g. Import Error"
+                            onChange={handleTitleChange}/>
                     <FormControl sx={{ m: 1, minWidth: 140 }}>
                         <InputLabel id="simple-select-autowidth-label">
                             Faulty Lines
