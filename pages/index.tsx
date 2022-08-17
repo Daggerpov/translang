@@ -38,7 +38,6 @@ import { Text, createEditor, Element as SlateElement, Descendant } from "slate";
 import { withHistory } from "slate-history";
 import { css } from "@emotion/css";
 
-
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, logout, db } from "../firebase-config";
 
@@ -268,14 +267,13 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
     // });
 
     useEffect(() => {
-        const q = query(collection(db, "users"))
+        const q = query(collection(db, "users"));
         const unsub = onSnapshot(q, (querySnapshot) => {
             console.log(
                 "Data",
-                querySnapshot.docs//.map((d) => doc.data())
+                querySnapshot.docs //.map((d) => doc.data())
             );
         });
-
     }, []);
 
     // decorate function depends on the language selected
@@ -338,7 +336,7 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
 
     useEffect(() => {
         axios
-            .get("/api/handler", {
+            .get("/api/complaintHandler", {
                 responseType: "text",
                 transformResponse: [(v) => v],
             })
@@ -349,7 +347,7 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
             .catch(function (error) {
                 console.log(error);
             });
-    }); 
+    });
 
     // console.log(usersFromDB);
 
@@ -579,7 +577,7 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
                     />
                 </Head>
 
-                <main className={styles.main} style={{ marginLeft: "150px"}}>
+                <main className={styles.main} style={{ marginLeft: "150px" }}>
                     <h1 className={styles.title}>translang</h1>
 
                     <div style={{ width: "95%" }}>
@@ -691,7 +689,12 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
                                 <Button
                                     variant="outlined"
                                     onClick={handleCopyClick}
-                                    style={{ marginRight: "15px", color: 'darkgreen', backgroundColor: "#1fd655", borderColor: 'lightblue'}}
+                                    style={{
+                                        marginRight: "15px",
+                                        color: "darkgreen",
+                                        backgroundColor: "#1fd655",
+                                        borderColor: "lightblue",
+                                    }}
                                 >
                                     {isCopied ? "Copied!" : "Copy to Clipboard"}
                                 </Button>
@@ -711,7 +714,11 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
                                     <Button
                                         variant="outlined"
                                         // onClick={}
-                                        style={{ color: 'darkred', backgroundColor: "#FF6863", borderColor: 'lightblue' }}
+                                        style={{
+                                            color: "darkred",
+                                            backgroundColor: "#FF6863",
+                                            borderColor: "lightblue",
+                                        }}
                                         className="btn"
                                     >
                                         Submit a Complaint
@@ -726,7 +733,6 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
                     <h2>Most recent accepted complaint:</h2>
 
                     {complaintsState}
-
                 </main>
 
                 <footer className={styles.footer}>
@@ -754,7 +760,7 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
 export default Home;
 
 export async function getServerSideProps(context) {
-    let res = await fetch(process.env.API_PREFIX+"/api/handler", {
+    let res = await fetch(process.env.API_PREFIX + "/api/complaintHandler", {
         method: "GET",
         headers: {
             "Content-Type": "application/json",

@@ -66,7 +66,6 @@ const db = getFirestore();
 //         });
 // }
 
-
 // const getAllUsers = (req, res) => {
 //     const maxResults = 1; // optional arg.
 
@@ -78,7 +77,6 @@ const db = getFirestore();
 //         .catch((error) => console.log(error));
 // };
 
-
 // const functions = firebase.functions();
 
 // making a user an admin
@@ -88,6 +86,26 @@ const signInWithGoogle = async () => {
     try {
         const res = await signInWithPopup(auth, googleProvider);
         const user = res.user;
+
+        // setLoading(true);
+
+        // let res = 
+        await fetch("/api/userHandler", {
+            method: "POST",
+            body: JSON.stringify({
+                uid: user.id,
+                name: user.displayName,
+                authProvider: "github",
+                email: user.email,
+                superuser: false,
+            }),
+        });
+        // if (res.ok) {
+        //     res = await res.json();
+        // }
+
+        // setLoading(false);
+
         const q = query(collection(db, "users"), where("uid", "==", user.uid));
         const docs = await getDocs(q);
         if (docs.docs.length === 0) {
@@ -114,6 +132,26 @@ const signInWithGithub = async () => {
         const token = credential.accessToken;
 
         const user = res.user;
+
+        // setLoading(true);
+
+        // let res = 
+        await fetch("/api/userHandler", {
+            method: "POST",
+            body: JSON.stringify({
+                uid: user.id,
+                name: user.displayName,
+                authProvider: "google",
+                email: user.email,
+                superuser: false,
+            }),
+        });
+        // if (res.ok) {
+        //     res = await res.json();
+        // }
+
+        // setLoading(false);
+
         const q = query(collection(db, "users"), where("uid", "==", user.uid));
         const docs = await getDocs(q);
         if (docs.docs.length === 0) {

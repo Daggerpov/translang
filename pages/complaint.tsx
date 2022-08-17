@@ -400,7 +400,7 @@ const Complaint: NextPage = (users) => {
         setLoading(true);
         e.preventDefault();
 
-        let res = await fetch("/api/handler", {
+        let res = await fetch("/api/complaintHandler", {
             method: "POST",
             body: JSON.stringify({
                 userInfo: user,
