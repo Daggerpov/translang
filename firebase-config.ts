@@ -95,8 +95,8 @@ const signInWithGoogle = async () => {
             body: JSON.stringify({
                 uid: user.id,
                 name: user.displayName,
-                authProvider: "github",
                 email: user.email,
+                authProvider: "google",
                 superuser: false,
             }),
         });
@@ -112,8 +112,8 @@ const signInWithGoogle = async () => {
             await addDoc(collection(db, "users"), {
                 uid: user.uid,
                 name: user.displayName,
-                authProvider: "google",
                 email: user.email,
+                authProvider: "google",
                 superuser: false,
             });
         }
@@ -133,24 +133,16 @@ const signInWithGithub = async () => {
 
         const user = res.user;
 
-        // setLoading(true);
-
-        // let res = 
         await fetch("/api/userHandler", {
             method: "POST",
             body: JSON.stringify({
                 uid: user.id,
                 name: user.displayName,
-                authProvider: "google",
                 email: user.email,
+                authProvider: "github",
                 superuser: false,
             }),
         });
-        // if (res.ok) {
-        //     res = await res.json();
-        // }
-
-        // setLoading(false);
 
         const q = query(collection(db, "users"), where("uid", "==", user.uid));
         const docs = await getDocs(q);
@@ -158,8 +150,8 @@ const signInWithGithub = async () => {
             await addDoc(collection(db, "users"), {
                 uid: user.uid,
                 name: user.displayName,
-                authProvider: "github",
                 email: user.email,
+                authProvider: "github",
                 superuser: false,
             });
         }
@@ -185,9 +177,22 @@ const registerWithEmailAndPassword = async (name, email, password) => {
         await addDoc(collection(db, "users"), {
             uid: user.uid,
             name,
-            authProvider: "local",
             email,
+            authProvider: "local",
             superuser: false,
+        });
+
+        console.log(user.uid, name, email);
+
+        await fetch("/api/userHandler", {
+            method: "POST",
+            body: JSON.stringify({
+                uid: user.uid,
+                name: name,
+                email: email,
+                authProvider: "local",
+                superuser: false,
+            }),
         });
     } catch (err) {
         console.error(err);

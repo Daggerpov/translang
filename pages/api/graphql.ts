@@ -7,6 +7,7 @@ import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-co
 import { resolvers } from './resolvers';
 import { typeDefs } from './typeDefs';
 import { User } from "./models/User";
+import { testUser } from "./models/testUser";
 
 import { mongoose } from "mongoose";
 mongoose.connect(

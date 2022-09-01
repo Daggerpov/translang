@@ -267,13 +267,7 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
     // });
 
     useEffect(() => {
-        const q = query(collection(db, "users"));
-        const unsub = onSnapshot(q, (querySnapshot) => {
-            console.log(
-                "Data",
-                querySnapshot.docs //.map((d) => doc.data())
-            );
-        });
+        
     }, []);
 
     // decorate function depends on the language selected
