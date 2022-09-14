@@ -12,7 +12,9 @@ import { testUser } from "./models/testUser";
 import { mongoose } from "mongoose";
 mongoose.connect(
     process.env.DB_URI
-);
+).then(() => {
+    app.listen(3000);
+});
 
 // const Daggerpov = new User({ displayName: "Daniel Agapov" });
 // Daggerpov.save().then(() => console.log("daggerpov is here"));
@@ -20,8 +22,9 @@ mongoose.connect(
 const apolloServer = new ApolloServer({
     typeDefs,
     resolvers,
-    playground: true,
-    plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],
+    // playground: true,
+    plugins: [ApolloServerPluginLandingPageLocalDefault({ embed: true })],
+    // plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],
 });
 
 const startserver = apolloServer.start();

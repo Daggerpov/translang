@@ -723,10 +723,10 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
                     </div>
                     {/* </Box> */}
 
-                    <div style={{ height: "25px" }}></div>
-                    <h2>Most recent accepted complaint:</h2>
+                    {/* <div style={{ height: "25px" }}></div> */}
+                    {/* <h2>Most recent accepted complaint:</h2> */}
 
-                    {complaintsState}
+                    {/* {complaintsState} */}
                 </main>
 
                 <footer className={styles.footer}>

@@ -3,6 +3,8 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 
+import { typeDefs } from "./pages/api/typeDefs";
+
 import {
     GoogleAuthProvider,
     GithubAuthProvider,
@@ -100,6 +102,9 @@ const signInWithGoogle = async () => {
                 superuser: false,
             }),
         });
+
+        // createTestUser(user.displayName);
+
         // if (res.ok) {
         //     res = await res.json();
         // }
