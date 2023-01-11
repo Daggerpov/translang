@@ -1,25 +1,22 @@
-# translang
+# Submitting Complaints
 
-## Main Page
+![image](https://user-images.githubusercontent.com/53918934/211744314-4bbfc728-4c4d-450e-8cf3-0911988e5b61.png)
 
-Basic language feature translations such as converting `print()` statements from Python to `console.log` ones in JavaScript. 
+# ... after translating code
 
-[screenshots to be inserted here once the UI is cleaned up]
+![image](https://user-images.githubusercontent.com/53918934/211738838-35e8bbd6-1fff-4cd4-aeab-4e7105d69ce3.png)
+![image](https://user-images.githubusercontent.com/53918934/211738993-27727f18-2ca9-4e86-95a8-a17a90c2417e.png)
 
-## However, the main premise of this application is the complaint submission which takes in the following fields:
 
-- the code
 
-![image](https://user-images.githubusercontent.com/53918934/180667465-290fa80d-cfad-4548-9fa3-63c0717c5164.png)
+# Authenticate For 
 
-- the selection of faulty lines (the ones that the user took issue with/found errors in)
+<img style="margin: 10px" src="https://user-images.githubusercontent.com/53918934/211737073-19799d14-470a-4c9d-a610-b2ed5f8a4251.png" height="400" /> <img style="margin: 10px" src="https://user-images.githubusercontent.com/53918934/211736962-04a3d76d-abca-49c9-b889-1a741907fc08.png" height="400" /> 
 
-![image](https://user-images.githubusercontent.com/53918934/180667277-379b7d29-a5da-4f1f-89f3-13086240c86d.png)
 
-- additional notes, with a rich text editor for formatting
+<img style="margin: 10px" src="https://user-images.githubusercontent.com/53918934/211744891-419ea887-ef2b-4622-9358-cdaeeab4940e.png" height="300" /> 
 
-![image](https://user-images.githubusercontent.com/53918934/180667549-6d0aea0e-ec00-4dbe-a812-84098aaee678.png)
+<img style="margin: 10px" src="https://user-images.githubusercontent.com/53918934/211735539-77d3c322-aa5d-4df0-8744-b4cdee688c47.png" height="180" /> 
+<img style="margin: 10px" src="https://user-images.githubusercontent.com/53918934/211736249-0624d982-f8af-4537-83d0-52e70130919d.png" height="250" />
 
-- an urgency rating
 
-![image](https://user-images.githubusercontent.com/53918934/180667572-2fe20161-5e69-4593-a516-fc9f2a8b5b97.png)
