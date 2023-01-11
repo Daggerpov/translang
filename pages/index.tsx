@@ -266,9 +266,7 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
 
     // });
 
-    useEffect(() => {
-        
-    }, []);
+    useEffect(() => {}, []);
 
     // decorate function depends on the language selected
     // this decorates the code, as in highlights the

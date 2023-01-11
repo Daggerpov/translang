@@ -451,9 +451,17 @@ print(f"{name}'s favourite number is: {favourite_number}")`,
             if (!Text.isText(node)) {
                 return ranges;
             }
+            let decorationLanguage = "";
+            if (languageTo === "python") {
+                decorationLanguage = "python";
+            } else if (languageTo === "javascript") {
+                decorationLanguage = "javascript";
+            } else {
+                decorationLanguage = "java";
+            }
             const tokens = Prism.tokenize(
                 node.text,
-                Prism.languages[languageFrom]
+                Prism.languages[decorationLanguage]
             );
 
             if (submissionCode === "") {

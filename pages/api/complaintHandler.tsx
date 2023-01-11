@@ -8,13 +8,13 @@ export default async function handler(req, res) {
         case "POST":
             let bodyObject = JSON.parse(req.body);
             let newComplaint = await db
-                .collection("RequestsAndResponses")
+                .collection("Complaints")
                 .insertOne(bodyObject);
             res.json(newComplaint.ops[0]);
             break;
         case "GET":
             const complaints = await db
-                .collection("RequestsAndResponses")
+                .collection("Complaints")
                 .find({})
                 .toArray();
             res.json(complaints);

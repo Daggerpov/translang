@@ -17,10 +17,8 @@ import Image from "next/image";
 import Router from "next/router";
 import { TextBox } from "@syncfusion/ej2-react-inputs";
 
-import GoogleIcon from '@mui/icons-material/Google';
-import GitHubIcon from '@mui/icons-material/GitHub';
-
-
+import GoogleIcon from "@mui/icons-material/Google";
+import GitHubIcon from "@mui/icons-material/GitHub";
 
 function Login() {
     const [email, setEmail] = useState("");
@@ -39,7 +37,7 @@ function Login() {
         <>
             <div
                 style={{
-                    height: "100vh",
+                    height: "85vh",
                     width: "100vw",
                     display: "flex",
                     alignItems: "center",

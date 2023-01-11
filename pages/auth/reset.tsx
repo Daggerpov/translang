@@ -20,9 +20,9 @@ function Reset() {
         <>
             <div
                 style={{
-                    height: "100vh",
+                    height: "85vh",
                     width: "100vw",
-                    display: "fGlex",
+                    display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
                     marginTop: "7px",

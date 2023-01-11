@@ -14,8 +14,8 @@ import {
 import styles from "../../styles/Home.module.css";
 import Router from "next/router";
 
-import GoogleIcon from '@mui/icons-material/Google';
-import GitHubIcon from '@mui/icons-material/GitHub';
+import GoogleIcon from "@mui/icons-material/Google";
+import GitHubIcon from "@mui/icons-material/GitHub";
 
 function Register() {
     const [email, setEmail] = useState("");
@@ -34,7 +34,7 @@ function Register() {
         <>
             <div
                 style={{
-                    height: "100vh",
+                    height: "85vh",
                     width: "100vw",
                     display: "flex",
                     alignItems: "center",
