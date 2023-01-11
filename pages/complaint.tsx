@@ -582,13 +582,8 @@ print(f"{name}'s favourite number is: {favourite_number}")`,
                         </Button>
                     </Link>
                 </h2>
-
-                <h1>
-                    You translated from: {languageFrom} to: {languageTo} and had{" "}
-                    {numLines} lines of code
-                </h1>
                 <div>
-                    <TextField sx={{ m: 1, minWidth: 140 }} id="outlined-basic" label="Title" variant="outlined" placeholder="e.g. Import Error"
+                    <TextField sx={{ m: 1, minWidth: 280 }} id="outlined-basic" label="Title" variant="outlined" placeholder="e.g. Import Error"
                             onChange={handleTitleChange}/>
                     <FormControl sx={{ m: 1, minWidth: 140 }}>
                         <InputLabel id="simple-select-autowidth-label">
