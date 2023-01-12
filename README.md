@@ -1,11 +1,3 @@
-This website is not currently deployed (as of January 11th), because I'm switching the following technologies:
-
-- Web Deployment: Heroku -> Vercel (to be done in mid-January)
-- Database: MongoDB -> PostgreSQL (to be done in late-February)
-- Authentication: Firebase -> Nextauth.js (to be done in early-February)
-
-Expect this all to be done by late February (reading week). 
-
 # Submit Complaints
 
 ![image](https://user-images.githubusercontent.com/53918934/211744314-4bbfc728-4c4d-450e-8cf3-0911988e5b61.png)
