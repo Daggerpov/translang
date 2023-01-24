@@ -422,13 +422,14 @@ const Complaint: NextPage = (users) => {
 
     const codeInitialValue: Descendant[] = [
         {
+            // TODO: change this to be dynamic based on actual code output
             type: "paragraph",
             children: [
                 {
-                    text: `import random
-name = 'Daniel'
-favourite_number = random.randint(0, 10)
-print(f"{name}'s favourite number is: {favourite_number}")`,
+                    text: `import random;
+name = 'Daniel';
+favourite_number = random.randint(0, 10);
+System.out.println(f"{name}'s favourite number is: {favourite_number}");`,
                 },
             ],
         },
