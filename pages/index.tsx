@@ -613,7 +613,7 @@ print(f"{name}'s favourite number is: {favourite_number}")`);
                                     <MenuItem value={"python"}>Python</MenuItem>
                                     <MenuItem value={"java"}>Java</MenuItem>
                                     <MenuItem value={"javascript"}>
-                                        javascript
+                                        JavaScript
                                     </MenuItem>
                                 </Select>
                             </FormControl>
